@@ -109,7 +109,7 @@
     </dependencies>
 
     <build>
-        <defaultGoal>package</defaultGoal>
+        <defaultGoal>clean install</defaultGoal>
         <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
 
         <finalName>${project.name}</finalName>
@@ -248,5 +248,4 @@
             </build>
         </profile>
     </profiles>
-
 </project>
