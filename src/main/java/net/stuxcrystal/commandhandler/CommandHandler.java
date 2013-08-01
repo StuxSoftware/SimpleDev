@@ -48,6 +48,11 @@ public class CommandHandler {
         private final CommandHandler subcommands;
 
         /**
+         * Current Command handler
+         */
+        private final CommandHandler current;
+
+        /**
          * The Method.
          */
         private final Method method;
@@ -62,12 +67,13 @@ public class CommandHandler {
          */
         private final Backend backend;
 
-        public CommandData(Command command, Method method, Object instance, Backend backend, CommandHandler subcommands) {
+        public CommandData(Command command, Method method, Object instance, Backend backend, CommandHandler subcommands, CommandHandler current) {
             this.command = command;
             this.method = method;
             this.instance = instance;
             this.backend = backend;
             this.subcommands = subcommands;
+            this.current = current;
         }
 
         /**
@@ -78,12 +84,13 @@ public class CommandHandler {
          * @param arguments
          */
         public void execute(CommandExecutor sender, ArgumentParser arguments) {
-            if (this.subcommands == null || this.subcommands.getSubCommand().time() == CallTime.PRE)
+            if (this.subcommands == null || this.subcommands.getSubCommand().time() == CallTime.PRE) {
                 if (!_execute(sender, arguments)) {
                     if (this.subcommands != null)
                         sender.sendMessage(subcommands._(sender, "cmd.notfound"));
                     return;
                 }
+            }
 
             if (this.subcommands == null)
                 return;
@@ -134,10 +141,10 @@ public class CommandHandler {
                     return false; // Don't execute the subcommand.
                 }
 
-                ExceptionHandler handler = this.subcommands.getExceptionHandler(e.getCause().getClass());
+                ExceptionHandler handler = this.current.getExceptionHandler(e.getCause().getClass());
                 if (handler == null) {
                     // If the exception couldn't be handled, throw this generic exception.
-                    sender.sendMessage(subcommands._(sender, "cmd.exception"));
+                    sender.sendMessage(this.current._(sender, "cmd.exception"));
                     backend.getLogger().log(Level.SEVERE, "Exception while calling command.", e.getCause());
                 } else {
                     // Handle the exception.
@@ -146,6 +153,16 @@ public class CommandHandler {
             }
 
             return true;
+        }
+
+        /**
+         * @return The name of the command.
+         */
+        private String getName() {
+            if (this.command.value().isEmpty())
+                return this.method.getName();
+
+            return this.command.value();
         }
     }
 
@@ -252,7 +269,7 @@ public class CommandHandler {
             }
 
             // Add the command.
-            commands.add(new CommandData(method.getAnnotation(Command.class), method, container, this.backend, subhandler));
+            commands.add(new CommandData(method.getAnnotation(Command.class), method, container, this.backend, subhandler, this));
         }
     }
 
@@ -283,7 +300,6 @@ public class CommandHandler {
 
     /**
      * Executes the command.<p />
-     * <p/>
      * Additionally searches for a command.
      *
      * @param sender    The sender that executes the command.
@@ -294,7 +310,7 @@ public class CommandHandler {
     protected boolean execute(CommandExecutor sender, String name, String[] arguments) {
         // Prefer Exact Matches first.
         for (CommandData data : commands) {
-            if (data.command.value().equals(name)) {
+            if (data.getName().equals(name)) {
                 executeCommand(sender, data, arguments);
                 return true;
             }
@@ -302,7 +318,7 @@ public class CommandHandler {
 
         // Then ignore the case.
         for (CommandData data : commands) {
-            if (data.command.value().equalsIgnoreCase(name)) {
+            if (data.getName().equalsIgnoreCase(name)) {
                 executeCommand(sender, data, arguments);
                 return true;
             }
@@ -363,7 +379,10 @@ public class CommandHandler {
     }
 
     /**
-     * Executes the command.
+     * Executes the command.<p />
+     *
+     * Before the command will be executed, some checks will be done to ensure
+     * the player/console is allowed to execute the command.
      *
      * @param sender    The sender
      * @param data      The internal data of the command.
@@ -406,12 +425,12 @@ public class CommandHandler {
         }
 
         if (data.command.minSize() != -1 && parser.count() < data.command.minSize()) {
-            sender.sendMessage(_(sender, "cmd.flag.args.min"));
+            sender.sendMessage(_(sender, "cmd.check.args.min"));
             return;
         }
 
         if (data.command.maxSize() != -1 && parser.count() > data.command.maxSize()) {
-            sender.sendMessage(_(sender, "cmd.flag.args.max"));
+            sender.sendMessage(_(sender, "cmd.check.args.max"));
             return;
         }
 
@@ -451,12 +470,12 @@ public class CommandHandler {
     public ExceptionHandler<?> getExceptionHandler(Class<?> cls) {
         ExceptionHandler result = null;
         Class<?> current = cls;
-        while (result == null || current != null) {
-            result = this.exceptionHandlers.get(cls);
-            current = cls.getSuperclass();
+        while (result == null && current != null) {
+            result = this.exceptionHandlers.get(current);
+            current = current.getSuperclass();
         }
 
-        if (result == null)
+        if (result == null && this.parent != null)
             return this.parent.getExceptionHandler(cls);
         return result;
     }

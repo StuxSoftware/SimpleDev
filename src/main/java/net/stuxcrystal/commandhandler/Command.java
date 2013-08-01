@@ -27,11 +27,13 @@ import java.lang.annotation.*;
 public @interface Command {
 
     /**
-     * The name of the command.
+     * The name of the command.<p />
+     *
+     * If the value doesn't have a value, the name of the method will be used.
      *
      * @return
      */
-    public String value();
+    public String value() default "";
 
     /**
      * The aliases of the command.

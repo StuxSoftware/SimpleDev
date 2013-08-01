@@ -36,12 +36,17 @@ public final class BukkitCommandHandler extends CommandHandler implements Comman
 
     /**
      * Simple command handler for subcommands.
+     *
+     * @param _sender   The sender that sends the command.
+     * @param command   The internal command
+     * @param label     The alias used to execute this command.
+     * @param arguments The arguments passed to the command.
      */
     @Override
     public boolean onCommand(CommandSender _sender, org.bukkit.command.Command command, String label, String[] arguments) {
         if (arguments.length == 0) {
             // Make a command out of it.
-            arguments = new String[]{""};
+            arguments = new String[]{" "};
         }
 
         net.stuxcrystal.commandhandler.CommandExecutor<?> sender = ((BukkitPluginBackend) this.backend).wrapSender(_sender);

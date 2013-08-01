@@ -101,6 +101,12 @@ public final class ReflectionUtil {
      */
     public static <T> T getField(Class<?> cls, Object object, String... fields) throws ReflectiveOperationException {
 
+        if (object == null) {
+            Field field = cls.getDeclaredField(fields[0]);
+            field.setAccessible(true);
+            return (T) field.get(null);
+        }
+
         Object current = object;
         Class<?> currentClass = cls;
         for (String fieldName : fields) {
