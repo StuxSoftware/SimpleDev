@@ -80,8 +80,4 @@ public class ConfigurationParser {
         }
         throw new ValueException("The parser does not know how to parse the object...");
     }
-
-    private void warn(String where, String message) {
-        this.loader.warn(where, message);
-    }
 }
