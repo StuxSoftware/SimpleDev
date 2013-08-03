@@ -88,8 +88,10 @@ public class ConfigurationType implements ValueType<Object> {
             if (Modifier.isTransient(f.getModifiers())) continue;
             if (!f.isAccessible()) f.setAccessible(true);
 
+
+
             String name = f.getName();
-            String[] comments = new String[0];
+            String[] comments = cls.getAnnotation(Configuration.class).header();             // Use the default header.
             if (f.isAnnotationPresent(Value.class)) {
                 Value value = f.getAnnotation(Value.class);
                 name = value.name().isEmpty() ? name : value.name();

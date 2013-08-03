@@ -382,7 +382,7 @@ public class CommandHandler {
      * Executes the command.<p />
      *
      * Before the command will be executed, some checks will be done to ensure
-     * the player/console is allowed to execute the command.
+     * the player/console is allowed to execute the command with the correct syntax.
      *
      * @param sender    The sender
      * @param data      The internal data of the command.
