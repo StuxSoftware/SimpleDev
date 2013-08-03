@@ -27,4 +27,10 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 public @interface Configuration {
 
+    /**
+     * If the node representing the configuration has no comment, use
+     * this to define a default header.
+     */
+    public String[] header() default {};
+
 }
