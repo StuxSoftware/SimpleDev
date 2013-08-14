@@ -17,20 +17,27 @@ package net.stuxcrystal.commandhandler.compat.bukkit;
 
 import net.stuxcrystal.commandhandler.Backend;
 import net.stuxcrystal.commandhandler.CommandExecutor;
+import net.stuxcrystal.commandhandler.CommandHandler;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 
 import java.util.logging.Logger;
 
 /**
  * Represents a backend backend.
  */
-public class BukkitPluginBackend implements Backend<JavaPlugin> {
+public class BukkitPluginBackend implements Backend<Plugin> {
 
-    private final JavaPlugin plugin;
+    private final Plugin plugin;
 
-    public BukkitPluginBackend(JavaPlugin plugin) {
+    private CommandHandler handler;
+
+    public BukkitPluginBackend(Plugin plugin) {
         this.plugin = plugin;
+    }
+
+    public void setCommandHandler(CommandHandler handler) {
+        this.handler = handler;
     }
 
     @Override
@@ -51,11 +58,17 @@ public class BukkitPluginBackend implements Backend<JavaPlugin> {
     }
 
     @Override
-    public JavaPlugin getHandle() {
+    public Plugin getHandle() {
         return plugin;
     }
 
+    @Override
+    public Boolean hasPermission(CommandExecutor<?> executor, String node) {
+        if (!(executor instanceof BukkitSenderWrapper)) return null;
+        return ((BukkitSenderWrapper) executor).getHandle().hasPermission(node);
+    }
+
     CommandExecutor<?> wrapSender(CommandSender sender) {
-        return new SenderWrapper(sender);
+        return new BukkitSenderWrapper(sender, handler);
     }
 }

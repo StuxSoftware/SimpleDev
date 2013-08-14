@@ -15,21 +15,23 @@
 
 package net.stuxcrystal.commandhandler.compat.bukkit;
 
+import net.stuxcrystal.commandhandler.Backend;
 import net.stuxcrystal.commandhandler.CommandExecutor;
+import net.stuxcrystal.commandhandler.CommandHandler;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 /**
  * Wraps a CommandSender.
  */
-public class SenderWrapper extends CommandExecutor<CommandSender> {
+public class BukkitSenderWrapper extends CommandExecutor<CommandSender> {
 
     final CommandSender sender;
 
-    SenderWrapper(CommandSender sender) {
+    BukkitSenderWrapper(CommandSender sender, CommandHandler backend) {
+        super(backend);
         this.sender = sender;
     }
-
 
     @Override
     public String getName() {
@@ -39,11 +41,6 @@ public class SenderWrapper extends CommandExecutor<CommandSender> {
     @Override
     public void sendMessage(String... message) {
         this.sender.sendMessage(message);
-    }
-
-    @Override
-    public boolean hasPermission(String node) {
-        return this.sender.hasPermission(node);
     }
 
     @Override

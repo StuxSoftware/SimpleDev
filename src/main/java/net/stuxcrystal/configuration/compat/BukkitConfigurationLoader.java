@@ -18,6 +18,7 @@ package net.stuxcrystal.configuration.compat;
 import net.stuxcrystal.configuration.ConfigurationLoader;
 import net.stuxcrystal.configuration.Constructor;
 import net.stuxcrystal.configuration.logging.JULBinding;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -32,7 +33,7 @@ public class BukkitConfigurationLoader extends ConfigurationLoader {
      *
      * @param plugin The plugin that the logger should use.
      */
-    public BukkitConfigurationLoader(JavaPlugin plugin) {
+    public BukkitConfigurationLoader(Plugin plugin) {
         super();
         this.setLoggingInterface(new JULBinding(plugin.getLogger()));
     }
@@ -43,7 +44,7 @@ public class BukkitConfigurationLoader extends ConfigurationLoader {
      * @param plugin      The plugin which logger should be used.
      * @param constructor The constructor-object that adds the types and resolvers of the configuration loader.
      */
-    public BukkitConfigurationLoader(JavaPlugin plugin, Constructor constructor) {
+    public BukkitConfigurationLoader(Plugin plugin, Constructor constructor) {
         super(constructor);
         this.setLoggingInterface(new JULBinding(plugin.getLogger()));
     }

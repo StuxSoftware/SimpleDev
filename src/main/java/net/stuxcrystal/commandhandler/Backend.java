@@ -50,4 +50,13 @@ public interface Backend<T> {
      */
     public T getHandle();
 
+    /**
+     * Checks if the user has the permission.
+     *
+     * @param executor The executor.
+     * @param node     The node to use.
+     * @return null, if the given backend does not support permissions.
+     */
+    public Boolean hasPermission(CommandExecutor<?> executor, String node);
+
 }

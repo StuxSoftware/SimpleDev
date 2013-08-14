@@ -26,7 +26,7 @@ import java.util.Map;
 /**
  * A handler using a memory configuration.
  */
-public class ConfigurationLocalizationHandler implements TranslationHandler {
+public class BukkitConfigurationLocalizationHandler implements TranslationHandler {
 
     /**
      * Starts the memory section.
@@ -38,7 +38,7 @@ public class ConfigurationLocalizationHandler implements TranslationHandler {
      *
      * @param configuration
      */
-    public ConfigurationLocalizationHandler(MemoryConfiguration configuration) {
+    public BukkitConfigurationLocalizationHandler(MemoryConfiguration configuration) {
         update(configuration);
     }
 

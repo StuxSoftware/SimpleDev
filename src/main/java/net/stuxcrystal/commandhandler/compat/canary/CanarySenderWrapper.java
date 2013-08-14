@@ -17,7 +17,9 @@ package net.stuxcrystal.commandhandler.compat.canary;
 
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.chat.MessageReceiver;
+import net.stuxcrystal.commandhandler.Backend;
 import net.stuxcrystal.commandhandler.CommandExecutor;
+import net.stuxcrystal.commandhandler.CommandHandler;
 
 /**
  * Wrapper for the Canary Sender.
@@ -26,7 +28,8 @@ public class CanarySenderWrapper extends CommandExecutor<MessageReceiver> {
 
     final MessageReceiver receiver;
 
-    public CanarySenderWrapper(MessageReceiver receiver) {
+    public CanarySenderWrapper(MessageReceiver receiver, CommandHandler backend) {
+        super(backend);
         this.receiver = receiver;
     }
 
@@ -39,11 +42,6 @@ public class CanarySenderWrapper extends CommandExecutor<MessageReceiver> {
     public void sendMessage(String... message) {
         for (String line : message)
             this.receiver.message(parseMessage(line));
-    }
-
-    @Override
-    public boolean hasPermission(String node) {
-        return this.receiver.hasPermission(node);
     }
 
     @Override

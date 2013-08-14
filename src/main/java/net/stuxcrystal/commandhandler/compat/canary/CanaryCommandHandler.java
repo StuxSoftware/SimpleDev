@@ -25,6 +25,7 @@ import org.apache.commons.lang.ArrayUtils;
  * CommandHandler for Canary Mod.
  */
 public class CanaryCommandHandler extends CommandHandler {
+
     /**
      * The Constructor for base-commands.
      *
@@ -32,6 +33,7 @@ public class CanaryCommandHandler extends CommandHandler {
      */
     public CanaryCommandHandler(Plugin plugin) {
         super(new CanaryPluginBackend(plugin));
+        ((CanaryPluginBackend) backend).setCommandHandler(this);
     }
 
     /**

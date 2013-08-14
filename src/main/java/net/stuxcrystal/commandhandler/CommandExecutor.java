@@ -21,6 +21,19 @@ package net.stuxcrystal.commandhandler;
 public abstract class CommandExecutor<T> {
 
     /**
+     * The CommandHandler providing the handler.
+     */
+    private final CommandHandler handler;
+
+    /**
+     * The handler.
+     * @param handler The handler providing the permission handler.
+     */
+    public CommandExecutor(CommandHandler handler) {
+        this.handler = handler;
+    }
+
+    /**
      * @return Returns the name of the sender.
      */
     public abstract String getName();
@@ -38,7 +51,13 @@ public abstract class CommandExecutor<T> {
      * @param node The node to test.
      * @return true if the sender has the permission needed.
      */
-    public abstract boolean hasPermission(String node);
+    public final boolean hasPermission(String node) {
+        PermissionHandler handler = this.handler.getPermissionHandler();
+        if (handler == null)
+            this.handler.setPermissionHandler(handler = new DefaultPermissionHandler(this.handler));
+
+        return handler.hasPermission(this, node);
+    }
 
     /**
      * Returns the type of the sender.

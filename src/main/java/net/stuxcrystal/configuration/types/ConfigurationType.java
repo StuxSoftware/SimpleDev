@@ -61,6 +61,7 @@ public class ConfigurationType implements ValueType<Object> {
             try {
                 f.set(result, parser.parseObject(result, f, f.getGenericType(), getNode(((Node<Node<?>[]>) value), name)));
             } catch (NoSuchElementException e) {
+                // Should this message be removed?
                 e.printStackTrace();
             }
         }

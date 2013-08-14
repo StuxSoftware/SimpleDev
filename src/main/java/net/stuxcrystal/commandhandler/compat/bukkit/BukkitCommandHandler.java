@@ -19,6 +19,7 @@ import net.stuxcrystal.commandhandler.CommandHandler;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -30,8 +31,9 @@ public final class BukkitCommandHandler extends CommandHandler implements Comman
      *
      * @param plugin The backend that needs the command handler.
      */
-    public BukkitCommandHandler(JavaPlugin plugin) {
+    public BukkitCommandHandler(Plugin plugin) {
         super(new BukkitPluginBackend(plugin));
+        ((BukkitPluginBackend) backend).setCommandHandler(this);
     }
 
     /**
@@ -64,7 +66,7 @@ public final class BukkitCommandHandler extends CommandHandler implements Comman
      * @param command   The command
      * @param label     The label
      * @param arguments The arguments
-     * @return
+     * @return true if the command was found.
      */
     public boolean commandSwitch(CommandSender _sender, @SuppressWarnings("unused") org.bukkit.command.Command command, String label, String[] arguments) {
         net.stuxcrystal.commandhandler.CommandExecutor<?> sender = ((BukkitPluginBackend) this.backend).wrapSender(_sender);

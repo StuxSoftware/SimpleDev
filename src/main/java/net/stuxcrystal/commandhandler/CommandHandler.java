@@ -193,6 +193,11 @@ public class CommandHandler {
     private final CommandHandler parent;
 
     /**
+     * The handler retrieving the permissions.
+     */
+    private PermissionHandler permissionHandler = null;
+
+    /**
      * Stores all exception handlers.
      */
     private final Map<Class<? extends Throwable>, ExceptionHandler<? extends Throwable>> exceptionHandlers =
@@ -481,10 +486,26 @@ public class CommandHandler {
     }
 
     /**
+     * Returns the permission-handler.
+     * @return The PermissionHandler.
+     */
+    public PermissionHandler getPermissionHandler() {
+        return this.permissionHandler;
+    }
+
+    /**
+     * Returns the permission-handler.
+     * @param handler The handler to use now.
+     */
+    public void setPermissionHandler(PermissionHandler handler) {
+        this.permissionHandler = handler;
+    }
+
+    /**
      * Registers an ExceptionHandler.
      *
      * @param cls     The type of exception that the exception handler handles.
-     * @param handler
+     * @param handler The handler to use.
      */
     public void registerExceptionHandler(Class<? extends Throwable> cls, ExceptionHandler<? extends Throwable> handler) {
         this.exceptionHandlers.put(cls, handler);

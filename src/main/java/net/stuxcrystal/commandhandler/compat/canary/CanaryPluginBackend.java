@@ -20,6 +20,7 @@ import net.canarymod.chat.MessageReceiver;
 import net.canarymod.plugin.Plugin;
 import net.stuxcrystal.commandhandler.Backend;
 import net.stuxcrystal.commandhandler.CommandExecutor;
+import net.stuxcrystal.commandhandler.CommandHandler;
 
 import java.util.logging.Logger;
 
@@ -30,10 +31,15 @@ public class CanaryPluginBackend implements Backend<Plugin> {
 
     final Plugin plugin;
 
-    public CanaryPluginBackend(Plugin plugin) {
+    private CommandHandler handler;
 
+    public CanaryPluginBackend(Plugin plugin) {
         this.plugin = plugin;
         this.plugin.getLogman().warning("CanaryMod Recode does not support asynchronous tasks out of the box. Falling back to threads.");
+    }
+
+    public void setCommandHandler(CommandHandler handler) {
+        this.handler = handler;
     }
 
     @Override
@@ -60,7 +66,13 @@ public class CanaryPluginBackend implements Backend<Plugin> {
         return this.plugin;
     }
 
+    @Override
+    public Boolean hasPermission(CommandExecutor<?> executor, String node) {
+        if (!(executor instanceof CanarySenderWrapper)) return null;
+        return ((CanarySenderWrapper) executor).getHandle().hasPermission(node);
+    }
+
     CommandExecutor<?> wrapReceiver(MessageReceiver receiver) {
-        return new CanarySenderWrapper(receiver);
+        return new CanarySenderWrapper(receiver, handler);
     }
 }
