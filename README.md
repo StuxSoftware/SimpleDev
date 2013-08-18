@@ -1,11 +1,11 @@
 SimpleDev
 =========
 
-Libary to create configurations in various markup languages.
+Library to make platform independent plugins (and mods) easier.
 
 Building
 --------
-Build this package using the following command:
+Build this package using maven:
 ```mvn clean install```
 
 License
@@ -36,4 +36,6 @@ Features
  * Configuration API - Implement Configurations without worrying that the Plugin-API cannot
    handle these plugins.
 
- Learn more about the features in the Wiki.
+Support
+-------
+This libarry currently supports CanaryMod Recode, Forge Mod Loader and Bukkit.

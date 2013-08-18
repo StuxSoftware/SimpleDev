@@ -41,11 +41,17 @@
             <url>http://ci.herocraftonline.com/plugin/repository/everything</url>
         </repository>
 
-        <!-- Canary Mod -->
+        <!-- Canary Mod Recode -->
         <repository>
             <id>vi-repo</id>
             <name>Visual Illusions Repository</name>
             <url>http://repo.visualillusionsent.net</url>
+        </repository>
+
+        <!-- A repository where Forge available. -->
+        <repository>
+            <id>mcstats</id>
+            <url>http://repo.mcstats.org/content/repositories/public/</url>
         </repository>
 
         <!-- Maven repo. -->
@@ -66,6 +72,7 @@
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
             <version>1.9</version>
+            <type>jar</type>
             <scope>compile</scope>
         </dependency>
 
@@ -76,6 +83,7 @@
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
             <version>2.6</version>
+            <type>jar</type>
             <scope>compile</scope>
         </dependency>
 
@@ -88,6 +96,7 @@
             <groupId>net.canarymod</groupId>
             <artifactId>CanaryLib</artifactId>
             <version>0.9</version>
+            <type>jar</type>
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>
@@ -97,6 +106,17 @@
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
             <version>1.5.2-R1.0</version>
+            <type>jar</type>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Forge -->
+        <dependency>
+            <groupId>org.minecraftforge</groupId>
+            <artifactId>minecraft_deobfuscated</artifactId>
+            <version>1.6.2</version>
+            <type>jar</type>
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>
