@@ -17,6 +17,7 @@ package net.stuxcrystal.configuration.logging;
 
 import net.stuxcrystal.configuration.LoggingInterface;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -33,5 +34,20 @@ public class JULBinding implements LoggingInterface {
     @Override
     public void warn(String message) {
         this.logger.warning(message);
+    }
+
+    @Override
+    public void debug(String message) {
+        this.logger.fine(message);
+    }
+
+    @Override
+    public void debugException(Throwable exception) {
+        this.logger.log(Level.FINE, "Minor exception.", exception);
+    }
+
+    @Override
+    public void exception(Throwable exception) {
+        this.logger.log(Level.WARNING, "Major exception.", exception);
     }
 }

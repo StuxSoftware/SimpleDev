@@ -26,4 +26,30 @@ public interface LoggingInterface {
      * @param message Message to send.
      */
     public void warn(String message);
+
+    /**
+     * Returns a debug message.
+     * @param message The debug message.
+     */
+    public void debug(String message);
+
+    /**
+     * Exception thrown in debug-mode.<p />
+     *
+     * Use this method to declare a minor exception that
+     * does not affect the load in any way.
+     *
+     * @param exception The thrown exception.
+     */
+    public void debugException(Throwable exception);
+
+    /**
+     * Send a major exception into the logging system.<p />
+     *
+     * Use this method to show exception that can affect
+     * the load if the configuration.
+     *
+     * @param exception The thrown exception.
+     */
+    public void exception(Throwable exception);
 }

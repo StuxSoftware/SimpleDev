@@ -30,4 +30,16 @@ public class NullBinding implements LoggingInterface {
     @Override
     public void warn(String message) {
     }
+
+    @Override
+    public void debug(String message) {
+    }
+
+    @Override
+    public void debugException(Throwable exception) {
+    }
+
+    @Override
+    public void exception(Throwable exception) {
+    }
 }

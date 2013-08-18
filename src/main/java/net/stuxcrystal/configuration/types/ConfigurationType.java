@@ -61,8 +61,8 @@ public class ConfigurationType implements ValueType<Object> {
             try {
                 f.set(result, parser.parseObject(result, f, f.getGenericType(), getNode(((Node<Node<?>[]>) value), name)));
             } catch (NoSuchElementException e) {
-                // Should this message be removed?
-                e.printStackTrace();
+                parser.getConfigurationLoader().getLoggingInterface().debug("Node not found...");
+                parser.getConfigurationLoader().getLoggingInterface().debugException(e);
             }
         }
 
@@ -85,7 +85,6 @@ public class ConfigurationType implements ValueType<Object> {
         MapNode parent = new MapNode(null);
         List<Node<?>> nodes = new ArrayList<>();                 // Use the transient keyword to indicate that the value is transient.
         for (Field f : cls.getDeclaredFields()) {
-            // if (f.isAnnotationPresent(Transient.class)) continue;
             if (Modifier.isTransient(f.getModifiers())) continue;
             if (!f.isAccessible()) f.setAccessible(true);
 

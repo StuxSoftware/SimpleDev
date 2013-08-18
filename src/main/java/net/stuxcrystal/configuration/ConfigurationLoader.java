@@ -46,6 +46,9 @@ public class ConfigurationLoader {
      */
     final List<ValueType<?>> types = new ArrayList<>();
 
+    /**
+     * The logging interface.
+     */
     private LoggingInterface logger = new ErrorStreamBinding();
 
     /**
@@ -275,6 +278,15 @@ public class ConfigurationLoader {
             throw new ReflectionException(e);
         }
         return (T) o;
+    }
+
+    /**
+     * The logging interface.
+     *
+     * @return A logging-interface object.
+     */
+    public LoggingInterface getLoggingInterface() {
+        return this.logger;
     }
 
 }

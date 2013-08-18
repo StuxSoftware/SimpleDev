@@ -28,4 +28,19 @@ public class ErrorStreamBinding implements LoggingInterface {
     public void warn(String message) {
         System.err.println(message);
     }
+
+    @Override
+    public void debug(String message) {
+        // Silently drop the message.
+    }
+
+    @Override
+    public void debugException(Throwable exception) {
+        // Silently drop the exception.
+    }
+
+    @Override
+    public void exception(Throwable exception) {
+        exception.printStackTrace();
+    }
 }

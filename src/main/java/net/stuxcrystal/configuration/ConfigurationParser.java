@@ -80,4 +80,12 @@ public class ConfigurationParser {
         }
         throw new ValueException("The parser does not know how to parse the object...");
     }
+
+    /**
+     * Returns the underlying configuration loader instance.
+     * @return The configuration loader using this object.
+     */
+    public ConfigurationLoader getConfigurationLoader() {
+        return this.loader;
+    }
 }
