@@ -19,13 +19,13 @@ import java.lang.annotation.*;
 
 /**
  * Marks a value.<p />
- * If used on a class this will be the header of the entire file.
+ * Please note that this annotation can also be used on methods of Interfaces.
  *
  * @author StuxCrystal
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD, ElementType.TYPE})
+@Target({ElementType.FIELD, ElementType.METHOD})
 public @interface Value {
     /**
      * The name of the value.<p />

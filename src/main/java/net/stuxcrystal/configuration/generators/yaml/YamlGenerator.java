@@ -23,6 +23,7 @@ import net.stuxcrystal.configuration.node.Node;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
+import org.yaml.snakeyaml.error.YAMLException;
 import org.yaml.snakeyaml.representer.Representer;
 
 import java.io.*;
@@ -53,12 +54,20 @@ public class YamlGenerator implements NodeTreeGenerator {
 
     @Override
     public Node<?> parseFile(File file, ConfigurationLoader cparser) throws IOException {
-        return parseNode(parser.load(new FileInputStream(file)));
+        try {
+            return parseNode(parser.load(new FileInputStream(file)));
+        } catch (YAMLException e) {
+            throw new IOException(e);
+        }
     }
 
     @Override
     public Node<?> parse(InputStream stream, ConfigurationLoader cparser) throws IOException {
-        return parseNode(parser.load(stream));
+        try {
+            return parseNode(parser.load(stream));
+        } catch (YAMLException e) {
+            throw new IOException(e);
+        }
     }
 
     @SuppressWarnings("unchecked")
