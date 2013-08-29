@@ -19,7 +19,8 @@
 
     <groupId>net.stuxcrystal</groupId>
     <artifactId>SimpleDev</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
+
     <packaging>jar</packaging>
 
     <!-- Encoding properties. -->
@@ -48,7 +49,7 @@
             <url>http://repo.visualillusionsent.net</url>
         </repository>
 
-        <!-- A repository where Forge available. -->
+        <!-- A repository where Forge is available. -->
         <repository>
             <id>mcstats</id>
             <url>http://repo.mcstats.org/content/repositories/public/</url>
