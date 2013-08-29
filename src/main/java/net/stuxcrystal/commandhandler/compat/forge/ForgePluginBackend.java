@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 /**
  * The plugin backend for forge.
  */
-public class ForgePluginBackend<T> implements Backend<T> {
+public class ForgePluginBackend<T> implements Backend<T, ICommandSender> {
 
     /**
      * Reference to a forge mod.
@@ -85,6 +85,11 @@ public class ForgePluginBackend<T> implements Backend<T> {
     @Override
     public CommandExecutor<?> getExecutor(String name) {
         return wrapExecutor(MinecraftServer.getServer().getConfigurationManager().getPlayerForUsername(name));
+    }
+
+    @Override
+    public CommandExecutor<?> wrapPlayer(ICommandSender player) {
+        return wrapExecutor(player);
     }
 
     public CommandExecutor wrapExecutor(ICommandSender sender) {

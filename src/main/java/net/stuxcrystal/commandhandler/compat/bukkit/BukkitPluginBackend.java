@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 /**
  * Represents a backend backend.
  */
-public class BukkitPluginBackend implements Backend<Plugin> {
+public class BukkitPluginBackend implements Backend<Plugin, CommandSender> {
 
     private final Plugin plugin;
 
@@ -55,6 +55,11 @@ public class BukkitPluginBackend implements Backend<Plugin> {
         if (name == null || name.isEmpty())
             return wrapSender(this.plugin.getServer().getConsoleSender());
         return wrapSender(this.plugin.getServer().getPlayer(name));
+    }
+
+    @Override
+    public CommandExecutor<?> wrapPlayer(CommandSender player) {
+        return wrapSender(player);
     }
 
     @Override

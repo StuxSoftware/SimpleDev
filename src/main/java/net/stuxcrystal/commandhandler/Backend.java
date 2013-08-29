@@ -21,8 +21,9 @@ import java.util.logging.Logger;
  * Backend of the command handler. Used to communicate with the program.
  *
  * @param <T> The type of the backend.
+ * @param <P> The type of the player.
  */
-public interface Backend<T> {
+public interface Backend<T, P> {
 
     /**
      * Called if the logger has to be used.
@@ -44,6 +45,13 @@ public interface Backend<T> {
      * @param name The name of the executor. If null or empty, the console executor will be returned.
      */
     public CommandExecutor<?> getExecutor(String name);
+
+    /**
+     * Wraps a player object.
+     * @param player The player (sender) to wrap.
+     * @return The wrapped player.
+     */
+    public CommandExecutor<?> wrapPlayer(P player);
 
     /**
      * @return The handle.

@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 /**
  * Backend for the Canary-Mod-Server.
  */
-public class CanaryPluginBackend implements Backend<Plugin> {
+public class CanaryPluginBackend implements Backend<Plugin, MessageReceiver> {
 
     final Plugin plugin;
 
@@ -59,6 +59,11 @@ public class CanaryPluginBackend implements Backend<Plugin> {
         }
 
         return wrapReceiver(Canary.getServer().getPlayer(name));
+    }
+
+    @Override
+    public CommandExecutor<?> wrapPlayer(MessageReceiver player) {
+        return wrapReceiver(player);
     }
 
     @Override
