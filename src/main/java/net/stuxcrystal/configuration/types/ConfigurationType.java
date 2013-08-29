@@ -56,6 +56,8 @@ public class ConfigurationType implements ValueType<Object> {
             if (f.isAnnotationPresent(Value.class)) {
                 Value _value = f.getAnnotation(Value.class);
                 name = _value.name().isEmpty() ? name : _value.name();
+
+                if (_value.transientValue()) continue;
             }
 
             try {
@@ -96,6 +98,8 @@ public class ConfigurationType implements ValueType<Object> {
                 Value value = f.getAnnotation(Value.class);
                 name = value.name().isEmpty() ? name : value.name();
                 comments = value.comment();
+
+                if (value.transientValue()) continue;
             }
 
             Node<?> node = parser.dumpObject(data, f, f.getGenericType(), f.get(data));

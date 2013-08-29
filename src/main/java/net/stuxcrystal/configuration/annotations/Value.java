@@ -37,4 +37,9 @@ public @interface Value {
      * The comment that is written above the value.
      */
     public String[] comment() default {};
+
+    /**
+     * Is the value transient.
+     */
+    public boolean transientValue() default false;
 }
