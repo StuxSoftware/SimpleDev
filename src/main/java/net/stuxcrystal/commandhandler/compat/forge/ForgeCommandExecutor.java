@@ -15,6 +15,7 @@
 
 package net.stuxcrystal.commandhandler.compat.forge;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
@@ -70,7 +71,22 @@ public class ForgeCommandExecutor extends CommandExecutor<ICommandSender> {
      */
     @Override
     public boolean isOp() {
-        return MinecraftServer.getServer().getConfigurationManager().getOps().contains(this.getName());
+
+        // If the player is Single-Player always allow the command.
+        if (FMLCommonHandler.instance().getEffectiveSide().isClient())
+            return true;
+
+        MinecraftServer server = FMLCommonHandler.instance().getSidedDelegate().getServer();
+
+        // Check SinglePlayer and LAN-Servers
+        if (server.isSinglePlayer()) {
+            // Check LAN or Integrated Server.
+            if (server.getServerOwner().equalsIgnoreCase(this.getName()))
+                return true;
+        }
+
+        // Operator check.
+        return server.getConfigurationManager().getOps().contains(this.getName());
     }
 
     @Override

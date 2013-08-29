@@ -52,7 +52,6 @@ public class ForgePluginBackend<T> implements Backend<T> {
     /**
      * Constructs the plugin backend with the given mod.
      * @param mod The mod to use.
-     * @param handler
      */
     public ForgePluginBackend(T mod) {
         this(mod, FMLLog.getLogger());
@@ -85,7 +84,10 @@ public class ForgePluginBackend<T> implements Backend<T> {
 
     @Override
     public CommandExecutor<?> getExecutor(String name) {
-        ICommandSender sender = MinecraftServer.getServer().getConfigurationManager().getPlayerForUsername(name);
+        return wrapExecutor(MinecraftServer.getServer().getConfigurationManager().getPlayerForUsername(name));
+    }
+
+    public CommandExecutor wrapExecutor(ICommandSender sender) {
         return new ForgeCommandExecutor(sender, this.handler);
     }
 
