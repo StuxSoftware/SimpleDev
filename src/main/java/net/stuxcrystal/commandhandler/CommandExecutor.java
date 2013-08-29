@@ -108,4 +108,11 @@ public abstract class CommandExecutor<T> {
         return me.hashCode();
     }
 
+    /**
+     * @return The backend that manages the players.
+     */
+    public Backend getBackend() {
+        return this.handler.backend;
+    }
+
 }
