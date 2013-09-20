@@ -19,7 +19,7 @@
 
     <groupId>net.stuxcrystal</groupId>
     <artifactId>SimpleDev</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.2-SNAPSHOT</version>
 
     <packaging>jar</packaging>
 
@@ -28,6 +28,19 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
+
+    <!-- Repository fir SimpleDev. -->
+    <distributionManagement>
+        <repository>
+            <id>repo.stuxcrystal.net</id>
+            <url>http://repo.stuxcrystal.net/content/repositories/releases</url>
+        </repository>
+
+        <snapshotRepository>
+            <id>repo.stuxcrystal.net</id>
+            <url>http://repo.stuxcrystal.net/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <repositories>
         <!-- Bukkit -->
@@ -86,6 +99,10 @@
             <version>2.6</version>
             <type>jar</type>
             <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId></groupId>
         </dependency>
 
         <!--                                                                                                         -->
