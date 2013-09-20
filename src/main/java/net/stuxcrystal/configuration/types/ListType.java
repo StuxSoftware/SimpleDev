@@ -42,6 +42,8 @@ public class ListType implements ValueType<List<?>> {
     @Override
     public List<?> parse(Object object, Field field, ConfigurationParser parser, Type cls, Node<?> value) throws ReflectiveOperationException, ValueException {
         Node<?>[] children = ((Node<Node<?>[]>) value).getData();
+        if (children == null) return new ArrayList(0);
+
         Type type = ReflectionUtil.getGenericArguments(cls)[0];
         List data = new ArrayList(children.length);
 

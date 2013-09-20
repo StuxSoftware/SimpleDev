@@ -101,7 +101,7 @@ public class NumberType implements ValueType<Object> {
             else
                 throw new ValueException("Failed to parse file.");
         } catch (NumberFormatException e) {
-            throw new ValueException("Failed to parse string...");
+            throw new ValueException("Failed to parse string...", e);
         }
     }
 
