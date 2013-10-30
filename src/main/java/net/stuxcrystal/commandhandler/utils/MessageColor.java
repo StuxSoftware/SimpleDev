@@ -16,6 +16,8 @@
 package net.stuxcrystal.commandhandler.utils;
 
 
+import java.text.AttributedCharacterIterator;
+
 /**
  * Implements all colors of minecraft.
  */
@@ -93,5 +95,4 @@ public enum MessageColor {
     public boolean isFormat() {
         return format;
     }
-
 }
