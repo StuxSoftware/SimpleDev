@@ -17,6 +17,7 @@ package net.stuxcrystal.commandhandler.compat.bukkit;
 
 import net.stuxcrystal.commandhandler.CommandHandler;
 import org.apache.commons.lang.ArrayUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
@@ -27,7 +28,9 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public final class BukkitCommandHandler extends CommandHandler implements CommandExecutor {
     /**
-     * The Constructor for base-commands.
+     * The Constructor for base-commands.<p />
+     *
+     * Uses Vault if Vault is detected. Please note that an addition
      *
      * @param plugin The backend that needs the command handler.
      */

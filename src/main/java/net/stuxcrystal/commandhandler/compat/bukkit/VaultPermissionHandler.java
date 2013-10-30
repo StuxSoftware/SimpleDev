@@ -30,14 +30,21 @@ public class VaultPermissionHandler implements PermissionHandler {
     /**
      * Handler to the permissions provider.
      */
-    private final Permission permissions;
+    private Permission permissions = null;
 
     /**
-     * Constructs the Vault-Permission-Handler.<p />
-     *
-     * Please note that Vault has to be loaded when an instance is created.
+     * Constructs the Vault-Permission-Handler.
      */
-    public VaultPermissionHandler() {
+    public VaultPermissionHandler() {}
+
+    /**
+     * Prepares the permission-handler to be used.<p />
+     *
+     * Vault has to be loaded when this function is called.
+     */
+    private void preparePermissionHandler() {
+        if (permissions != null) return;
+
         Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("Vault");
         if (plugin == null)
             throw new IllegalStateException("Vault is not installed.");
@@ -59,6 +66,8 @@ public class VaultPermissionHandler implements PermissionHandler {
      */
     @Override
     public boolean hasPermission(CommandExecutor<?> executor, String node) {
+        this.preparePermissionHandler();
+
         if (!(executor instanceof BukkitSenderWrapper))
             throw new IllegalArgumentException("This permission handler needs a Bukkit-Command-Sender.");
 

@@ -18,6 +18,7 @@ package net.stuxcrystal.commandhandler.compat.bukkit;
 import net.stuxcrystal.commandhandler.CommandBackend;
 import net.stuxcrystal.commandhandler.CommandExecutor;
 import net.stuxcrystal.commandhandler.CommandHandler;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
@@ -73,6 +74,13 @@ public class BukkitPluginBackend implements CommandBackend<Plugin, CommandSender
         return plugin;
     }
 
+    /**
+     * Checks if the sender has the permission needed.
+     *
+     * @param executor The executor.
+     * @param node     The node to use.
+     * @return
+     */
     @Override
     public Boolean hasPermission(CommandExecutor<?> executor, String node) {
         if (!(executor instanceof BukkitSenderWrapper)) return null;
