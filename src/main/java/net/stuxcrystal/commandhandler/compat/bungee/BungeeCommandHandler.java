@@ -1,6 +1,7 @@
 package net.stuxcrystal.commandhandler.compat.bungee;
 
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.stuxcrystal.commandhandler.CommandBackend;
 import net.stuxcrystal.commandhandler.CommandExecutor;
@@ -50,5 +51,14 @@ public class BungeeCommandHandler extends CommandHandler {
         if (!this.execute(executor, name, args))
             executor.sendMessage(_(executor, "cmd.notfound"));
 
+    }
+
+    /**
+     * Makes a command from this command handler.
+     * @param name The name of the command.
+     * @return The command instance.
+     */
+    public Command asCommand(String name) {
+        return new BungeeCordCommand(name, this);
     }
 }
