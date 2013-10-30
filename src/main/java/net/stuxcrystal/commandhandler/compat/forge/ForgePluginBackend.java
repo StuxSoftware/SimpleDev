@@ -92,6 +92,11 @@ public class ForgePluginBackend<T> implements CommandBackend<T, ICommandSender> 
         return wrapExecutor(player);
     }
 
+    @Override
+    public CommandExecutor<?> getConsole() {
+        return wrapExecutor(MinecraftServer.getServer());
+    }
+
     public CommandExecutor wrapExecutor(ICommandSender sender) {
         return new ForgeCommandExecutor(sender, this.handler);
     }
