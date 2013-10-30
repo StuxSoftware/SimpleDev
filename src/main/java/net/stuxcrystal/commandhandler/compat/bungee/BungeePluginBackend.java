@@ -39,7 +39,7 @@ public class BungeePluginBackend implements CommandBackend<Plugin, CommandSender
 
     @Override
     public void schedule(Runnable runnable) {
-        // Fortunately this API supports scheduling asyncronous tasks.
+        // Fortunately this API supports scheduling asynchronous tasks.
         this.plugin.getProxy().getScheduler().runAsync(this.plugin, runnable);
     }
 
