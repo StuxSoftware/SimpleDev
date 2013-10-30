@@ -33,7 +33,6 @@ public final class BukkitCommandHandler extends CommandHandler implements Comman
      */
     public BukkitCommandHandler(Plugin plugin) {
         super(new BukkitPluginBackend(plugin));
-        ((BukkitPluginBackend) backend).setCommandHandler(this);
     }
 
     /**

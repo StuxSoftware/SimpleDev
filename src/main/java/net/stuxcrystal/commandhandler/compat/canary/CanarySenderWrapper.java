@@ -17,7 +17,6 @@ package net.stuxcrystal.commandhandler.compat.canary;
 
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.chat.MessageReceiver;
-import net.stuxcrystal.commandhandler.Backend;
 import net.stuxcrystal.commandhandler.CommandExecutor;
 import net.stuxcrystal.commandhandler.CommandHandler;
 

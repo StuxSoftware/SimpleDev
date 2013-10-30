@@ -18,7 +18,7 @@ package net.stuxcrystal.commandhandler.compat.forge;
 import cpw.mods.fml.common.FMLLog;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
-import net.stuxcrystal.commandhandler.Backend;
+import net.stuxcrystal.commandhandler.CommandBackend;
 import net.stuxcrystal.commandhandler.CommandExecutor;
 import net.stuxcrystal.commandhandler.CommandHandler;
 
@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 /**
  * The plugin backend for forge.
  */
-public class ForgePluginBackend<T> implements Backend<T, ICommandSender> {
+public class ForgePluginBackend<T> implements CommandBackend<T, ICommandSender> {
 
     /**
      * Reference to a forge mod.

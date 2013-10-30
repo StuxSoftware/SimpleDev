@@ -33,7 +33,6 @@ public class CanaryCommandHandler extends CommandHandler {
      */
     public CanaryCommandHandler(Plugin plugin) {
         super(new CanaryPluginBackend(plugin));
-        ((CanaryPluginBackend) backend).setCommandHandler(this);
     }
 
     /**
@@ -57,6 +56,6 @@ public class CanaryCommandHandler extends CommandHandler {
 
         if (!this.execute(executor, name, args))
             executor.sendMessage(_(executor, "cmd.notfound"));
-        ;
+
     }
 }

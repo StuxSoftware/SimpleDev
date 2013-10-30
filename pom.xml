@@ -59,13 +59,20 @@
         <repository>
             <id>vi-repo</id>
             <name>Visual Illusions Repository</name>
-            <url>http://repo.visualillusionsent.net</url>
+            <url>http://repo.visualillusionsent.net/</url>
+            <snapshots><enabled>true</enabled></snapshots>
         </repository>
 
         <!-- A repository where Forge is available. -->
         <repository>
             <id>mcstats</id>
             <url>http://repo.mcstats.org/content/repositories/public/</url>
+        </repository>
+
+        <!-- Bungee-Cord -->
+        <repository>
+            <id>cmcdev</id>
+            <url>http://repo.craftminecraft.net/content/groups/public/</url>
         </repository>
 
         <!-- Maven repo. -->
@@ -102,7 +109,11 @@
         </dependency>
 
         <dependency>
-            <groupId></groupId>
+            <groupId>net.md-5</groupId>
+            <artifactId>bungeecord-api</artifactId>
+            <version>1.5-SNAPSHOT</version>
+            <optional>true</optional>
+            <type>jar</type>
         </dependency>
 
         <!--                                                                                                         -->
@@ -113,8 +124,7 @@
         <dependency>
             <groupId>net.canarymod</groupId>
             <artifactId>CanaryLib</artifactId>
-            <version>0.9</version>
-            <type>jar</type>
+            <version>1.0-RC-1</version>
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>
@@ -123,7 +133,7 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.5.2-R1.0</version>
+            <version>1.6.4-R0.1-SNAPSHOT</version>
             <type>jar</type>
             <scope>provided</scope>
             <optional>true</optional>

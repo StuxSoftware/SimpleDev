@@ -15,7 +15,6 @@
 
 package net.stuxcrystal.commandhandler.compat.bukkit;
 
-import net.stuxcrystal.commandhandler.Backend;
 import net.stuxcrystal.commandhandler.CommandExecutor;
 import net.stuxcrystal.commandhandler.CommandHandler;
 import org.bukkit.command.CommandSender;

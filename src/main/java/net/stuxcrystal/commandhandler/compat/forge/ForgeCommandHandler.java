@@ -17,7 +17,6 @@ package net.stuxcrystal.commandhandler.compat.forge;
 
 import cpw.mods.fml.common.FMLLog;
 import net.minecraft.command.ICommandSender;
-import net.stuxcrystal.commandhandler.Backend;
 import net.stuxcrystal.commandhandler.CommandExecutor;
 import net.stuxcrystal.commandhandler.CommandHandler;
 import org.apache.commons.lang.ArrayUtils;

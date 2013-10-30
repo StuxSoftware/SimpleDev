@@ -65,9 +65,9 @@ public class CommandHandler {
         /**
          * The JavaPlugin for the logs.
          */
-        private final Backend backend;
+        private final CommandBackend backend;
 
-        public CommandData(Command command, Method method, Object instance, Backend backend, CommandHandler subcommands, CommandHandler current) {
+        public CommandData(Command command, Method method, Object instance, CommandBackend backend, CommandHandler subcommands, CommandHandler current) {
             this.command = command;
             this.method = method;
             this.instance = instance;
@@ -175,7 +175,7 @@ public class CommandHandler {
     /**
      * The java backend to register tasks.
      */
-    protected final Backend backend;
+    protected final CommandBackend backend;
 
     /**
      * Data for the subcommand.
@@ -208,7 +208,7 @@ public class CommandHandler {
      *
      * @param backend
      */
-    public CommandHandler(Backend backend) {
+    public CommandHandler(CommandBackend backend) {
         this(backend, null, new TranslationManager(), null);
     }
 
@@ -220,11 +220,15 @@ public class CommandHandler {
      * @param manager    The translation manager.
      * @param parent     The parent command handler.
      */
-    private CommandHandler(Backend backend, SubCommand subcommand, TranslationManager manager, CommandHandler parent) {
+    private CommandHandler(CommandBackend backend, SubCommand subcommand, TranslationManager manager, CommandHandler parent) {
         this.backend = backend;
         this.subcommand = subcommand;
         this.manager = manager;
-        this.parent = null;
+        this.parent = parent;
+
+        // Intitialize Backend.
+        if (parent == null)
+            this.backend.setCommandHandler(this);
     }
 
     public TranslationManager getTranslationManager() {
@@ -453,7 +457,7 @@ public class CommandHandler {
      *
      * @return The instance to the server backend.
      */
-    public Backend getServerBackend() {
+    public CommandBackend getServerBackend() {
         return this.backend;
     }
 

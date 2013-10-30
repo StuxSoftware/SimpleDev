@@ -15,7 +15,7 @@
 
 package net.stuxcrystal.commandhandler.compat.bukkit;
 
-import net.stuxcrystal.commandhandler.Backend;
+import net.stuxcrystal.commandhandler.CommandBackend;
 import net.stuxcrystal.commandhandler.CommandExecutor;
 import net.stuxcrystal.commandhandler.CommandHandler;
 import org.bukkit.command.CommandSender;
@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 /**
  * Represents a backend backend.
  */
-public class BukkitPluginBackend implements Backend<Plugin, CommandSender> {
+public class BukkitPluginBackend implements CommandBackend<Plugin, CommandSender> {
 
     private final Plugin plugin;
 
@@ -36,6 +36,7 @@ public class BukkitPluginBackend implements Backend<Plugin, CommandSender> {
         this.plugin = plugin;
     }
 
+    @Override
     public void setCommandHandler(CommandHandler handler) {
         this.handler = handler;
     }
@@ -60,6 +61,11 @@ public class BukkitPluginBackend implements Backend<Plugin, CommandSender> {
     @Override
     public CommandExecutor<?> wrapPlayer(CommandSender player) {
         return wrapSender(player);
+    }
+
+    @Override
+    public CommandExecutor<?> getConsole() {
+        return wrapSender(this.plugin.getServer().getConsoleSender());
     }
 
     @Override

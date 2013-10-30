@@ -15,6 +15,9 @@
 
 package net.stuxcrystal.commandhandler;
 
+import java.text.AttributedCharacterIterator;
+import java.text.AttributedString;
+
 /**
  * Represents the sender of a command.
  */
@@ -111,7 +114,7 @@ public abstract class CommandExecutor<T> {
     /**
      * @return The backend that manages the players.
      */
-    public Backend getBackend() {
+    public CommandBackend getBackend() {
         return this.handler.backend;
     }
 

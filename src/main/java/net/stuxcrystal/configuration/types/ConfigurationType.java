@@ -42,15 +42,13 @@ public class ConfigurationType implements ValueType<Object> {
     @SuppressWarnings("unchecked")
     public Object parse(Object object, Field field, ConfigurationParser parser, Type type, Node<?> value) throws ReflectiveOperationException, ValueException {
         Class<?> cls = ReflectionUtil.toClass(type);
-        if (!value.hasChildren())
-            throw new ValueException("The node does not have any subnodes.");
-
         Object result = ReflectionUtil.newInstance(cls);
 
         for (Field f : cls.getDeclaredFields()) {
-            // if (f.isAnnotationPresent(Transient.class)) continue;    // Use the transient keyword to indicate that the value is transient.
-            if (Modifier.isTransient(f.getModifiers())) continue;
-            if (!f.isAccessible()) f.setAccessible(true);
+            if (Modifier.isTransient(f.getModifiers())) continue;                // Ignore Transient values.
+            if (Modifier.isStatic(f.getModifiers())) continue;                   // Ignore Static fields.
+
+            if (!f.isAccessible()) f.setAccessible(true);                        // Set the field accessible.
 
             String name = f.getName();
             if (f.isAnnotationPresent(Value.class)) {
@@ -85,12 +83,12 @@ public class ConfigurationType implements ValueType<Object> {
         Class<?> cls = ReflectionUtil.toClass(type);
 
         MapNode parent = new MapNode(null);
-        List<Node<?>> nodes = new ArrayList<>();                 // Use the transient keyword to indicate that the value is transient.
+        List<Node<?>> nodes = new ArrayList<>();
         for (Field f : cls.getDeclaredFields()) {
-            if (Modifier.isTransient(f.getModifiers())) continue;
-            if (!f.isAccessible()) f.setAccessible(true);
+            if (Modifier.isTransient(f.getModifiers())) continue;                // Ignore Transient values.
+            if (Modifier.isStatic(f.getModifiers())) continue;                   // Ignore Static fields.
 
-
+            if (!f.isAccessible()) f.setAccessible(true);                        // Set the field accessible.
 
             String name = f.getName();
             String[] comments = cls.getAnnotation(Configuration.class).header();             // Use the default header.

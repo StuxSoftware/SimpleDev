@@ -18,7 +18,7 @@ package net.stuxcrystal.commandhandler.compat.canary;
 import net.canarymod.Canary;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.plugin.Plugin;
-import net.stuxcrystal.commandhandler.Backend;
+import net.stuxcrystal.commandhandler.CommandBackend;
 import net.stuxcrystal.commandhandler.CommandExecutor;
 import net.stuxcrystal.commandhandler.CommandHandler;
 
@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 /**
  * Backend for the Canary-Mod-Server.
  */
-public class CanaryPluginBackend implements Backend<Plugin, MessageReceiver> {
+public class CanaryPluginBackend implements CommandBackend<Plugin, MessageReceiver> {
 
     final Plugin plugin;
 
@@ -38,6 +38,7 @@ public class CanaryPluginBackend implements Backend<Plugin, MessageReceiver> {
         this.plugin.getLogman().warning("CanaryMod Recode does not support asynchronous tasks out of the box. Falling back to threads.");
     }
 
+    @Override
     public void setCommandHandler(CommandHandler handler) {
         this.handler = handler;
     }
@@ -64,6 +65,11 @@ public class CanaryPluginBackend implements Backend<Plugin, MessageReceiver> {
     @Override
     public CommandExecutor<?> wrapPlayer(MessageReceiver player) {
         return wrapReceiver(player);
+    }
+
+    @Override
+    public CommandExecutor<?> getConsole() {
+        return wrapReceiver(Canary.getServer());
     }
 
     @Override

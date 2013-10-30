@@ -23,7 +23,13 @@ import java.util.logging.Logger;
  * @param <T> The type of the backend.
  * @param <P> The type of the player.
  */
-public interface Backend<T, P> {
+public interface CommandBackend<T, P> {
+
+    /**
+     * Sets the command hanlder for the plugin.
+     * @param handler The new command handler.
+     */
+    public void setCommandHandler(CommandHandler handler);
 
     /**
      * Called if the logger has to be used.
@@ -52,6 +58,12 @@ public interface Backend<T, P> {
      * @return The wrapped player.
      */
     public CommandExecutor<?> wrapPlayer(P player);
+
+    /**
+     * Returns an CommandExecutor that represents the console.
+     * @return The Executor-Object that represents the console.
+     */
+    public CommandExecutor<?> getConsole();
 
     /**
      * @return The handle.
