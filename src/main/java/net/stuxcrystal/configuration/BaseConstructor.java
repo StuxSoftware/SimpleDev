@@ -25,12 +25,26 @@ import net.stuxcrystal.configuration.types.*;
 public class BaseConstructor implements Constructor {
 
     /**
+     * Generators to add by a subclass.
+     * @param loader The loader.
+     */
+    public void addedGenerators(ConfigurationLoader loader) {}
+
+    /**
+     * Types to be added by a subclass.
+     * @param loader The loader.
+     */
+    public void addedTypes(ConfigurationLoader loader) {}
+
+    /**
      * Loads all existing generators.
      *
      * @param loader The loader where to add the generators.
      */
     @Override
-    public void loadGenerators(ConfigurationLoader loader) {
+    public final void loadGenerators(ConfigurationLoader loader) {
+        addedGenerators(loader);
+
         // Adds predefined generators.
         loader.addTreeGenerator(new YamlGenerator());                 // ".yml" and ".yaml"
         loader.addTreeGenerator(new XmlGenerator());                  // ".xml"
@@ -42,7 +56,9 @@ public class BaseConstructor implements Constructor {
      * @param loader The loader where to add the types.
      */
     @Override
-    public void loadValueTypes(ConfigurationLoader loader) {
+    public final void loadValueTypes(ConfigurationLoader loader) {
+        addedTypes(loader);
+
         // Adds predefined types.
         loader.addType(new ByteArrayType());                          // byte[]   to String using Base64
         loader.addType(new ArrayType());                              // All other arrays.
