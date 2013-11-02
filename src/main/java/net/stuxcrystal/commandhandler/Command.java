@@ -102,7 +102,7 @@ public @interface Command {
     public int maxSize() default -1;
 
     /**
-     * Should the command only executed as an operator.
+     * Should the command only executed as an operator if no permissions-system is supported.
      *
      * @return
      */

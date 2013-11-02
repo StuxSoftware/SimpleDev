@@ -399,12 +399,6 @@ public class CommandHandler {
      */
     private void executeCommand(CommandExecutor sender, CommandData data, String[] arguments) {
 
-        // Check op only
-        if (data.command.opOnly() && !sender.isOp()) {
-            sender.sendMessage(_(sender, "cmd.check.oponly"));
-            return;
-        }
-
         // Check sender type.
         if (sender.isPlayer()) {
             if (!data.command.asPlayer()) {
@@ -419,9 +413,17 @@ public class CommandHandler {
         }
 
         // Check permissions.
-        if (!data.command.permission().isEmpty() && !sender.hasPermission(data.command.permission())) {
-            sender.sendMessage(_(sender, "cmd.check.permission"));
-            return;
+        if (this.isPermissionsSupported(sender)) {
+            if (!data.command.permission().isEmpty() && !sender.hasPermission(data.command.permission())) {
+                sender.sendMessage(_(sender, "cmd.check.permission"));
+                return;
+            }
+        } else {
+            // Check op only
+            if (data.command.opOnly() && !sender.isOp()) {
+                sender.sendMessage(_(sender, "cmd.check.oponly"));
+                return;
+            }
         }
 
         // Check argument data.
@@ -450,6 +452,15 @@ public class CommandHandler {
         else
             // Synchronous execution if Command.async is false.
             data.execute(sender, parser);
+    }
+
+    /**
+     * Checks if permissions are supported.
+     * @return true if so.
+     */
+    private boolean isPermissionsSupported(CommandExecutor sender) {
+        if (sender != null && !(this.getPermissionHandler() instanceof DefaultPermissionHandler)) return true;
+        return (this.getServerBackend().hasPermission(sender, "chandler.testpermission") != null);
     }
 
     /**
