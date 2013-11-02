@@ -13,7 +13,10 @@
  * specific language governing permissions and limitations under the License.
  */
 
-package net.stuxcrystal.commandhandler;
+package net.stuxcrystal.commandhandler.exceptions;
+
+import net.stuxcrystal.commandhandler.arguments.ArgumentParser;
+import net.stuxcrystal.commandhandler.CommandExecutor;
 
 /**
  * A handler for exceptions.<p />

@@ -2,7 +2,7 @@ package net.stuxcrystal.commandhandler.compat.bungee;
 
 import net.md_5.bungee.api.ProxyServer;
 import net.stuxcrystal.commandhandler.CommandExecutor;
-import net.stuxcrystal.commandhandler.TranslationHandler;
+import net.stuxcrystal.commandhandler.translations.TranslationHandler;
 
 /**
  * Translation handler for BungeeCord.

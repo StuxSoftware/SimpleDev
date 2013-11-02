@@ -21,6 +21,7 @@ package net.stuxcrystal.commandhandler;
  * @author StuxCrystal
  */
 public enum CallTime {
+
     /**
      * Call the function before the subcommand is processed.
      */

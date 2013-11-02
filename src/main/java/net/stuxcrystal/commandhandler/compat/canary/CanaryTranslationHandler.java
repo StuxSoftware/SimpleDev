@@ -17,7 +17,7 @@ package net.stuxcrystal.commandhandler.compat.canary;
 
 import net.canarymod.Translator;
 import net.stuxcrystal.commandhandler.CommandExecutor;
-import net.stuxcrystal.commandhandler.TranslationHandler;
+import net.stuxcrystal.commandhandler.translations.TranslationHandler;
 
 /**
  * Translation handler for canary mod.

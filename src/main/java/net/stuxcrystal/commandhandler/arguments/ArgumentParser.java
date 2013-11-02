@@ -12,7 +12,7 @@
  * CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.stuxcrystal.commandhandler;
+package net.stuxcrystal.commandhandler.arguments;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.math.NumberUtils;

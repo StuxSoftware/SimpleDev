@@ -16,7 +16,7 @@
 package net.stuxcrystal.configuration.test;
 
 import junit.framework.TestCase;
-import net.stuxcrystal.commandhandler.TranslationManager;
+import net.stuxcrystal.commandhandler.translations.TranslationManager;
 
 import java.util.Map;
 

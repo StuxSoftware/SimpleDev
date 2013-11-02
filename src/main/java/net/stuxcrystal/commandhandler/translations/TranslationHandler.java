@@ -13,31 +13,24 @@
  * specific language governing permissions and limitations under the License.
  */
 
-package net.stuxcrystal.commandhandler;
+package net.stuxcrystal.commandhandler.translations;
 
-import java.lang.annotation.*;
+import net.stuxcrystal.commandhandler.CommandExecutor;
 
 /**
- * Defines a subcommand.
+ * Returns the translation.
  *
  * @author StuxCrystal
  */
-@Documented
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD})
-public @interface SubCommand {
+public interface TranslationHandler {
 
     /**
-     * The class used for the subcommand.
+     * Returns the translation.
      *
-     * @return A list of classobject that can be instantiated without an argument.
+     * @param sender The sender that sent the command.
+     * @param key    The Key of the translation.
+     * @return The translation.
      */
-    public Class<?>[] value();
+    public String getTranslation(CommandExecutor sender, String key);
 
-    /**
-     * When should the subcommand be called. Defaults to never.
-     *
-     * @return The time when the function is to be called.
-     */
-    public CallTime time() default CallTime.NEVER;
 }

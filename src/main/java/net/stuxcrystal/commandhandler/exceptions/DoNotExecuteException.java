@@ -13,7 +13,7 @@
  * specific language governing permissions and limitations under the License.
  */
 
-package net.stuxcrystal.commandhandler;
+package net.stuxcrystal.commandhandler.exceptions;
 
 /**
  * Thrown when the command handler should execute the given subcommand.
