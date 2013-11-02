@@ -22,7 +22,7 @@ import net.stuxcrystal.configuration.types.*;
 /**
  * Basic constructor.
  */
-class BaseConstructor implements Constructor {
+public class BaseConstructor implements Constructor {
 
     /**
      * Loads all existing generators.
