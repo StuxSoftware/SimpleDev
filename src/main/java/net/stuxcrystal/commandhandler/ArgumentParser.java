@@ -131,8 +131,8 @@ public class ArgumentParser {
     /**
      * Parses the given argument.
      *
-     * @param index
-     * @return
+     * @param index The index of the argument.
+     * @return A float.
      */
     public float getFloat(int index) {
         return Float.parseFloat(arguments[index]);
@@ -141,9 +141,9 @@ public class ArgumentParser {
     /**
      * Parses the given argument.
      *
-     * @param index
-     * @param def
-     * @return
+     * @param index The index of the argument.
+     * @param def   The default value.
+     * @return A float.
      */
     public float getFloat(int index, float def) {
         return index < arguments.length ? NumberUtils.toFloat(arguments[index], def) : def;
