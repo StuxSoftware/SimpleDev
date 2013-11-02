@@ -18,16 +18,32 @@ package net.stuxcrystal.commandhandler;
 /**
  * The default permission handler.
  */
-public class DefaultPermissionHandler implements PermissionHandler {
+public final class DefaultPermissionHandler implements PermissionHandler {
 
+    /**
+     * The command-handler handling the permissions.
+     */
     private final CommandHandler handler;
 
+    /**
+     * Did the system warned the administrator that Op-Permissions are used?
+     */
     private boolean warning = false;
 
+    /**
+     * Constructs the default-permission handler.
+     * @param handler The CommandHandler.
+     */
     public DefaultPermissionHandler(CommandHandler handler) {
         this.handler = handler;
     }
 
+    /**
+     * Checks the permission using the underlying server-backend.
+     * @param executor The user.
+     * @param node     The node to check.
+     * @return true If the executor has the permission.
+     */
     @Override
     public boolean hasPermission(CommandExecutor<?> executor, String node) {
         Boolean result = this.handler.getServerBackend().hasPermission(executor, node);
