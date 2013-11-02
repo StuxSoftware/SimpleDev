@@ -158,13 +158,27 @@ public class ConfigurationLoader {
     }
 
     /**
-     * Writes the configuration into a file.
+     * Writes the configuration into a file.<p />
+     *
+     * Creates the file (and the parent-directories) if needed.
      *
      * @param file          The file to save into.
      * @param configuration The configuration.
      * @throws ConfigurationException
      */
     public void dumpFile(File file, Object configuration) throws ConfigurationException {
+        if (!file.exists()) {
+            if (!file.getParentFile().exists()) {
+                file.getParentFile().mkdirs();
+            }
+
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                throw new FileException("Failed to create file", e);
+            }
+        }
+
         Node<?> nodes = dumpConfiguration(configuration);
 
         boolean found = false;
