@@ -1,11 +1,14 @@
 package net.stuxcrystal.commandhandler.compat.bungee;
 
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.stuxcrystal.commandhandler.CommandBackend;
 import net.stuxcrystal.commandhandler.CommandExecutor;
 import net.stuxcrystal.commandhandler.CommandHandler;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -41,6 +44,16 @@ public class BungeePluginBackend implements CommandBackend<Plugin, CommandSender
     public void schedule(Runnable runnable) {
         // Fortunately this API supports scheduling asynchronous tasks.
         this.plugin.getProxy().getScheduler().runAsync(this.plugin, runnable);
+    }
+
+    @Override
+    public CommandExecutor<?>[] getPlayers() {
+        List<ProxiedPlayer> players = new ArrayList<>(this.plugin.getProxy().getPlayers());
+        CommandExecutor[] executors = new CommandExecutor[players.size()];
+        for (int i = 0; i<players.size(); i++) {
+            executors[i] = wrapPlayer(players.get(i));
+        }
+        return executors;
     }
 
     @Override

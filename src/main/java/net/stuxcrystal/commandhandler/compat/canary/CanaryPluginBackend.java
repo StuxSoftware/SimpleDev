@@ -16,12 +16,14 @@
 package net.stuxcrystal.commandhandler.compat.canary;
 
 import net.canarymod.Canary;
+import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.plugin.Plugin;
 import net.stuxcrystal.commandhandler.CommandBackend;
 import net.stuxcrystal.commandhandler.CommandExecutor;
 import net.stuxcrystal.commandhandler.CommandHandler;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -51,6 +53,16 @@ public class CanaryPluginBackend implements CommandBackend<Plugin, MessageReceiv
     @Override
     public void schedule(Runnable runnable) {
         new Thread(runnable).start();
+    }
+
+    @Override
+    public CommandExecutor<?>[] getPlayers() {
+        List<Player> players = Canary.getServer().getPlayerList();
+        CommandExecutor[] executors = new CommandExecutor[players.size()];
+        for (int i = 0; i<players.size(); i++) {
+            executors[i] = wrapReceiver(players.get(i));
+        }
+        return executors;
     }
 
     @Override

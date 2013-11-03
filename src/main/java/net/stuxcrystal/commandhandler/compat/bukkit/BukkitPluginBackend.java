@@ -20,6 +20,7 @@ import net.stuxcrystal.commandhandler.CommandExecutor;
 import net.stuxcrystal.commandhandler.CommandHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.util.logging.Logger;
@@ -64,6 +65,7 @@ public class BukkitPluginBackend implements CommandBackend<Plugin, CommandSender
 
     @Override
     public CommandExecutor<?> getExecutor(String name) {
+
         if (name == null || name.isEmpty())
             return wrapSender(this.plugin.getServer().getConsoleSender());
         return wrapSender(this.plugin.getServer().getPlayer(name));
