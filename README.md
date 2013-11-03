@@ -38,4 +38,4 @@ Features
 
 Support
 -------
-This libarry currently supports CanaryMod Recode, Forge Mod Loader and Bukkit.
+This libarry currently supports Bukkit, CanaryMod Recode and BungeeCord.
