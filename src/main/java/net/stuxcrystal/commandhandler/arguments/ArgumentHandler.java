@@ -3,8 +3,8 @@ package net.stuxcrystal.commandhandler.arguments;
 import net.stuxcrystal.commandhandler.CommandBackend;
 import net.stuxcrystal.commandhandler.CommandExecutor;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Handles arguments.
@@ -14,7 +14,7 @@ public class ArgumentHandler {
     /**
      * The registered argument-types.
      */
-    private Map<Class<?>, ArgumentType<?>> argumentTypes = new HashMap<>();
+    private List<ArgumentType> argumentTypes = new ArrayList<>();
 
     /**
      * Adds the types with the default values.
@@ -35,9 +35,9 @@ public class ArgumentHandler {
      * Registers the argument-types for the argument-parser.
      * @param types The new argument-parser.
      */
-    public void registerArgumentTypes(ArgumentType<?>... types) {
-        for (ArgumentType<?> type : types) {
-            argumentTypes.put(type.getType(), type);
+    public void registerArgumentTypes(ArgumentType... types) {
+        for (ArgumentType type : types) {
+            argumentTypes.add(type);
         }
     }
 
@@ -47,7 +47,10 @@ public class ArgumentHandler {
      * @return true.
      */
     public boolean supportsType(Class<?> cls) {
-        return this.argumentTypes.containsKey(cls);
+        for (ArgumentType type : argumentTypes) {
+            if (type.isTypeSupported(cls)) return true;
+        }
+        return false;
     }
 
     /**
@@ -61,11 +64,12 @@ public class ArgumentHandler {
      * @throws IllegalArgumentException If the given type is unsupported.
      */
     public <T> T convertType(String value, Class<T> type, CommandExecutor executor, CommandBackend handler) {
-        ArgumentType<T> converter = (ArgumentType<T>) argumentTypes.get(type);
-        if (converter == null)
-            throw new IllegalArgumentException("Unsupported conversion type.");
+        for (ArgumentType aType : argumentTypes) {
+            if (aType.isTypeSupported(type))
+                return (T) aType.convert(value, type, executor, handler);
+        }
 
-        return converter.convert(value, executor, handler);
+        throw new IllegalArgumentException("Unsupported type");
     }
 
 }

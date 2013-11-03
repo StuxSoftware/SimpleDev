@@ -7,17 +7,15 @@ import net.stuxcrystal.commandhandler.arguments.ArgumentType;
 /**
  * Parsing the string and makes it to a CommandExecutor.
  */
-public class CommandExecutorType extends ArgumentType<CommandExecutor> {
+public class CommandExecutorType implements ArgumentType {
 
-    /**
-     * The type of the argument.
-     */
-    public CommandExecutorType() {
-        super(CommandExecutor.class);
+    @Override
+    public boolean isTypeSupported(Class<?> cls) {
+        return CommandExecutor.class.isAssignableFrom(cls);
     }
 
     @Override
-    public CommandExecutor convert(String value, CommandExecutor executor, CommandBackend backend) {
+    public Object convert(String value, Class<?> toClass, CommandExecutor executor, CommandBackend backend) {
         return backend.getExecutor(value);
     }
 }

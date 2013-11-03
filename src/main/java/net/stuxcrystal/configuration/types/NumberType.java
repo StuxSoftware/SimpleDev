@@ -15,6 +15,9 @@
 
 package net.stuxcrystal.configuration.types;
 
+import net.stuxcrystal.commandhandler.CommandBackend;
+import net.stuxcrystal.commandhandler.CommandExecutor;
+import net.stuxcrystal.commandhandler.arguments.ArgumentType;
 import net.stuxcrystal.configuration.ConfigurationParser;
 import net.stuxcrystal.configuration.ValueType;
 import net.stuxcrystal.configuration.exceptions.ValueException;
@@ -24,8 +27,12 @@ import net.stuxcrystal.configuration.utils.ReflectionUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
+import java.util.logging.Level;
 
-public class NumberType implements ValueType<Object> {
+/**
+ * Support for CommandHandler and Configuration
+ */
+public class NumberType implements ValueType<Object>, ArgumentType {
 
     /**
      * List of all class types.
@@ -139,4 +146,22 @@ public class NumberType implements ValueType<Object> {
         return new DataNode(data.toString());
     }
 
+    @Override
+    public boolean isTypeSupported(Class<?> cls) {
+        try {
+            return this.isValidType(null, null, cls);
+        } catch (ReflectiveOperationException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public Object convert(String value, Class<?> toClass, CommandExecutor executor, CommandBackend backend) {
+        try {
+            return parseValue(toClass, value);
+        } catch (ValueException e) {
+            backend.getLogger().log(Level.WARNING, "Failed to convert value: " + value, e);
+            return null;
+        }
+    }
 }

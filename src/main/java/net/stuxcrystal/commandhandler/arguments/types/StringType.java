@@ -7,17 +7,15 @@ import net.stuxcrystal.commandhandler.arguments.ArgumentType;
 /**
  * Represents a type for strings.
  */
-public class StringType extends ArgumentType<String> {
+public class StringType implements ArgumentType {
 
-    /**
-     * The type of the argument.
-     */
-    public StringType() {
-        super(String.class);
+    @Override
+    public boolean isTypeSupported(Class<?> cls) {
+        return String.class.isAssignableFrom(cls);
     }
 
     @Override
-    public String convert(String value, CommandExecutor executor, CommandBackend backend) {
+    public String convert(String value, Class<?> toClass, CommandExecutor executor, CommandBackend backend) {
         return value;
     }
 }

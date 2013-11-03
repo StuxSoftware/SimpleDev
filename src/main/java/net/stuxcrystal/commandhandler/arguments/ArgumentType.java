@@ -6,35 +6,25 @@ import net.stuxcrystal.commandhandler.CommandExecutor;
 /**
  * Represents a type applicable by ArgumentType.
  */
-public abstract class ArgumentType<T> {
+public interface ArgumentType {
 
     /**
-     * The type of the argument
+     * Checks if the type is supported by this converter.
+     * @param cls The class to convert.
+     * @return true if the type is supported.
      */
-    private final Class<T> type;
-
-    /**
-     * The type of the argument.
-     * @param type The type the string will be converted to.
-     */
-    public ArgumentType(Class<T> type) {
-        this.type = type;
-    }
-
-    /**
-     * @return The type the argument will be converted to.
-     */
-    public final Class<T> getType() {
-        return this.type;
-    }
+    public abstract boolean isTypeSupported(Class<?> cls);
 
     /**
      * Converts a value into the given type.
      * @param value      The argument passed as a string.
+     * @param toClass    The class the value should be converted to.
      * @param executor   The executor who passed the argument.
      * @param backend    The backend that executed the command.
      * @return The converted value.
      */
-    public abstract T convert(String value, CommandExecutor executor, CommandBackend backend);
+    public abstract Object convert(String value, Class<?> toClass, CommandExecutor executor, CommandBackend backend);
+
+
 
 }
