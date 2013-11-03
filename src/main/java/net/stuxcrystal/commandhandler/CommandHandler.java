@@ -322,7 +322,7 @@ public class CommandHandler {
 
         // Execute Command.
         if (data.command.async())
-            // Asynchronous Execution if Command.async is true
+            // Asynchronous execution if Command.async is true
             backend.schedule(new CommandExecutionTask(data, sender, parser));
         else
             // Synchronous execution if Command.async is false.
