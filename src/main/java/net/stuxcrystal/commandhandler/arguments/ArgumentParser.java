@@ -18,6 +18,7 @@ import net.stuxcrystal.commandhandler.CommandExecutor;
 import net.stuxcrystal.commandhandler.CommandHandler;
 import net.stuxcrystal.configuration.types.NumberType;
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 
 /**
@@ -30,12 +31,12 @@ public class ArgumentParser {
     /**
      * Raw arguments
      */
-    private String[] arguments;
+    private String[] arguments = new String[0];
 
     /**
      * Raw flags.
      */
-    private String flags;
+    private String flags = "";
 
     /**
      * Reference to the Command-Handler.
@@ -64,15 +65,16 @@ public class ArgumentParser {
      * @param args The array of arguments to be parsed.
      */
     private void parseArgs(String[] args) {
-        if (args.length == 0) {
-            flags = "";
-            arguments = args;
-        } else if (args[0].startsWith("-")) {
-            flags = args[0].substring(1);
-            arguments = (String[]) ArrayUtils.remove(args, 0);
-        } else {
-            flags = "";
-            arguments = args;
+        String rawArgs = StringUtils.join(args, " ");
+
+        String[] parsed = this.handler.getArgumentHandler().getArgumentSplitter().split(rawArgs);
+
+        if (parsed.length >= 1) {
+            flags = parsed[0];
+        }
+
+        if (parsed.length >= 2) {
+            arguments = (String[]) ArrayUtils.subarray(parsed, 1, parsed.length);
         }
     }
 
@@ -116,12 +118,17 @@ public class ArgumentParser {
 
     /**
      * Returns the real index as specified in getArgument.
-     * @param index The index passed in getArgument.
+     * @param index       The index passed in getArgument.
+     * @param allowLength Allow
      * @return The real index or -1 if the index is invalid.
      */
-    private int getRealIndex(int index) {
+    private int getRealIndex(int index, boolean allowLength) {
         // Check validity of the index.
-        if (index >= arguments.length) {
+        if (index > arguments.length) {
+            // Index greater than the count of arguments.
+            return -1;
+        } else if (!allowLength && index == arguments.length) {
+            // Disallow passing the actual length of the argument.
             return -1;
         } else if (index < 0) {
             // Support python-like indices.
@@ -135,6 +142,15 @@ public class ArgumentParser {
         }
 
         return index;
+    }
+
+    /**
+     * Returns the real index as specified in getArgument.
+     * @param index The index passed in getArgument.
+     * @return The real index or -1 if the index is invalid.
+     */
+    private int getRealIndex(int index) {
+        return getRealIndex(index, false);
     }
 
     /**
@@ -228,6 +244,36 @@ public class ArgumentParser {
         return result;
     }
 
+    /**
+     * Joins the arguments beginning by the specified beginIndex (inclusive).
+     * @param beginIndex Index of first argument.
+     * @return The joined string.
+     */
+    public String getJoinedString(int beginIndex) {
+        return getJoinedString(beginIndex, this.arguments.length);
+    }
+
+    /**
+     * Joins the arguments using the given indexes.
+     * @param beginIndex First Index (Inclusive)
+     * @param endIndex   Last Index (Exclusive)
+     * @return The joined string.
+     */
+    public String getJoinedString(int beginIndex, int endIndex) {
+        int pBegin = beginIndex, pEnd = endIndex;
+
+        beginIndex = getRealIndex(beginIndex, false);    // Inclusive
+        endIndex = getRealIndex(endIndex, true);         // Exclusive
+
+        if (beginIndex < 0)
+            throw new ArrayIndexOutOfBoundsException(pBegin);
+
+        if (endIndex < 0)
+            throw new ArrayIndexOutOfBoundsException(pEnd);
+
+        String[] arguments = (String[]) ArrayUtils.subarray(this.arguments, beginIndex, endIndex);
+        return StringUtils.join(arguments, " ");
+    }
 
     /**
      * Returns the int at the given index.<p />

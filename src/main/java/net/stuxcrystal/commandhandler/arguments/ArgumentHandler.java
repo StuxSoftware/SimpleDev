@@ -2,6 +2,7 @@ package net.stuxcrystal.commandhandler.arguments;
 
 import net.stuxcrystal.commandhandler.CommandBackend;
 import net.stuxcrystal.commandhandler.CommandExecutor;
+import net.stuxcrystal.commandhandler.arguments.splitter.NoSplit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,11 @@ public class ArgumentHandler {
      * The registered argument-types.
      */
     private List<ArgumentType> argumentTypes = new ArrayList<>();
+
+    /**
+     * The argument-splitter for this handler.
+     */
+    private ArgumentSplitter splitter = new NoSplit();
 
     /**
      * Adds the types with the default values.
@@ -70,6 +76,21 @@ public class ArgumentHandler {
         }
 
         throw new IllegalArgumentException("Unsupported type");
+    }
+
+    /**
+     * @return The ArgumentSplitter for this handler.
+     */
+    public ArgumentSplitter getArgumentSplitter() {
+        return this.splitter;
+    }
+
+    /**
+     * Sets the ArgumentSplitter.
+     * @param splitter The new ArgumentSplitter.
+     */
+    public void setArgumentSplitter(ArgumentSplitter splitter) {
+        this.splitter = splitter;
     }
 
 }
