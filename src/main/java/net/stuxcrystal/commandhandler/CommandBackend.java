@@ -44,6 +44,11 @@ public interface CommandBackend<T, P> {
      * @param runnable
      */
     public void schedule(Runnable runnable);
+    
+    /**
+     * Returns all players that are currently logged in.
+     */
+    public CommandExecutor<?>[] getPlayers();
 
     /**
      * Returns an CommandExecutor by the given name.
