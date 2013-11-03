@@ -88,6 +88,7 @@ public class BukkitPluginBackend implements CommandBackend<Plugin, CommandSender
     }
 
     CommandExecutor<?> wrapSender(CommandSender sender) {
+        if (sender == null) return null;
         return new BukkitSenderWrapper(sender, handler);
     }
 }

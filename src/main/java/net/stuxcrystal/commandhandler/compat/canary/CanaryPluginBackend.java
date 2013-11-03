@@ -84,6 +84,7 @@ public class CanaryPluginBackend implements CommandBackend<Plugin, MessageReceiv
     }
 
     CommandExecutor<?> wrapReceiver(MessageReceiver receiver) {
+        if (receiver == null) return null;
         return new CanarySenderWrapper(receiver, handler);
     }
 }

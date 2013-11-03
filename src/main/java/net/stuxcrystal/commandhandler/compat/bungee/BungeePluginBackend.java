@@ -45,11 +45,14 @@ public class BungeePluginBackend implements CommandBackend<Plugin, CommandSender
 
     @Override
     public CommandExecutor<?> getExecutor(String name) {
+        if (name == null || name.isEmpty())
+            return wrapPlayer(this.plugin.getProxy().getConsole());
         return wrapPlayer(this.plugin.getProxy().getPlayer(name));
     }
 
     @Override
     public CommandExecutor<?> wrapPlayer(CommandSender player) {
+        if (player == null) return null;
         return new BungeeSenderWrapper(handler, player);
     }
 
