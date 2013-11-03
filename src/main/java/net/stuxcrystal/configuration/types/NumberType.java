@@ -30,7 +30,7 @@ public class NumberType implements ValueType<Object> {
     /**
      * List of all class types.
      */
-    private static final Class<?>[] WRAPPER_TYPES = new Class[]{
+    public static final Class<?>[] WRAPPER_TYPES = new Class[]{
             Boolean.class, Character.class, Integer.class, Long.class,
             Short.class, Byte.class, Double.class, Float.class,
     };
@@ -57,7 +57,7 @@ public class NumberType implements ValueType<Object> {
      * @param before The primitive type.
      * @return The wrapper type.
      */
-    private static Class<?> wrap(Class<?> before) {
+    public static Class<?> wrap(Class<?> before) {
         if (!before.isPrimitive()) return before;
 
         for (Class<?> clz : WRAPPER_TYPES) {
@@ -76,30 +76,30 @@ public class NumberType implements ValueType<Object> {
      * @return the parsed number.
      * @throws ValueException If the parse fails.
      */
-    private Object parseValue(Class<?> cls, String value) throws ValueException {
+    public static <T> T parseValue(Class<T> cls, String value) throws ValueException {
         if (!(cls.isPrimitive() || isWrapper(cls)))
             throw new ValueException("Invalid type.");
 
         Class<?> wrapper = wrap(cls);
         try {
             if (wrapper.equals(Boolean.class))
-                return Boolean.valueOf(Boolean.valueOf(value));
+                return (T) Boolean.valueOf(Boolean.valueOf(value));
             else if (wrapper.equals(Character.class))
-                return Character.valueOf(value.charAt(0));
+                return (T) Character.valueOf(value.charAt(0));
             else if (wrapper.equals(Integer.class))
-                return Integer.valueOf(value);
+                return (T) Integer.valueOf(value);
             else if (wrapper.equals(Long.class))
-                return Long.valueOf(value);
+                return (T) Long.valueOf(value);
             else if (wrapper.equals(Short.class))
-                return Short.valueOf(value);
+                return (T) Short.valueOf(value);
             else if (wrapper.equals(Byte.class))
-                return Byte.valueOf(value);
+                return (T) Byte.valueOf(value);
             else if (wrapper.equals(Double.class))
-                return Double.valueOf(value);
+                return (T) Double.valueOf(value);
             else if (wrapper.equals(Float.class))
-                return Float.valueOf(value);
+                return (T) Float.valueOf(value);
             else
-                throw new ValueException("Failed to parse file.");
+                throw new ValueException("Failed to parse number-value.");
         } catch (NumberFormatException e) {
             throw new ValueException("Failed to parse string...", e);
         }

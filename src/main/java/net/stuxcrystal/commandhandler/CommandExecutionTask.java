@@ -15,7 +15,6 @@
 
 package net.stuxcrystal.commandhandler;
 
-import net.stuxcrystal.commandhandler.CommandHandler.CommandData;
 import net.stuxcrystal.commandhandler.arguments.ArgumentParser;
 
 class CommandExecutionTask implements Runnable {
