@@ -22,6 +22,11 @@ public abstract class Session {
     private long expireTime = 30*60*1000;             // Half an hour.
 
     /**
+     * Was the session forced to be expired?
+     */
+    private boolean isExpired = false;
+
+    /**
      * Constructs a session object.
      */
     public Session() { }
@@ -63,8 +68,25 @@ public abstract class Session {
      * @return true if the session is expired.
      */
     public final boolean isSessionExpired() {
+        if (this.isExpired) return true;
         if (this.expireTime == 0) return false;
-        return System.currentTimeMillis() - this.lastAccessTime > this.expireTime;
+        boolean expired = System.currentTimeMillis() - this.lastAccessTime > this.expireTime;
+        if (expired) this.isExpired = true;
+        return expired;
+    }
+
+    /**
+     * @return Returns the CommandExecutor this session belongs to.
+     */
+    public CommandExecutor getCommandExecutor() {
+        return this.executor;
+    }
+
+    /**
+     * Expire the session now.
+     */
+    public void expire() {
+        this.isExpired = true;
     }
 
 }
