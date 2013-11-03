@@ -44,6 +44,7 @@ public abstract class Session {
      * Updates the last-access-time.
      */
     public final void updateAccessTime() {
+        if (this.isSessionExpired()) throw new IllegalStateException("The session is expired");
         this.lastAccessTime = System.currentTimeMillis();
     }
 
@@ -59,7 +60,7 @@ public abstract class Session {
      * @param time The time to expire or 0 if the session should never expire.
      */
     public final void setExpireTime(long time) {
-        if (isSessionExpired()) throw new IllegalArgumentException("The session is expired.");
+        if (isSessionExpired()) throw new IllegalStateException("The session is expired.");
         this.expireTime = time;
     }
 
