@@ -51,6 +51,16 @@ public class BukkitPluginBackend implements CommandBackend<Plugin, CommandSender
     public void schedule(Runnable runnable) {
         this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, runnable);
     }
+    
+    @Override
+    public CommandExecutor<?>[] getPlayers() {
+        Player[] players = this.plugin.getServer().getOnlinePlayers();
+        CommandExecutor[] executors = new CommandExecutor[players.length];
+        for (int i = 0; i<players.length; i++) {
+            executors[i] = wrapSender(players[i]);
+        }
+        return executors;
+    }
 
     @Override
     public CommandExecutor<?> getExecutor(String name) {
