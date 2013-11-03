@@ -26,6 +26,9 @@ has announced that they won't enforce it's license for its plugins. (1)
 
 This library can be used with CanaryLib licensed under the BSD 3-Clause
  License.
+ 
+This library can be used with BungeeCord licensed under a modified BSD-4-Clause
+ License with an additional clause in the license.
 
 (1) Source: https://forums.bukkit.org/threads/what-license-is-the-bukkit-project-under.154/
 
