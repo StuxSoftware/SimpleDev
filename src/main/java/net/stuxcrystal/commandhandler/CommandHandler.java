@@ -302,7 +302,7 @@ public class CommandHandler {
         }
 
         // Check argument data.
-        ArgumentParser parser = new ArgumentParser(arguments);
+        ArgumentParser parser = new ArgumentParser(sender, this, arguments);
 
         // Check if only these flags are in the flag list
         if (!data.command.flags().isEmpty() && !parser.getFlags().matches("[" + data.command.flags() + "]*")) {
