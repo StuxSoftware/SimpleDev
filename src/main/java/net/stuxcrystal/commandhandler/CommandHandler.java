@@ -42,6 +42,11 @@ public class CommandHandler {
     private final List<CommandData> commands = new ArrayList<>();
 
     /**
+     * List of registered sub-command-handlers.
+     */
+    private final List<CommandHandler> subCommandHandler = new ArrayList<>();
+
+    /**
      * The java backend to register tasks.
      */
     protected final CommandBackend backend;
@@ -226,6 +231,12 @@ public class CommandHandler {
                     return true;
                 }
             }
+        }
+
+        // Try subordinate CommandHandlers.
+        for (CommandHandler subhandler : this.subCommandHandler) {
+            if (subhandler.execute(sender, name, arguments))
+                return true;
         }
 
         return false;
@@ -427,6 +438,27 @@ public class CommandHandler {
      */
     SubCommand getSubCommand() {
         return subcommand;
+    }
+
+    /**
+     * Registers an subordinate CommandHandler.
+     * @param index         The index where the new command-handler should be registered.
+     * @param subHandler    The subordinate command handler.
+     */
+    private void registerCommandHandler(int index, CommandHandler subHandler) {
+        if (index == -1) {
+            index = this.subCommandHandler.size();
+        }
+
+        this.subCommandHandler.add(index, subHandler);
+    }
+
+    /**
+     * Removes a subordinate CommandHandler.
+     * @param subHandler The index where the new command-handler should be registered.
+     */
+    private void unregisterCommandHandler(CommandHandler subHandler) {
+        this.subCommandHandler.remove(subHandler);
     }
 
 }
