@@ -57,7 +57,7 @@ public class BukkitConfigurationLocalizationHandler implements TranslationHandle
     /**
      * Updates the configuration data.
      *
-     * @param configuration
+     * @param configuration The new ConfigurationSection.
      */
     public void update(MemoryConfiguration configuration) {
         this.section = configuration;
