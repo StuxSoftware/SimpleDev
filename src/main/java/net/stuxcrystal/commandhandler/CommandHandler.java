@@ -35,7 +35,6 @@ import java.util.Map;
  */
 public class CommandHandler {
 
-
     /**
      * List of commands.
      */
@@ -64,7 +63,7 @@ public class CommandHandler {
     /**
      * Reference to the parent command handler.
      */
-    private final CommandHandler parent;
+    private CommandHandler parent;
 
     /**
      * The handler retrieving the permissions.
@@ -84,10 +83,25 @@ public class CommandHandler {
     /**
      * The Constructor for base-commands.
      *
-     * @param backend
+     * @param backend The backend that handles the command handler.
      */
     public CommandHandler(CommandBackend backend) {
         this(backend, null, new TranslationManager(), null);
+    }
+
+    /**
+     * Use this constructor to instantiate a new subordinate command handler.<p />
+     *
+     * The CommandHandler passed to this constructor is <i>not</i> the parent handler.<p />
+     *
+     * This constructor does not register itself as the subordinate CommandHandler to the passed CommandHandler.
+     *
+     * @param handler The handler to copy it's attributes from.
+     */
+    public CommandHandler(CommandHandler handler) {
+        this(handler.getServerBackend(), null, handler.getTranslationManager(), null);
+        this.setArgumentHandler(handler.getArgumentHandler());
+
     }
 
     /**
