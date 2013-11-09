@@ -21,6 +21,14 @@ public class BungeeCommandHandler extends CommandHandler {
     }
 
     /**
+     * The constructor for base-commands.
+     * @param handler The handler to copy the values from.
+     */
+    public BungeeCommandHandler(BungeeCommandHandler handler) {
+        super(handler);
+    }
+
+    /**
      * Command switch for multiple commands.
      * @param sender    The sender.
      * @param command   The command name.

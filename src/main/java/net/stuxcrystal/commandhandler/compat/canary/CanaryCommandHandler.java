@@ -36,6 +36,15 @@ public class CanaryCommandHandler extends CommandHandler {
     }
 
     /**
+     * The constructor for base-commands.
+     *
+     * @param handler The handler to copy it's data from.
+     */
+    public CanaryCommandHandler(CanaryCommandHandler handler) {
+        super(handler);
+    }
+
+    /**
      * Executes the command as a subcommand.
      *
      * @param caller The caller.
