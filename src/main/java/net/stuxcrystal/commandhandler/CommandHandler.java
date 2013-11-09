@@ -134,7 +134,7 @@ public class CommandHandler {
      *
      * @param sender The sender that sent the message
      * @param msg    The message itself.
-     * @return
+     * @return The translated message.
      */
     protected String _(CommandExecutor sender, String msg) {
         return this.manager.translate(sender, msg);
@@ -144,7 +144,7 @@ public class CommandHandler {
      * Registers the commands.<p />
      * Also prepares subcommands.
      *
-     * @param container
+     * @param container The container for the methods.
      */
     public void registerCommands(Object container) {
         for (Method method : container.getClass().getDeclaredMethods()) {
@@ -257,34 +257,49 @@ public class CommandHandler {
     }
 
     /**
-     * Returns the name of the description.
-     *
-     * @param name
-     * @return
-     */
-    public String getDescription(String name) {
-        for (CommandData data : commands) {
-            if (data.command.value().equals(name)) {
-                return data.command.description();
-            }
-        }
-
-        return null;
-    }
-
-    /**
      * Returns a lift of all descriptors.
      *
-     * @return
+     * @return A list of all descriptors for methods.
      */
     public List<Command> getDescriptors() {
         List<Command> commands = new ArrayList<>();
 
-        for (CommandData data : this.commands) {
+        for (CommandData data : this.getCommandData()) {
             commands.add(data.command);
         }
 
         return commands;
+    }
+
+    /**
+     * Returns the descriptors for methods.
+     * @return An array of internal representations of Commands.
+     */
+    private List<CommandData> getCommandData() {
+        List<CommandData> commandData = new ArrayList<>(this.commands);
+
+        for (CommandHandler subHandler : this.subCommandHandler) {
+            commandData.addAll(subHandler.getCommandData());
+        }
+
+        return commandData;
+    }
+
+    /**
+     * Returns the CommandHandler handling the SubCommands.
+     * @param name The name of the command.
+     * @return The CommandHandler for the given SubCommand or null.
+     */
+    public CommandHandler getSubCommandHandler(String name) {
+
+        for (CommandData data : this.getCommandData()) {
+            if (data.getName().equals(name)) {
+                return data.getSubCommands();
+            }
+        }
+
+        return null;
+
     }
 
     /**
@@ -448,7 +463,7 @@ public class CommandHandler {
     /**
      * If this handler handles a subcommand, use this function to get the data about the subcommand.
      *
-     * @return The Sub-Command-Annotation that handles this CommandHandler.
+     * @return The Sub-Command-Annotation that is being handled by this CommandHandler.
      */
     SubCommand getSubCommand() {
         return subcommand;
@@ -469,10 +484,19 @@ public class CommandHandler {
 
     /**
      * Removes a subordinate CommandHandler.
-     * @param subHandler The index where the new command-handler should be registered.
+     * @param subHandler The SubHandler to remove.
      */
     private void unregisterCommandHandler(CommandHandler subHandler) {
         this.subCommandHandler.remove(subHandler);
+    }
+
+    /**
+     * Returns the CommandHandler using the given index.
+     * @param index The index of the SubHandler to remove.
+     * @return The CommandHandler on this index.
+     */
+    private CommandHandler getCommandHandler(int index) {
+        return this.subCommandHandler.get(index);
     }
 
 }

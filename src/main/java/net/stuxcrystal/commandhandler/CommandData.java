@@ -144,4 +144,8 @@ class CommandData {
 
         return this.command.value();
     }
+
+    CommandHandler getSubCommands() {
+        return this.subcommands;
+    }
 }
