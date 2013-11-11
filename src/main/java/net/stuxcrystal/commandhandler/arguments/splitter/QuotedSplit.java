@@ -173,8 +173,6 @@ public class QuotedSplit implements ArgumentSplitter {
                     // Handle other characters.
                     default:
                         addCharacter(c);
-                        continue;
-
                 }
             }
 

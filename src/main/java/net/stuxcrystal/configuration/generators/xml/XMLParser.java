@@ -18,6 +18,7 @@ package net.stuxcrystal.configuration.generators.xml;
 import net.stuxcrystal.configuration.node.DataNode;
 import net.stuxcrystal.configuration.node.MapNode;
 import net.stuxcrystal.configuration.node.Node;
+import net.stuxcrystal.configuration.node.NullNode;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.xml.sax.Attributes;

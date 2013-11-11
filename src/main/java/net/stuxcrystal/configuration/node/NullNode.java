@@ -13,9 +13,7 @@
  * specific language governing permissions and limitations under the License.
  */
 
-package net.stuxcrystal.configuration.generators.xml;
-
-import net.stuxcrystal.configuration.node.Node;
+package net.stuxcrystal.configuration.node;
 
 /**
  * Node without data.

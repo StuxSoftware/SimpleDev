@@ -17,6 +17,7 @@ package net.stuxcrystal.configuration.generators.yaml;
 
 import net.stuxcrystal.configuration.ConfigurationLoader;
 import net.stuxcrystal.configuration.NodeTreeGenerator;
+import net.stuxcrystal.configuration.node.ArrayNode;
 import net.stuxcrystal.configuration.node.DataNode;
 import net.stuxcrystal.configuration.node.MapNode;
 import net.stuxcrystal.configuration.node.Node;
@@ -62,7 +63,7 @@ public class YamlGenerator implements NodeTreeGenerator {
     }
 
     @Override
-    public Node<?> parse(InputStream stream, ConfigurationLoader cparser) throws IOException {
+    public Node<?> parse(InputStream stream, ConfigurationLoader cParser) throws IOException {
         try {
             return parseNode(parser.load(stream));
         } catch (YAMLException e) {
@@ -98,7 +99,7 @@ public class YamlGenerator implements NodeTreeGenerator {
     }
 
     private Node<?> parseList(List<Object> data) {
-        MapNode node = new MapNode();
+        MapNode node = new ArrayNode();
         ArrayList<Node<?>> nodes = new ArrayList<>();
         for (Object o : data) {
             Node<?> n = parseNode(o);
