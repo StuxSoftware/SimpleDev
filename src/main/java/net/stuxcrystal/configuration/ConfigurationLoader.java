@@ -22,10 +22,7 @@ import net.stuxcrystal.configuration.exceptions.ValueException;
 import net.stuxcrystal.configuration.logging.ErrorStreamBinding;
 import net.stuxcrystal.configuration.node.Node;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -119,11 +116,12 @@ public class ConfigurationLoader {
      */
     @SuppressWarnings("unchecked")
     public <T> T parseFile(File file, Class<? extends T> cls) throws ConfigurationException {
-        Node<?> nodes = null;
+
+        NodeTreeGenerator usedGenerator = null;
         for (NodeTreeGenerator generator : this.generators) {
             try {
                 if (generator.isValidFile(file)) {
-                    nodes = generator.parseFile(file, this);
+                    usedGenerator = generator;
                     break;
                 }
             } catch (IOException e) {
@@ -131,10 +129,11 @@ public class ConfigurationLoader {
             }
         }
 
-        if (nodes == null)
-            throw new ValueException("File type not supported.");
-
-        return parseNodeTree(nodes, cls);
+        try {
+            return parseStream(new FileInputStream(file), usedGenerator, cls);
+        } catch (IOException e) {
+            throw new FileException(e);
+        }
     }
 
     /**
@@ -166,7 +165,7 @@ public class ConfigurationLoader {
      * @param configuration The configuration.
      * @throws ConfigurationException
      */
-    public void dumpFile(File file, Object configuration) throws ConfigurationException {
+    public void dumpFile(File file, Object configuration) throws ConfigurationException, IOException {
         if (!file.exists()) {
             if (!file.getParentFile().exists()) {
                 file.getParentFile().mkdirs();
@@ -181,12 +180,11 @@ public class ConfigurationLoader {
 
         Node<?> nodes = dumpConfiguration(configuration);
 
-        boolean found = false;
+        NodeTreeGenerator usedGenerator = null;
         for (NodeTreeGenerator generator : this.generators) {
             try {
                 if (generator.isValidFile(file)) {
-                    generator.dumpFile(file, nodes, this);
-                    found = true;
+                    usedGenerator = generator;
                     break;
                 }
             } catch (IOException e) {
@@ -194,8 +192,14 @@ public class ConfigurationLoader {
             }
         }
 
-        if (!found)
+        if (usedGenerator == null)
             throw new ValueException("File type not supported.");
+
+        try {
+            dumpStream(new FileOutputStream(file), usedGenerator, configuration);
+        } catch (IOException e) {
+            throw new FileException("Failed to open stream.", e);
+        }
     }
 
     /**

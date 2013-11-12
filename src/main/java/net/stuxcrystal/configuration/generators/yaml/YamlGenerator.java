@@ -54,15 +54,6 @@ public class YamlGenerator implements NodeTreeGenerator {
     }
 
     @Override
-    public Node<?> parseFile(File file, ConfigurationLoader cparser) throws IOException {
-        try {
-            return parseNode(parser.load(new FileInputStream(file)));
-        } catch (YAMLException e) {
-            throw new IOException(e);
-        }
-    }
-
-    @Override
     public Node<?> parse(InputStream stream, ConfigurationLoader cParser) throws IOException {
         try {
             return parseNode(parser.load(stream));
@@ -108,11 +99,6 @@ public class YamlGenerator implements NodeTreeGenerator {
         }
         node.setData(nodes.toArray(new Node<?>[nodes.size()]));
         return node;
-    }
-
-    @Override
-    public void dumpFile(File file, Node<?> node, ConfigurationLoader parser) throws IOException {
-        dump(new FileWriter(file), node, parser);
     }
 
     @Override

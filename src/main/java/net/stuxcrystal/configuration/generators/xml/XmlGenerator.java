@@ -37,18 +37,8 @@ public class XmlGenerator implements NodeTreeGenerator {
     }
 
     @Override
-    public Node<?> parseFile(File file, ConfigurationLoader parser) throws IOException {
-        return XMLParser.parse(new FileInputStream(file));
-    }
-
-    @Override
     public Node<?> parse(InputStream stream, ConfigurationLoader parser) throws IOException {
         return XMLParser.parse(stream);
-    }
-
-    @Override
-    public void dumpFile(File file, Node<?> node, ConfigurationLoader parser) throws IOException {
-        CommentAwareDumper.dump(new FileOutputStream(file), node);
     }
 
     @Override

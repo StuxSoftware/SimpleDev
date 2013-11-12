@@ -48,15 +48,6 @@ public interface NodeTreeGenerator {
     public boolean isValidFile(File file) throws IOException;
 
     /**
-     * Parses a file.
-     *
-     * @param file The file to be parsed.
-     * @return a node-tree.
-     * @throws java.io.IOException if an IO-Operation failed.
-     */
-    public Node<?> parseFile(File file, ConfigurationLoader parser) throws IOException;
-
-    /**
      * Parses a stream.
      *
      * @param stream The stream to parse.
@@ -64,15 +55,6 @@ public interface NodeTreeGenerator {
      * @throws IOException if an IO-Operation fails.
      */
     public Node<?> parse(InputStream stream, ConfigurationLoader parser) throws IOException;
-
-    /**
-     * Dumps the node-tree into a file.
-     *
-     * @param file The file to be dumped.
-     * @param node The node.
-     * @throws java.io.IOException if an IO-Operation failed.
-     */
-    public void dumpFile(File file, Node<?> node, ConfigurationLoader parser) throws IOException;
 
     /**
      * Dumps to a stream.
