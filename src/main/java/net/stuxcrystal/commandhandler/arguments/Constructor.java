@@ -1,9 +1,6 @@
 package net.stuxcrystal.commandhandler.arguments;
 
-import net.stuxcrystal.commandhandler.arguments.types.CommandExecutorType;
-import net.stuxcrystal.commandhandler.arguments.types.StringType;
-import net.stuxcrystal.configuration.types.EnumType;
-import net.stuxcrystal.configuration.types.NumberType;
+import net.stuxcrystal.commandhandler.arguments.types.*;
 
 /**
  * Constructor for an ArgumentHandler.
@@ -24,7 +21,7 @@ public class Constructor {
         addedTypes(handler);
 
         // Handle numbers.
-        handler.registerArgumentTypes(new NumberType());
+        handler.registerArgumentTypes(new PrimitiveType());
         handler.registerArgumentTypes(new StringType());
         handler.registerArgumentTypes(new EnumType());
         handler.registerArgumentTypes(new CommandExecutorType());

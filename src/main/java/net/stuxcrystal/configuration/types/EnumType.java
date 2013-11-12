@@ -28,7 +28,7 @@ import net.stuxcrystal.configuration.utils.ReflectionUtil;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 
-public class EnumType implements ValueType<Enum<?>>, ArgumentType {
+public class EnumType implements ValueType<Enum<?>> {
 
     @Override
     public boolean isValidType(Object object, Field field, Type cls) throws ReflectiveOperationException {
@@ -39,7 +39,7 @@ public class EnumType implements ValueType<Enum<?>>, ArgumentType {
     @SuppressWarnings({"unchecked", "rawtypes"})
     public Enum<?> parse(Object object, Field field, ConfigurationParser parser, Type type, Node<?> value) throws ReflectiveOperationException, ValueException {
         Class<?> cls = ReflectionUtil.toClass(type);
-        return (Enum<?>) convert(((Node<String>) value).getData(), cls, null, null);
+        return (Enum<?>) convert(((Node<String>) value).getData(), cls);
     }
 
     @Override
@@ -47,17 +47,7 @@ public class EnumType implements ValueType<Enum<?>>, ArgumentType {
         return new DataNode(data.toString());
     }
 
-    @Override
-    public boolean isTypeSupported(Class<?> cls) {
-        try {
-            return isValidType(null, null, cls);
-        } catch (ReflectiveOperationException e) {
-            return false;
-        }
-    }
-
-    @Override
-    public Object convert(String value, Class<?> toClass, CommandExecutor executor, CommandBackend backend) {
+    public Object convert(String value, Class<?> toClass) {
         return Enum.valueOf((Class<Enum>) toClass, value);
     }
 }

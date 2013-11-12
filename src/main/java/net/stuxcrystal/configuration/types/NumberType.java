@@ -32,7 +32,7 @@ import java.util.logging.Level;
 /**
  * Support for CommandHandler and Configuration
  */
-public class NumberType implements ValueType<Object>, ArgumentType {
+public class NumberType implements ValueType<Object> {
 
     /**
      * List of all class types.
@@ -146,22 +146,4 @@ public class NumberType implements ValueType<Object>, ArgumentType {
         return new DataNode(data.toString());
     }
 
-    @Override
-    public boolean isTypeSupported(Class<?> cls) {
-        try {
-            return this.isValidType(null, null, cls);
-        } catch (ReflectiveOperationException e) {
-            return false;
-        }
-    }
-
-    @Override
-    public Object convert(String value, Class<?> toClass, CommandExecutor executor, CommandBackend backend) {
-        try {
-            return parseValue(toClass, value);
-        } catch (ValueException e) {
-            backend.getLogger().log(Level.WARNING, "Failed to convert value: " + value, e);
-            return null;
-        }
-    }
 }
