@@ -19,7 +19,7 @@
 
     <groupId>net.stuxcrystal</groupId>
     <artifactId>SimpleDev</artifactId>
-    <version>1.3-SNAPSHOT</version>
+    <version>1.3.1-SNAPSHOT</version>
 
     <packaging>jar</packaging>
 
@@ -108,6 +108,11 @@
             <scope>compile</scope>
         </dependency>
 
+        <!--                                                                                                         -->
+        <!-- Dependencies for the Front-End data.                                                                    -->
+        <!--                                                                                                         -->
+
+        <!-- BungeeCord. -->
         <dependency>
             <groupId>net.md-5</groupId>
             <artifactId>bungeecord-api</artifactId>
@@ -116,10 +121,6 @@
             <optional>true</optional>
             <type>jar</type>
         </dependency>
-
-        <!--                                                                                                         -->
-        <!-- Dependencies for the Front-End data.                                                                    -->
-        <!--                                                                                                         -->
 
         <!-- Canary Mod (Please note that this library uses Recode.) -->
         <dependency>
@@ -135,16 +136,6 @@
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
             <version>1.6.4-R2.0</version>
-            <type>jar</type>
-            <scope>provided</scope>
-            <optional>true</optional>
-        </dependency>
-
-        <!-- Forge -->
-        <dependency>
-            <groupId>org.minecraftforge</groupId>
-            <artifactId>minecraft_deobfuscated</artifactId>
-            <version>1.6.2</version>
             <type>jar</type>
             <scope>provided</scope>
             <optional>true</optional>
