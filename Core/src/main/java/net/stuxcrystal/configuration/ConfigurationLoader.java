@@ -19,6 +19,7 @@ import net.stuxcrystal.configuration.exceptions.ConfigurationException;
 import net.stuxcrystal.configuration.exceptions.FileException;
 import net.stuxcrystal.configuration.exceptions.ReflectionException;
 import net.stuxcrystal.configuration.exceptions.ValueException;
+import net.stuxcrystal.configuration.logging.ErrorStreamBinding;
 import net.stuxcrystal.configuration.node.Node;
 
 import java.io.*;
