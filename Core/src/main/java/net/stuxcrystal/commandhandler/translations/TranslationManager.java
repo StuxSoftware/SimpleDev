@@ -80,7 +80,11 @@ public class TranslationManager {
         // Internal warnings.
         defaults.put(
                 "internal.threading.no-scheduler",
-                "Your backend does not support scheduling... Falling back to standard threads."
+                "[CommandHandler::Scheduler] Your platform does not support scheduling... Falling back to standard threads."
+        );
+        defaults.put(
+                "internal.permissions.op-default",
+                "[CommandHandler::Permissions] Your platform does not support permission-systems... Falling back to op."
         );
 
         return Collections.unmodifiableMap(defaults);

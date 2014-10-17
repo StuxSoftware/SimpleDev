@@ -49,8 +49,10 @@ public final class DefaultPermissionHandler implements PermissionHandler {
         Boolean result = this.handler.getServerBackend().hasPermission(executor, node);
         if (result == null) {
             if (!warning) {
-                handler.backend.getLogger().warning("[CommandHandler] The given backend does not support a permission-system. Defaulting to op.");
-                warning = true;
+                this.handler.backend.getLogger().warning(
+                        this.handler.getTranslationManager().translate(executor, "internal.permissions.op-default")
+                );
+                this.warning = true;
             }
 
             return executor.isOp();
