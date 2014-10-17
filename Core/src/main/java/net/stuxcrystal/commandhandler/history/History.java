@@ -2,8 +2,6 @@ package net.stuxcrystal.commandhandler.history;
 
 import net.stuxcrystal.commandhandler.Session;
 
-import java.util.LinkedList;
-
 /**
  * Defines a session that can undo and redo things.
  */
