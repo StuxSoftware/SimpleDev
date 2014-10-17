@@ -1,7 +1,10 @@
 package net.stuxcrystal.commandhandler;
 
 /**
- * Represents a session.
+ * Represents a session.<p />
+ *
+ * The session implementation MUST have a constructor that does not have
+ * any parameters.
  */
 public abstract class Session {
 

@@ -15,6 +15,8 @@
 
 package net.stuxcrystal.commandhandler;
 
+import net.stuxcrystal.commandhandler.history.History;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -109,6 +111,23 @@ public abstract class CommandExecutor<T> {
      * @return
      */
     public abstract T getHandle();
+
+    /**
+     * Returns the command handler that is associated with
+     * this executor.
+     * @return The command handler that is associated with this executor.
+     */
+    public CommandHandler getCommandHandler() {
+        return this.handler;
+    }
+
+    /**
+     * Returns the history of the given player.
+     * @return The history of the given player.
+     */
+    public History getHistory() {
+        return this.getSession(History.class);
+    }
 
     /**
      * Compare the underlying handles.
