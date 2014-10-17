@@ -500,4 +500,15 @@ public class CommandHandler {
         return this.subCommandHandler.get(index);
     }
 
+    /**
+     * Returns the root-command handler.
+     * @return The root commandhandler.
+     */
+    public CommandHandler getRootCommandHandler() {
+        CommandHandler current = this;
+        while (current.parent != null)
+            current = current.parent;
+        return current;
+    }
+
 }
