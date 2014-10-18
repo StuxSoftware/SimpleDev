@@ -15,6 +15,7 @@
 
 package net.stuxcrystal.commandhandler;
 
+import net.stuxcrystal.commandhandler.component.ComponentProxy;
 import net.stuxcrystal.commandhandler.contrib.DefaultPermissionHandler;
 import net.stuxcrystal.commandhandler.history.History;
 
@@ -57,6 +58,10 @@ public abstract class CommandExecutor<T> {
      */
     private final CommandHandler handler;
 
+    /**
+     * The component proxy for the object.
+     */
+    private final ComponentProxy proxy = new ComponentProxy(this);
 
     /**
      * The handler.
@@ -273,13 +278,12 @@ public abstract class CommandExecutor<T> {
     }
 
     /**
-     * Calls an extension method for the command executor.
-     * @param name   The name of the executor.
-     * @param params The parameters of the executor.
-     * @param <R>    The type of the executor.
-     * @return The result of the command.
+     * Returns the extension for the player.
+     * @param interfaceClass The extension class.
+     * @param <R>            The extension class.
+     * @return The type.
      */
-    public <R> R call(String name, Object... params) {
-        return this.getCommandHandler().callComponent(name, this, params);
+    public <R> R getExtension(Class<R> interfaceClass) {
+        return this.proxy.createInstance(interfaceClass);
     }
 }
