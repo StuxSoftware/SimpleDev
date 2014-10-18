@@ -283,7 +283,7 @@ public abstract class CommandExecutor<T> {
      * @param <R>            The extension class.
      * @return The type.
      */
-    public <R> R getExtension(Class<R> interfaceClass) {
+    public <R> R getComponent(Class<R> interfaceClass) {
         return this.proxy.createInstance(interfaceClass);
     }
 }
