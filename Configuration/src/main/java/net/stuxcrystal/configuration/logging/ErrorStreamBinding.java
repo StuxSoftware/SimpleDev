@@ -13,33 +13,34 @@
  * specific language governing permissions and limitations under the License.
  */
 
-package net.stuxcrystal.configuration.parser.logging;
+package net.stuxcrystal.configuration.logging;
 
 import net.stuxcrystal.configuration.LoggingInterface;
 
 /**
- * Silently drops all messages.
+ * Binding to the error stream.<p />
+ * <p/>
+ * This is the default binding.
  */
-public class NullBinding implements LoggingInterface {
+public class ErrorStreamBinding implements LoggingInterface {
 
-    /**
-     * Drop the message.
-     *
-     * @param message Message to send.
-     */
     @Override
     public void warn(String message) {
+        System.err.println(message);
     }
 
     @Override
     public void debug(String message) {
+        // Silently drop the message.
     }
 
     @Override
     public void debugException(Throwable exception) {
+        // Silently drop the exception.
     }
 
     @Override
     public void exception(Throwable exception) {
+        exception.printStackTrace();
     }
 }

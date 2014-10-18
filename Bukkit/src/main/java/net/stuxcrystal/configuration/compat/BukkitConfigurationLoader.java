@@ -17,7 +17,7 @@ package net.stuxcrystal.configuration.compat;
 
 import net.stuxcrystal.configuration.ConfigurationLoader;
 import net.stuxcrystal.configuration.parser.Constructor;
-import net.stuxcrystal.configuration.parser.logging.JULBinding;
+import net.stuxcrystal.configuration.logging.JULBinding;
 import net.stuxcrystal.configuration.storage.contrib.filebased.FileBasedStorageBackend;
 import org.bukkit.plugin.Plugin;
 

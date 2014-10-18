@@ -13,7 +13,7 @@
  * specific language governing permissions and limitations under the License.
  */
 
-package net.stuxcrystal.configuration.parser.logging;
+package net.stuxcrystal.configuration.logging;
 
 import net.stuxcrystal.configuration.LoggingInterface;
 

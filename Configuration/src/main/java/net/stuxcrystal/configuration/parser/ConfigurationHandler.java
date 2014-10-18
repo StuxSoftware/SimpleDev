@@ -20,7 +20,7 @@ import net.stuxcrystal.configuration.parser.exceptions.ConfigurationException;
 import net.stuxcrystal.configuration.parser.exceptions.FileException;
 import net.stuxcrystal.configuration.parser.exceptions.ReflectionException;
 import net.stuxcrystal.configuration.parser.exceptions.ValueException;
-import net.stuxcrystal.configuration.parser.logging.ErrorStreamBinding;
+import net.stuxcrystal.configuration.logging.ErrorStreamBinding;
 import net.stuxcrystal.configuration.parser.node.Node;
 import net.stuxcrystal.configuration.storage.contrib.filebased.FileBasedStorageBackend;
 
