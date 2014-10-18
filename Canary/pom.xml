@@ -24,11 +24,17 @@
 
     <dependencies>
         <dependency>
-            <groupId>net.stuxcrystal.simpledev</groupId>
-            <artifactId>core</artifactId>
+            <groupId>net.stuxcrystal.simpledev.core</groupId>
+            <artifactId>configuration</artifactId>
             <version>${SimpleDevVersion}</version>
+            <optional>true</optional>
         </dependency>
-
+        <dependency>
+            <groupId>net.stuxcrystal.simpledev.core</groupId>
+            <artifactId>commands</artifactId>
+            <version>${SimpleDevVersion}</version>
+            <optional>true</optional>
+        </dependency>
         <!-- Canary Mod (Please note that this library uses Recode.) -->
         <dependency>
             <groupId>net.canarymod</groupId>

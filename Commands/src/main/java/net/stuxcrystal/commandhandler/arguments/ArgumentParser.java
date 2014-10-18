@@ -16,7 +16,7 @@ package net.stuxcrystal.commandhandler.arguments;
 
 import net.stuxcrystal.commandhandler.CommandExecutor;
 import net.stuxcrystal.commandhandler.CommandHandler;
-import net.stuxcrystal.configuration.parser.types.NumberType;
+import net.stuxcrystal.commandhandler.arguments.types.PrimitiveType;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 
@@ -173,9 +173,8 @@ public class ArgumentParser {
         if (index == -1)
             throw new ArrayIndexOutOfBoundsException(preIndex);
 
-
         // Make the Class-Instance the Class-Referecne to the Wrapper-Type.
-        if (cls.isPrimitive()) { cls = NumberType.wrap(cls); }
+        if (cls.isPrimitive()) { cls = PrimitiveType.wrap(cls); }
 
         // Use the current argument handler.
         ArgumentHandler handler = this.handler.getArgumentHandler();

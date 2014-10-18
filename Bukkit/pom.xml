@@ -29,15 +29,28 @@
     <dependencies>
         <!-- Core -->
         <dependency>
-            <groupId>net.stuxcrystal.simpledev</groupId>
-            <artifactId>core</artifactId>
+            <groupId>net.stuxcrystal.simpledev.core</groupId>
+            <artifactId>configuration</artifactId>
             <version>${SimpleDevVersion}</version>
+            <optional>true</optional>
             <exclusions>
                 <!-- Provided by bukkit. -->
                 <exclusion>
                     <groupId>org.yaml</groupId>
                     <artifactId>snakeyaml</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>commons-lang</groupId>
+                    <artifactId>commons-lang</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>net.stuxcrystal.simpledev.core</groupId>
+            <artifactId>commands</artifactId>
+            <version>${SimpleDevVersion}</version>
+            <optional>true</optional>
+            <exclusions>
                 <exclusion>
                     <groupId>commons-lang</groupId>
                     <artifactId>commons-lang</artifactId>

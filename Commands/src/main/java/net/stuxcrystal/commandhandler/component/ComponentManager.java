@@ -5,9 +5,7 @@ import org.apache.commons.lang.ArrayUtils;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -60,7 +58,7 @@ public class ComponentManager {
          * @param params      The parameters for the function.
          * @param <T>         Trick to allow dynamic return types.
          * @return            The result of the method.
-         * @throws java.lang.ReflectiveOperationException If an reflective operation exception occurs.
+         * @throws ReflectiveOperationException If an reflective operation exception occurs.
          */
         @SuppressWarnings("unchecked")
         public <T> T call(CommandExecutor executor, Object[] params) throws ReflectiveOperationException {

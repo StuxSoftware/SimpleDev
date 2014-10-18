@@ -22,10 +22,11 @@
     <version>${SimpleDevVersion}</version>
 
     <modules>
-        <module>Core</module>
+        <module>Commands</module>
         <module>Bukkit</module>
         <module>Canary</module>
         <module>BungeeCord</module>
+        <module>Configuration</module>
     </modules>
 
     <packaging>pom</packaging>

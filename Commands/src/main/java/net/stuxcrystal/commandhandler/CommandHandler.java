@@ -409,7 +409,7 @@ public class CommandHandler {
      * An exception handler handles a single exception.
      *
      * @param cls The class that handles the exception.
-     * @return An {@link ExceptionHandler}
+     * @return An {@link net.stuxcrystal.commandhandler.exceptions.ExceptionHandler}
      */
     public ExceptionHandler<?> getExceptionHandler(Class<?> cls) {
         ExceptionHandler result = null;
