@@ -22,7 +22,8 @@ import net.stuxcrystal.configuration.parser.Constructor;
 /**
  * Canary-Recode version for a configuration loader.<p />
  * <p/>
- * Automatically hooks into the logging system of the plugin.
+ * Automatically hooks into the logging system of the plugin and uses
+ * the configuration storage system given by canary-mod.
  */
 public class CanaryConfigurationLoader extends ConfigurationLoader {
 
@@ -32,7 +33,7 @@ public class CanaryConfigurationLoader extends ConfigurationLoader {
      * @param plugin The plugin that the logger should use.
      */
     public CanaryConfigurationLoader(Plugin plugin) {
-        super();
+        super(new CanaryConfigurationStorage(plugin));
         this.setLoggingInterface(new Log4jBinding(plugin.getLogman()));
     }
 
@@ -43,7 +44,7 @@ public class CanaryConfigurationLoader extends ConfigurationLoader {
      * @param constructor The constructor-object that adds the types and resolvers of the configuration loader.
      */
     public CanaryConfigurationLoader(Plugin plugin, Constructor constructor) {
-        super(constructor);
+        super(new CanaryConfigurationStorage(plugin), constructor);
         this.setLoggingInterface(new Log4jBinding(plugin.getLogman()));
     }
 }

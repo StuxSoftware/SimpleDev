@@ -18,6 +18,7 @@ package net.stuxcrystal.configuration.compat;
 import net.stuxcrystal.configuration.ConfigurationLoader;
 import net.stuxcrystal.configuration.parser.Constructor;
 import net.stuxcrystal.configuration.parser.logging.JULBinding;
+import net.stuxcrystal.configuration.storage.contrib.filebased.FileBasedStorageBackend;
 import org.bukkit.plugin.Plugin;
 
 /**
@@ -33,7 +34,7 @@ public class BukkitConfigurationLoader extends ConfigurationLoader {
      * @param plugin The plugin that the logger should use.
      */
     public BukkitConfigurationLoader(Plugin plugin) {
-        super();
+        super(new FileBasedStorageBackend(".yml", plugin.getDataFolder()));
         this.setLoggingInterface(new JULBinding(plugin.getLogger()));
     }
 
@@ -44,7 +45,7 @@ public class BukkitConfigurationLoader extends ConfigurationLoader {
      * @param constructor The constructor-object that adds the types and resolvers of the configuration loader.
      */
     public BukkitConfigurationLoader(Plugin plugin, Constructor constructor) {
-        super(constructor);
+        super(new FileBasedStorageBackend(".yml", plugin.getDataFolder()), constructor);
         this.setLoggingInterface(new JULBinding(plugin.getLogger()));
     }
 }

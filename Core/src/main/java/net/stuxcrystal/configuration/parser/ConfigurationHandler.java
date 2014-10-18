@@ -22,6 +22,7 @@ import net.stuxcrystal.configuration.parser.exceptions.ReflectionException;
 import net.stuxcrystal.configuration.parser.exceptions.ValueException;
 import net.stuxcrystal.configuration.parser.logging.ErrorStreamBinding;
 import net.stuxcrystal.configuration.parser.node.Node;
+import net.stuxcrystal.configuration.storage.contrib.filebased.FileBasedStorageBackend;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -121,7 +122,24 @@ public class ConfigurationHandler {
      */
     @SuppressWarnings("unchecked")
     public <T> T parseFile(File file, Class<? extends T> cls) throws ConfigurationException {
+        NodeTreeGenerator usedGenerator = this.getTreeGenerator(file);
 
+        if (usedGenerator == null)
+            throw new ValueException("File type not supported.");
+
+        try {
+            return parseStream(new FileInputStream(file), usedGenerator, cls);
+        } catch (IOException e) {
+            throw new FileException(e);
+        }
+    }
+
+    /**
+     * Returns the generator for the file.
+     * @param file The file.
+     * @return The node tree generator.
+     */
+    public NodeTreeGenerator getTreeGenerator(File file) throws ConfigurationException {
         NodeTreeGenerator usedGenerator = null;
         for (NodeTreeGenerator generator : this.generators) {
             try {
@@ -133,12 +151,7 @@ public class ConfigurationHandler {
                 throw new FileException(e);
             }
         }
-
-        try {
-            return parseStream(new FileInputStream(file), usedGenerator, cls);
-        } catch (IOException e) {
-            throw new FileException(e);
-        }
+        return usedGenerator;
     }
 
     /**
@@ -171,31 +184,10 @@ public class ConfigurationHandler {
      * @throws ConfigurationException
      */
     public void dumpFile(File file, Object configuration) throws ConfigurationException, IOException {
-        if (!file.exists()) {
-            if (!file.getParentFile().exists()) {
-                file.getParentFile().mkdirs();
-            }
-
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                throw new FileException("Failed to create file", e);
-            }
-        }
-
+        FileBasedStorageBackend.createFile(file);
         Node<?> nodes = dumpConfiguration(configuration);
 
-        NodeTreeGenerator usedGenerator = null;
-        for (NodeTreeGenerator generator : this.generators) {
-            try {
-                if (generator.isValidFile(file)) {
-                    usedGenerator = generator;
-                    break;
-                }
-            } catch (IOException e) {
-                throw new FileException(e);
-            }
-        }
+        NodeTreeGenerator usedGenerator = this.getTreeGenerator(file);
 
         if (usedGenerator == null)
             throw new ValueException("File type not supported.");

@@ -4,6 +4,7 @@ import net.md_5.bungee.api.plugin.Plugin;
 import net.stuxcrystal.configuration.ConfigurationLoader;
 import net.stuxcrystal.configuration.parser.Constructor;
 import net.stuxcrystal.configuration.parser.logging.JULBinding;
+import net.stuxcrystal.configuration.storage.contrib.filebased.FileBasedStorageBackend;
 
 /**
  * Configuration Loader for BungeeCord Proxy Servers.
@@ -16,7 +17,7 @@ public class BungeeConfigurationLoader extends ConfigurationLoader {
      * @param plugin The plugin that the logger should use.
      */
     public BungeeConfigurationLoader(Plugin plugin) {
-        super();
+        super(new FileBasedStorageBackend(".yml", plugin.getDataFolder()));
         this.setLoggingInterface(new JULBinding(plugin.getLogger()));
     }
 
@@ -27,7 +28,7 @@ public class BungeeConfigurationLoader extends ConfigurationLoader {
      * @param constructor The constructor-object that adds the types and resolvers of the configuration loader.
      */
     public BungeeConfigurationLoader(Plugin plugin, Constructor constructor) {
-        super(constructor);
+        super(new FileBasedStorageBackend(".yml", plugin.getDataFolder()), constructor);
         this.setLoggingInterface(new JULBinding(plugin.getLogger()));
     }
 
