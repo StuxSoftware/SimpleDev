@@ -44,12 +44,4 @@ public class HistoryComponent implements ComponentContainer {
         container.execute(action);
     }
 
-    /**
-     * Prepares the command-handler.
-     * @param handler The handler.
-     */
-    public static void prepareCommandHandler(CommandHandler handler) {
-        handler.registerComponent(HistoryComponent.class);
-    }
-
 }
