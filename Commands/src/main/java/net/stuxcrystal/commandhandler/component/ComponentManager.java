@@ -6,6 +6,7 @@ import org.apache.commons.lang.ArrayUtils;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 /**
@@ -83,6 +84,11 @@ public class ComponentManager {
     private Map<String, ComponentMethod> components = new HashMap<>();
 
     /**
+     * Actual registered classes.
+     */
+    private HashSet<Class<? extends ComponentContainer>> classes = new HashSet<>();
+
+    /**
      * Registers the methods of the component.
      *
      * @param componentType The type of the component.
@@ -110,6 +116,8 @@ public class ComponentManager {
                     new ComponentMethod(method, component, method.getAnnotation(Component.class))
             );
         }
+
+        this.classes.add(componentType);
     }
 
     /**
@@ -126,6 +134,15 @@ public class ComponentManager {
      */
     public void registerComponents(ComponentContainer container) {
         this.registerComponents(container.getClass(), container);
+    }
+
+    /**
+     * Checks if the extension has been registered.
+     * @param cls The class to register.
+     * @return {@code true} if the extension has been registered.
+     */
+    public boolean isRegistered(Class<? extends ComponentContainer> cls) {
+        return this.classes.contains(cls);
     }
 
     /**

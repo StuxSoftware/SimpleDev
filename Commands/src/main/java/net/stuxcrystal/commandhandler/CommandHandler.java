@@ -522,19 +522,27 @@ public class CommandHandler {
 
     /**
      * Adds all extension methods to the command handler.
-     * @param componentContainer The component to add.
+     * @param component The component to add.
      */
-    public void registerComponent(ComponentContainer componentContainer) {
-        this.getRootCommandHandler().components.registerComponents(componentContainer);
+    public void registerComponent(ComponentContainer component) {
+        this.getRootCommandHandler().components.registerComponents(component);
     }
 
     /**
      * Adds all static extension methods to the command handler.
-     * handler.
-     * @param componentContainer The class for the container.
+     * @param component The class for the container.
      */
-    public void registerComponent(Class<? extends ComponentContainer> componentContainer) {
-        this.getRootCommandHandler().components.registerComponents(componentContainer);
+    public void registerComponent(Class<? extends ComponentContainer> component) {
+        this.getRootCommandHandler().components.registerComponents(component);
+    }
+
+    /**
+     * Checks if the component has been registered.
+     * @param component The component.
+     * @return {@code true} if the component has been registered.
+     */
+    public boolean isComponentRegistered(Class<? extends ComponentContainer> component) {
+        return this.getRootCommandHandler().components.isRegistered(component);
     }
 
     /**
