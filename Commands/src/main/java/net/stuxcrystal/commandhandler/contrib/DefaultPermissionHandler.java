@@ -53,7 +53,7 @@ public final class DefaultPermissionHandler implements PermissionHandler {
         Boolean result = this.handler.getServerBackend().hasPermission(executor, node);
         if (result == null) {
             if (!warning) {
-                this.handler.backend.getLogger().warning(
+                this.handler.getServerBackend().getLogger().warning(
                         this.handler.getTranslationManager().translate(executor, "internal.permissions.op-default")
                 );
                 this.warning = true;

@@ -138,6 +138,18 @@ public class CommandHandler {
         return this.localization;
     }
 
+    /**
+     * Translates a string
+     *
+     * @param sender  The sender that should receive the message.
+     * @param key     The key that receives the message.
+     * @param values  The values that are used in the message.
+     * @return The translated message.
+     */
+    protected String _(CommandExecutor sender, String key, Object... values) {
+        return this.getTranslationManager().translate(sender, key, values);
+    }
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
