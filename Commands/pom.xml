@@ -5,7 +5,7 @@
     <parent>
         <artifactId>SimpleDev</artifactId>
         <groupId>net.stuxcrystal</groupId>
-        <version>2-SNAPSHOT</version>
+        <version>2.0.0-SNAPSHOT</version>
         <relativePath>../../SimpleDev/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
