@@ -13,9 +13,7 @@
  * specific language governing permissions and limitations under the License.
  */
 
-package net.stuxcrystal.commandhandler.annotations;
-
-import net.stuxcrystal.commandhandler.CallTime;
+package net.stuxcrystal.commandhandler.commands.contrib.annotations;
 
 import java.lang.annotation.*;
 

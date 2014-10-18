@@ -13,7 +13,7 @@
  * specific language governing permissions and limitations under the License.
  */
 
-package net.stuxcrystal.commandhandler;
+package net.stuxcrystal.commandhandler.commands.contrib.annotations;
 
 /**
  * Defines when a function is called.

@@ -12,12 +12,15 @@
  * CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.stuxcrystal.commandhandler.annotations;
+package net.stuxcrystal.commandhandler.commands.contrib.annotations;
 
 import java.lang.annotation.*;
 
 /**
- * Defines a command.
+ * Defines a command.<p />
+ *
+ * The command always looks like this:<br />
+ * {@code void &lt;CommandName&gt;(CommandExecutor sender, ArgumentParser args);}
  *
  * @author StuxCrystal
  */
