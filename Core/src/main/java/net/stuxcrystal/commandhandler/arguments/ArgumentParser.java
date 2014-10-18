@@ -16,7 +16,7 @@ package net.stuxcrystal.commandhandler.arguments;
 
 import net.stuxcrystal.commandhandler.CommandExecutor;
 import net.stuxcrystal.commandhandler.CommandHandler;
-import net.stuxcrystal.configuration.types.NumberType;
+import net.stuxcrystal.configuration.parser.types.NumberType;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 

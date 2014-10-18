@@ -7,7 +7,7 @@ import net.stuxcrystal.commandhandler.arguments.ArgumentType;
 /**
  * Implementation for enumerations.
  */
-public class EnumType extends net.stuxcrystal.configuration.types.EnumType implements ArgumentType {
+public class EnumType extends net.stuxcrystal.configuration.parser.types.EnumType implements ArgumentType {
 
 
     @Override

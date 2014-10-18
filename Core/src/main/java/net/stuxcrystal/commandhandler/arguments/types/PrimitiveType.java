@@ -3,8 +3,8 @@ package net.stuxcrystal.commandhandler.arguments.types;
 import net.stuxcrystal.commandhandler.CommandBackend;
 import net.stuxcrystal.commandhandler.CommandExecutor;
 import net.stuxcrystal.commandhandler.arguments.ArgumentType;
-import net.stuxcrystal.configuration.exceptions.ValueException;
-import net.stuxcrystal.configuration.types.NumberType;
+import net.stuxcrystal.configuration.parser.exceptions.ValueException;
+import net.stuxcrystal.configuration.parser.types.NumberType;
 
 import java.util.logging.Level;
 

@@ -17,7 +17,7 @@ package net.stuxcrystal.configuration.compat;
 
 import net.canarymod.plugin.Plugin;
 import net.stuxcrystal.configuration.ConfigurationLoader;
-import net.stuxcrystal.configuration.Constructor;
+import net.stuxcrystal.configuration.parser.Constructor;
 
 /**
  * Canary-Recode version for a configuration loader.<p />

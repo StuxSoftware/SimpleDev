@@ -2,8 +2,8 @@ package net.stuxcrystal.configuration.compat;
 
 import net.md_5.bungee.api.plugin.Plugin;
 import net.stuxcrystal.configuration.ConfigurationLoader;
-import net.stuxcrystal.configuration.Constructor;
-import net.stuxcrystal.configuration.logging.JULBinding;
+import net.stuxcrystal.configuration.parser.Constructor;
+import net.stuxcrystal.configuration.parser.logging.JULBinding;
 
 /**
  * Configuration Loader for BungeeCord Proxy Servers.
