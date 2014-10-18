@@ -128,6 +128,15 @@ public class ComponentManager {
         this.registerComponents(container.getClass(), container);
     }
 
+    /**
+     * Calls the extension function.
+     *
+     * @param name      The name of the extension function.
+     * @param executor  The executor to that is used for the commands.
+     * @param params    The additional parameters.
+     * @param <T> The return type.
+     * @return The function return.
+     */
     public <T> T call(String name, CommandExecutor executor, Object[] params) {
         ComponentMethod method = this.components.get(name);
         if (method == null)
@@ -139,5 +148,4 @@ public class ComponentManager {
             throw new ComponentAccessException(e);
         }
     }
-
 }
