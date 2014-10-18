@@ -270,4 +270,15 @@ public abstract class CommandExecutor<T> {
             SESSIONS.remove(handle);
         }
     }
+
+    /**
+     * Calls an extension method for the command executor.
+     * @param name   The name of the executor.
+     * @param params The parameters of the executor.
+     * @param <R>    The type of the executor.
+     * @return The result of the command.
+     */
+    public <R> R call(String name, Object... params) {
+        return this.getCommandHandler().callComponent(name, this, params);
+    }
 }

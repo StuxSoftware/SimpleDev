@@ -19,6 +19,8 @@ import net.stuxcrystal.commandhandler.annotations.Command;
 import net.stuxcrystal.commandhandler.annotations.SubCommand;
 import net.stuxcrystal.commandhandler.arguments.ArgumentHandler;
 import net.stuxcrystal.commandhandler.arguments.ArgumentParser;
+import net.stuxcrystal.commandhandler.component.ComponentContainer;
+import net.stuxcrystal.commandhandler.component.ComponentManager;
 import net.stuxcrystal.commandhandler.exceptions.ExceptionHandler;
 import net.stuxcrystal.commandhandler.translations.TranslationManager;
 
@@ -54,6 +56,11 @@ public class CommandHandler {
      * Data for the subcommand.
      */
     private SubCommand subcommand = null;
+
+    /**
+     * Container for components.
+     */
+    private ComponentManager components = null;
 
     /**
      * Manages translations
@@ -122,6 +129,7 @@ public class CommandHandler {
         if (parent == null) {
             this.backend.setCommandHandler(this);
             this.argument = new ArgumentHandler();
+            this.components = new ComponentManager();
         }
     }
 
@@ -509,6 +517,35 @@ public class CommandHandler {
         while (current.parent != null)
             current = current.parent;
         return current;
+    }
+
+    /**
+     * Adds all extension methods to the command handler.
+     * @param componentContainer The component to add.
+     */
+    public void registerComponent(ComponentContainer componentContainer) {
+        this.getRootCommandHandler().components.registerComponents(componentContainer);
+    }
+
+    /**
+     * Adds all static extension methods to the command handler.
+     * handler.
+     * @param componentContainer The class for the container.
+     */
+    public void registerComponent(Class<? extends ComponentContainer> componentContainer) {
+        this.getRootCommandHandler().components.registerComponents(componentContainer);
+    }
+
+    /**
+     * Calls a component method.
+     * @param name      The name of the method.
+     * @param executor  The executor associated with the method.
+     * @param params    The parameters.
+     * @param <T>       The return type.
+     * @return The result of the method.
+     */
+    public <T> T callComponent(String name, CommandExecutor executor, Object... params) {
+        return this.getRootCommandHandler().components.call(name, executor, params);
     }
 
 }
