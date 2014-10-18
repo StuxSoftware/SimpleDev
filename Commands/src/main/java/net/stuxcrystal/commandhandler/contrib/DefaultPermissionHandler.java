@@ -13,7 +13,11 @@
  * specific language governing permissions and limitations under the License.
  */
 
-package net.stuxcrystal.commandhandler;
+package net.stuxcrystal.commandhandler.contrib;
+
+import net.stuxcrystal.commandhandler.CommandExecutor;
+import net.stuxcrystal.commandhandler.CommandHandler;
+import net.stuxcrystal.commandhandler.PermissionHandler;
 
 /**
  * The default permission handler.

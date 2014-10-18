@@ -21,6 +21,7 @@ import net.stuxcrystal.commandhandler.arguments.ArgumentHandler;
 import net.stuxcrystal.commandhandler.arguments.ArgumentParser;
 import net.stuxcrystal.commandhandler.component.ComponentContainer;
 import net.stuxcrystal.commandhandler.component.ComponentManager;
+import net.stuxcrystal.commandhandler.contrib.DefaultPermissionHandler;
 import net.stuxcrystal.commandhandler.exceptions.ExceptionHandler;
 import net.stuxcrystal.commandhandler.translations.TranslationManager;
 
