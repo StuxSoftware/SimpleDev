@@ -17,7 +17,7 @@ package net.stuxcrystal.commandhandler;
 
 import net.stuxcrystal.commandhandler.component.ComponentProxy;
 import net.stuxcrystal.commandhandler.contrib.DefaultPermissionHandler;
-import net.stuxcrystal.commandhandler.history.HistoryContainer;
+import net.stuxcrystal.commandhandler.history.History;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -131,8 +131,8 @@ public abstract class CommandExecutor<T> {
      * Returns the history of the given player.
      * @return The history of the given player.
      */
-    public HistoryContainer getHistory() {
-        return this.getSession(HistoryContainer.class);
+    public History getHistory() {
+        return this.getComponent(History.class);
     }
 
     /**
@@ -196,6 +196,7 @@ public abstract class CommandExecutor<T> {
      * @param <S>      The type of the session object.
      * @return The session-object or null if the creation of the session failed.
      */
+    @SuppressWarnings("unchecked")
     private <S extends Session> S _getSession(Map<Class<? extends Session>, Session> sessions, Class<S> cls) {
         S result = (S) sessions.get(cls);
         if (result == null || result.isSessionExpired()) {
@@ -227,7 +228,8 @@ public abstract class CommandExecutor<T> {
     public final <S extends Session> S getSession(Class<S> cls) {
         Map<Class<? extends Session>, Session> sessions;
         if (this.isPlayer()) {
-            sessions = SESSIONS.get(this.getHandle());
+            // Fixed bug with name resolving.
+            sessions = SESSIONS.get(this.getName());
             if (sessions == null) {
                 SESSIONS.put(
                         this.getName(),

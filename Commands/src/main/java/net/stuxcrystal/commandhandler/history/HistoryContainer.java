@@ -5,7 +5,7 @@ import net.stuxcrystal.commandhandler.Session;
 /**
  * Defines a session that can undo and redo things.
  */
-public class HistoryContainer extends Session {
+class HistoryContainer extends Session {
 
     /**
      * Stores an action.
