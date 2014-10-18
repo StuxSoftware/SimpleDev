@@ -17,7 +17,7 @@ package net.stuxcrystal.commandhandler;
 
 import net.stuxcrystal.commandhandler.component.ComponentProxy;
 import net.stuxcrystal.commandhandler.contrib.DefaultPermissionHandler;
-import net.stuxcrystal.commandhandler.history.History;
+import net.stuxcrystal.commandhandler.history.HistoryContainer;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -131,8 +131,8 @@ public abstract class CommandExecutor<T> {
      * Returns the history of the given player.
      * @return The history of the given player.
      */
-    public History getHistory() {
-        return this.getSession(History.class);
+    public HistoryContainer getHistory() {
+        return this.getSession(HistoryContainer.class);
     }
 
     /**
