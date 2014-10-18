@@ -3,6 +3,7 @@ package net.stuxcrystal.commandhandler.commands;
 import net.stuxcrystal.commandhandler.CommandExecutor;
 import net.stuxcrystal.commandhandler.CommandHandler;
 import net.stuxcrystal.commandhandler.arguments.ArgumentParser;
+import net.stuxcrystal.commandhandler.commands.contrib.annotations.AnnotationCommandLoader;
 import net.stuxcrystal.commandhandler.translations.TranslationManager;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class CommandManager {
     /**
      * The list of loaders.
      */
-    private List<CommandLoader> loaders = new ArrayList<>();
+    private List<CommandLoader> loaders = new ArrayList<CommandLoader>(Arrays.asList(new AnnotationCommandLoader()));
 
     /**
      * Executes this specific command.

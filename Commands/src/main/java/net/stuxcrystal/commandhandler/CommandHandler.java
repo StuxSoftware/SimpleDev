@@ -16,18 +16,15 @@
 package net.stuxcrystal.commandhandler;
 
 import net.stuxcrystal.commandhandler.commands.CommandContainer;
+import net.stuxcrystal.commandhandler.commands.CommandLoader;
 import net.stuxcrystal.commandhandler.commands.CommandManager;
-import net.stuxcrystal.commandhandler.commands.contrib.annotations.Command;
-import net.stuxcrystal.commandhandler.commands.contrib.annotations.SubCommand;
 import net.stuxcrystal.commandhandler.arguments.ArgumentHandler;
-import net.stuxcrystal.commandhandler.arguments.ArgumentParser;
 import net.stuxcrystal.commandhandler.component.ComponentContainer;
 import net.stuxcrystal.commandhandler.component.ComponentManager;
 import net.stuxcrystal.commandhandler.contrib.DefaultPermissionHandler;
 import net.stuxcrystal.commandhandler.exceptions.ExceptionHandler;
 import net.stuxcrystal.commandhandler.translations.TranslationManager;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -63,7 +60,7 @@ public class CommandHandler {
     /**
      * Manages translations
      */
-    private final TranslationManager manager;
+    private final TranslationManager localization;
 
     /**
      * Reference to the parent command handler.
@@ -84,6 +81,8 @@ public class CommandHandler {
      * Stores all exception handlers.
      */
     private final Map<Class<? extends Throwable>, ExceptionHandler<? extends Throwable>> exceptionHandlers = new HashMap<>();
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * The Constructor for base-commands.
@@ -113,12 +112,12 @@ public class CommandHandler {
      * Internal constructor for subcommand-support.
      *
      * @param backend    The backend handling the server side stuff.
-     * @param manager    The translation manager.
+     * @param localization    The translation manager.
      * @param parent     The parent command handler.
      */
-    public CommandHandler(CommandBackend backend, TranslationManager manager, CommandHandler parent) {
+    public CommandHandler(CommandBackend backend, TranslationManager localization, CommandHandler parent) {
         this.backend = backend;
-        this.manager = manager;
+        this.localization = localization;
         this.parent = parent;
 
         // Intitialize Backend.
@@ -129,21 +128,17 @@ public class CommandHandler {
         }
     }
 
-    public TranslationManager getTranslationManager() {
-        return this.manager;
-    }
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Translates a value.
-     *
-     * @param sender The sender that sent the message
-     * @param msg    The message itself.
-     * @param values The values for the translation.
-     * @return The translated message.
+     * Returns the manager that is responsible for translations.
+     * @return The manager that is responsible for translations.
      */
-    protected String _(CommandExecutor sender, String msg, Object... values) {
-        return this.manager.translate(sender, msg, values);
+    public TranslationManager getTranslationManager() {
+        return this.localization;
     }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * Registers the commands.<p />
@@ -174,6 +169,8 @@ public class CommandHandler {
         return false;
     }
 
+
+
     /**
      * Returns a lift of all descriptors.
      *
@@ -181,6 +178,47 @@ public class CommandHandler {
      */
     public List<CommandContainer> getCommands() {
         return new ArrayList<>(this.commands.getCommands());
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    /**
+     * A server backend handles the internal stuff that needs the API of the plugin system.
+     *
+     * @return The instance to the server backend.
+     */
+    public CommandBackend getServerBackend() {
+        return this.backend;
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * The parent handler of the command handler.
+     *
+     * @return A CommandHandler object.
+     */
+    public CommandHandler getParentHandler() {
+        return this.parent;
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Returns the permission-handler.
+     * @return The PermissionHandler.
+     */
+    public PermissionHandler getPermissionHandler() {
+        return this.permissionHandler;
+    }
+
+    /**
+     * Returns the permission-handler.
+     * @param handler The handler to use now.
+     */
+    public void setPermissionHandler(PermissionHandler handler) {
+        this.permissionHandler = handler;
     }
 
     /**
@@ -192,22 +230,17 @@ public class CommandHandler {
         return (this.getServerBackend().hasPermission(sender, "chandler.testpermission") != null);
     }
 
-    /**
-     * A server backend handles the internal stuff that needs the API of the plugin system.
-     *
-     * @return The instance to the server backend.
-     */
-    public CommandBackend getServerBackend() {
-        return this.backend;
-    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * The parent handler of the command handler.
+     * Registers an ExceptionHandler.
      *
-     * @return A CommandHandler object.
+     * @param cls     The type of exception that the exception handler handles.
+     * @param handler The handler to use.
      */
-    public CommandHandler getParentHandler() {
-        return this.parent;
+    public void registerExceptionHandler(Class<? extends Throwable> cls, ExceptionHandler<? extends Throwable> handler) {
+        this.exceptionHandlers.put(cls, handler);
     }
 
     /**
@@ -229,31 +262,7 @@ public class CommandHandler {
         return result;
     }
 
-    /**
-     * Returns the permission-handler.
-     * @return The PermissionHandler.
-     */
-    public PermissionHandler getPermissionHandler() {
-        return this.permissionHandler;
-    }
-
-    /**
-     * Returns the permission-handler.
-     * @param handler The handler to use now.
-     */
-    public void setPermissionHandler(PermissionHandler handler) {
-        this.permissionHandler = handler;
-    }
-
-    /**
-     * Registers an ExceptionHandler.
-     *
-     * @param cls     The type of exception that the exception handler handles.
-     * @param handler The handler to use.
-     */
-    public void registerExceptionHandler(Class<? extends Throwable> cls, ExceptionHandler<? extends Throwable> handler) {
-        this.exceptionHandlers.put(cls, handler);
-    }
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * Returns the current ArgumentHandler.
@@ -273,6 +282,8 @@ public class CommandHandler {
     public void setArgumentHandler(ArgumentHandler handler) {
         this.argument = handler;
     }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * Registers an subordinate CommandHandler.
@@ -304,6 +315,24 @@ public class CommandHandler {
         return this.subCommandHandler.get(index);
     }
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Registers a command loader.
+     * @param loader The loader to register.
+     */
+    public void registerCommandLoader(CommandLoader loader) {
+        this.commands.registerLoader(loader);
+    }
+
+    /**
+     * Unregisters a command loader.
+     * @param loader The loader to unregister.
+     */
+    public void unregisterCommandLoader(CommandLoader loader) {
+        this.commands.unregisterLoader(loader);
+    }
+
     /**
      * Returns the root-command handler.
      * @return The root commandhandler.
@@ -314,6 +343,8 @@ public class CommandHandler {
             current = current.parent;
         return current;
     }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * Adds all extension methods to the command handler.
