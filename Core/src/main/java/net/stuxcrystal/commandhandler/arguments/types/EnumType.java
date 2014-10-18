@@ -3,24 +3,20 @@ package net.stuxcrystal.commandhandler.arguments.types;
 import net.stuxcrystal.commandhandler.CommandBackend;
 import net.stuxcrystal.commandhandler.CommandExecutor;
 import net.stuxcrystal.commandhandler.arguments.ArgumentType;
+import net.stuxcrystal.commandhandler.utils.ReflectionUtils;
 
 /**
  * Implementation for enumerations.
  */
-public class EnumType extends net.stuxcrystal.configuration.parser.types.EnumType implements ArgumentType {
-
+public class EnumType implements ArgumentType {
 
     @Override
     public boolean isTypeSupported(Class<?> cls) {
-        try {
-            return isValidType(null, null, cls);
-        } catch (ReflectiveOperationException e) {
-            return false;
-        }
+        return ReflectionUtils.toClass(cls).isEnum();
     }
 
     @Override
     public Object convert(String value, Class<?> toClass, CommandExecutor executor, CommandBackend backend) {
-        return convert(value, toClass);
+        return Enum.valueOf((Class<Enum>) toClass, value);
     }
 }
