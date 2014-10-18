@@ -2,8 +2,10 @@ package net.stuxcrystal.commandhandler.compat.bungee;
 
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.stuxcrystal.commandhandler.CommandExecutor;
 import net.stuxcrystal.commandhandler.CommandHandler;
+
 
 /**
  * Wraps an Command-Sender.
@@ -27,9 +29,12 @@ public class BungeeSenderWrapper extends CommandExecutor<CommandSender> {
         return this.getHandle().getName();
     }
 
+
     @Override
     public void sendMessage(String... message) {
-        this.getHandle().sendMessages(message);
+        for (String line : message) {
+            this.getHandle().sendMessage(TextComponent.fromLegacyText(line));
+        }
     }
 
     @Override
