@@ -24,6 +24,7 @@ import net.stuxcrystal.commandhandler.component.ComponentManager;
 import net.stuxcrystal.commandhandler.contrib.DefaultPermissionHandler;
 import net.stuxcrystal.commandhandler.exceptions.ExceptionHandler;
 import net.stuxcrystal.commandhandler.translations.TranslationManager;
+import org.apache.commons.lang.ArrayUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -187,7 +188,7 @@ public class CommandHandler {
      * @param executor  The executor that executes the command.
      * @param name      The name of the command.
      * @param args      The arguments for the command.
-     * @return
+     * @return {@code true} if the command was found and has been executed.
      */
     public boolean execute(CommandExecutor executor, String name, String[] args) {
         if (this.commands.execute(executor, name, args))
@@ -201,7 +202,25 @@ public class CommandHandler {
         return false;
     }
 
+    /**
+     * Raw implementation of the execute method. (For convenience).
+     *
+     * @param executor The executor that executes the command.
+     * @param rawArgs  The raw arguments.
+     */
+    public void execute(CommandExecutor executor, String[] rawArgs) {
+        String name;
+        if (rawArgs.length == 0) {
+            name = CommandHandler.FALLBACK_COMMAND_NAME;
+            rawArgs = new String[0];
+        } else {
+            name = rawArgs[0];
+            rawArgs = (String[]) ArrayUtils.remove(rawArgs, 0);
+        }
 
+        if (!this.execute(executor, name, rawArgs))
+            executor.sendMessage(T(executor, "cmd.notfound"));
+    }
 
     /**
      * Returns a lift of all descriptors.

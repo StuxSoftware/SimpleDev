@@ -39,7 +39,8 @@ public class BaseConstructor implements Constructor {
         try {
             Class<?> cls = ClassUtils.getClass(this.getClass().getClassLoader(), classname);
             loader.addTreeGenerator((NodeTreeGenerator) cls.newInstance());
-        } catch (ReflectiveOperationException e) {
+        } catch (Throwable e) {
+            // Do a catchall, that's easier.
             loader.getLoggingInterface().debug("Not installing: " + loader);
             loader.getLoggingInterface().debugException(e);
         }
@@ -55,8 +56,8 @@ public class BaseConstructor implements Constructor {
         addedGenerators(loader);
 
         // Adds predefined generators if they are supported.
-        this.registerTreeGeneratorClass(loader, "net.stuxcrystal.configuration.parser.generators.xml.XmlGenerator;");
-        this.registerTreeGeneratorClass(loader, "import net.stuxcrystal.configuration.parser.generators.yaml.YamlGenerator");
+        this.registerTreeGeneratorClass(loader, "net.stuxcrystal.configuration.parser.generators.xml.XmlGenerator");
+        this.registerTreeGeneratorClass(loader, "net.stuxcrystal.configuration.parser.generators.yaml.YamlGenerator");
     }
 
     /**

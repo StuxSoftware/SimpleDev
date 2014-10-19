@@ -72,4 +72,56 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.3</version>
+                <executions>
+                    <execution>
+                        <id>canary</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <outputFile>target/assembly/${project.artifactId}-canary.jar</outputFile>
+                            <artifactSet>
+                                <excludes>
+                                    <exclude>org.bukkit:bukkit</exclude>
+                                    <exclude>net.stuxcrystal.simpledev:bukkit</exclude>
+                                </excludes>
+                            </artifactSet>
+                            <relocations>
+                                <relocation>
+                                    <pattern>org.apache.commons.lang</pattern>
+                                    <shadedPattern>net.stuxcrystal.simpledev.libs.org.apache.commons.lang</shadedPattern>
+                                </relocation>
+                            </relocations>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>bukkit</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <outputFile>target/assembly/${project.artifactId}-bukkit.jar</outputFile>
+                            <artifactSet>
+                                <excludes>
+                                    <exclude>net.canarymod:CanaryLib</exclude>
+                                    <exclude>net.stuxcrystal.simpledev:canary</exclude>
+                                    <exclude>commons-lang:commons-lang</exclude>
+                                </excludes>
+                            </artifactSet>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

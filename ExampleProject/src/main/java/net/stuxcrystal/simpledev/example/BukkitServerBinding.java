@@ -31,7 +31,7 @@ public class BukkitServerBinding extends JavaPlugin implements ComponentContaine
         this.ch.registerComponent(this);
 
         // Create the InterBan instance.
-        new InterBan(this.ch, new BukkitConfigurationLoader(this));
+        new InterBan(this.ch, new BukkitConfigurationLoader(this)).enable();
     }
 
     @Override

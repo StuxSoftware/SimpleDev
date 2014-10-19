@@ -76,7 +76,7 @@ class CommentAwareDumper {
                 dumpComment(writer, child, indent);
                 dumpNode(writer, child, indent);
             }
-            writeIndent(writer, indent - 1);
+            writeIndent(writer, indent - 2);
 
         } else {
             dumpScalar(writer, node);
@@ -111,7 +111,7 @@ class CommentAwareDumper {
         writer.write(name);
         writer.write(">");
 
-        dump(writer, node, indent + 1);
+        dump(writer, node, indent + 2);
 
         writer.write("</");
         writer.write(name);

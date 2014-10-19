@@ -4,6 +4,7 @@ import net.canarymod.Canary;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.Command;
+import net.canarymod.commandsys.CommandDependencyException;
 import net.canarymod.commandsys.CommandListener;
 import net.canarymod.plugin.Plugin;
 import net.stuxcrystal.commandhandler.CommandExecutor;
@@ -31,7 +32,13 @@ public class CanaryServerBinding extends Plugin implements ComponentContainer, C
         this.canaryCommandHandler.registerComponent(this);
 
         // Create the interban instance.
-        new InterBan(this.canaryCommandHandler, new CanaryConfigurationLoader(this));
+        new InterBan(this.canaryCommandHandler, new CanaryConfigurationLoader(this)).enable();
+
+        try {
+            this.registerCommands(this, true);
+        } catch (CommandDependencyException e) {
+            e.printStackTrace();
+        }
         return true;
     }
 

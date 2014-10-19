@@ -20,6 +20,6 @@ public interface History {
      *
      * @param action The action to execute.
      */
-    public void execute(Action action);
+    public void executeAction(Action action);
 
 }

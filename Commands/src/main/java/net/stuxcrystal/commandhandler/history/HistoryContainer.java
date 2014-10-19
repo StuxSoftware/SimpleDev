@@ -5,7 +5,7 @@ import net.stuxcrystal.commandhandler.Session;
 /**
  * Defines a session that can undo and redo things.
  */
-class HistoryContainer extends Session {
+public class HistoryContainer extends Session {
 
     /**
      * Stores an action.
@@ -52,6 +52,11 @@ class HistoryContainer extends Session {
      * The lock used to synchronize action accesses.
      */
     private final Object lock = new Object();
+
+    /**
+     * Make sure we can create a history container instance.
+     */
+    public HistoryContainer() {}
 
     /**
      * Executes the next action.<p />

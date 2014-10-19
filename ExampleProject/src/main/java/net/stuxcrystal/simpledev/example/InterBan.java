@@ -70,7 +70,7 @@ public class InterBan {
     public void executeAction(Action action) {
         if (this.ibc.enableHistory) {
             // Use the history if enabled.
-            action.getOwner().getHistory().execute(action);
+            action.getOwner().getHistory().executeAction(action);
         } else {
             // Otherwise, directly execute the action.
             action.firstExecution();
@@ -96,7 +96,7 @@ public class InterBan {
         if (this.ibc.enableHistory) {
             CommandHandler ch = this.commands.createChildHandler();
             ch.registerCommands(InterBanHistoryCommands.class);
-            this.commands.registerCommands(new CommandBuilder().name("banhistory").create(ch));
+            this.commands.registerCommands(new CommandBuilder().name("banhistory").player(true).console(true).create(ch));
         }
     }
 

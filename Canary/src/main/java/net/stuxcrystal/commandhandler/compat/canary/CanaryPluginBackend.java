@@ -40,7 +40,6 @@ public class CanaryPluginBackend implements CommandBackend<Plugin, MessageReceiv
 
     public CanaryPluginBackend(Plugin plugin) {
         this.plugin = plugin;
-        this.plugin.getLogman().warn("CanaryMod Recode does not support asynchronous tasks out of the box. Falling back to threads.");
     }
 
     @Override
@@ -71,7 +70,7 @@ public class CanaryPluginBackend implements CommandBackend<Plugin, MessageReceiv
 
     @Override
     public CommandExecutor<?> getExecutor(String name) {
-        if (name == null || name.isEmpty()) {
+        if (name == null || name.isEmpty() || "console".equalsIgnoreCase(name)) {
             return wrapReceiver(Canary.getServer());
         }
 

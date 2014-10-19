@@ -41,7 +41,8 @@ public class CommandManager {
     private void execute(CommandContainer command, CommandExecutor executor, String[] args) {
         if (command.parseArguments())
             this.executeParsed(command, executor, args);
-
+        else
+            this.executeRaw(command, executor, args);
     }
 
     /**

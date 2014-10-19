@@ -9,14 +9,19 @@ package net.stuxcrystal.commandhandler;
 public abstract class Session {
 
     /**
-     * The executor that belongs to the session.
+     * The command-handler this session belongs to.
      */
-    private CommandExecutor executor;
+    private CommandHandler handler;
+
+    /**
+     * The name of the user.
+     */
+    private String name;
 
     /**
      * The last time of access.
      */
-    private long lastAccessTime = 0;
+    private long lastAccessTime = -1;
 
     /**
      * The time for a session to expire.<br />
@@ -39,7 +44,8 @@ public abstract class Session {
      * @param executor The current session-object.
      */
     final void initialize(CommandExecutor executor) {
-        this.executor = executor;
+        this.handler = executor.getCommandHandler().getRootCommandHandler();
+        this.name = executor.isPlayer()?executor.getName():null;
         updateAccessTime();
     }
 
@@ -74,6 +80,7 @@ public abstract class Session {
     public final boolean isSessionExpired() {
         if (this.isExpired) return true;
         if (this.expireTime == 0) return false;
+        if (this.lastAccessTime == -1) return false; // Forcefully allow the access time to exist
         boolean expired = System.currentTimeMillis() - this.lastAccessTime > this.expireTime;
         if (expired) this.isExpired = true;
         return expired;
@@ -83,7 +90,7 @@ public abstract class Session {
      * @return Returns the CommandExecutor this session belongs to.
      */
     public CommandExecutor getCommandExecutor() {
-        return this.executor;
+        return this.handler.getServerBackend().getExecutor(this.name);
     }
 
     /**

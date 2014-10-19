@@ -36,7 +36,12 @@ public class FileConfigurationLocation implements ConfigurationLocation {
 
     @Override
     public InputStream getInputStream() throws IOException {
-        return new FileInputStream(this.file);
+        if (this.file.exists())
+            // Open a stream to the file if it exists.
+            return new FileInputStream(this.file);
+        else
+            // Use an empty input stream if the file doesn't exist.
+            return new ByteArrayInputStream(new byte[0]);
     }
 
     @Override

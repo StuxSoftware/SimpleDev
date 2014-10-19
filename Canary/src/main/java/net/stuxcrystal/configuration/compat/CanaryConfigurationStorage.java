@@ -26,6 +26,9 @@ public class CanaryConfigurationStorage implements StorageBackend {
     }
 
     public static String getModuleName(String... module) {
+        if (module.length == 0)
+            return null;
+
         if (module[0] == null) {
             module = (String[]) ArrayUtils.remove(module, 0);
         }

@@ -20,22 +20,7 @@ public class SubCommandContainer extends SimpleCommandContainer {
 
     @Override
     public void execute(CommandExecutor executor, ArgumentParser parser) {
-        String name;
-        String[] args;
-
-        // Parse the command.
-        if (parser.count() == 0) {
-            // An empty name represents a call without an argument
-            name = CommandHandler.FALLBACK_COMMAND_NAME;
-            args = new String[0];
-        } else if (parser.count() == 1) {
-            name = parser.getString(0);
-            args = new String[0];
-        } else {
-            name = parser.getString(0);
-            args = parser.getArguments(1);
-        }
-
-        this.subhandler.execute(executor, name, args);
+        // Use the execute method created for this use
+        this.subhandler.execute(executor, parser.getArguments(0));
     }
 }

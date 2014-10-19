@@ -56,6 +56,7 @@ public class ModuleConfigurationLoader {
      */
     protected ModuleConfigurationLoader(String name, StorageBackend backend) {
         this(name, (ModuleConfigurationLoader)null);
+        this.backend = backend;
     }
 
     /**
@@ -365,7 +366,7 @@ public class ModuleConfigurationLoader {
             }
             return result;
         } catch (IOException e) {
-            throw new FileException("Failed to parse file.");
+            throw new FileException("Failed to parse file.", e);
         }
 
     }

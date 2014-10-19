@@ -94,7 +94,27 @@ class XMLParser extends DefaultHandler {
         return source;
     }
 
+    /**
+     * Checks if a stream is actually empty.
+     * @param pis The input stream.
+     * @return {@code true} if so.
+     */
+    private static boolean isEmpty(PushbackInputStream pis) throws IOException{
+        int b = pis.read();
+        boolean empty = (b==-1);
+        pis.unread(b);
+        return empty;
+    }
+
     public static Node<?> parse(InputStream stream) throws IOException {
+        // Make sure empty files are supported...
+        stream = new PushbackInputStream(stream, 1);
+        if (XMLParser.isEmpty((PushbackInputStream)stream)) {
+            // The node has no content.
+            return new MapNode(new Node[0]);
+        }
+
+
         SAXParser parser;
         try {
             parser = getParser();
