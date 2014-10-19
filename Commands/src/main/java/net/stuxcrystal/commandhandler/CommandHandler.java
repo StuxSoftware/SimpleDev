@@ -15,6 +15,7 @@
 
 package net.stuxcrystal.commandhandler;
 
+import net.stuxcrystal.commandhandler.arguments.ArgumentParser;
 import net.stuxcrystal.commandhandler.commands.CommandContainer;
 import net.stuxcrystal.commandhandler.commands.CommandLoader;
 import net.stuxcrystal.commandhandler.commands.CommandManager;
@@ -203,7 +204,7 @@ public class CommandHandler {
     }
 
     /**
-     * Raw implementation of the execute method. (For convenience).
+     * Implementation of the execute method that uses the first argument as its command name.
      *
      * @param executor The executor that executes the command.
      * @param rawArgs  The raw arguments.
@@ -220,6 +221,16 @@ public class CommandHandler {
 
         if (!this.execute(executor, name, rawArgs))
             executor.sendMessage(T(executor, "cmd.notfound"));
+    }
+
+    /**
+     * Short for CommandHandler.execute(executor, parser.getArguments(0));
+     *
+     * @param executor The executor that executes the command.
+     * @param parser   The already parsed argumetns.
+     */
+    public void execute(CommandExecutor executor, ArgumentParser parser) {
+        this.execute(executor, parser.getArguments(0));
     }
 
     /**
