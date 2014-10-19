@@ -2,6 +2,10 @@ package net.stuxcrystal.commandhandler.history;
 
 import net.stuxcrystal.commandhandler.Session;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 /**
  * Defines a session that can undo and redo things.
  */
@@ -66,6 +70,7 @@ public class HistoryContainer extends Session {
      * @param action The action to execute.
      */
     public void execute(Action action) {
+        Objects.nonNull(action);
         this.updateAccessTime();
 
         synchronized (this.lock) {
@@ -113,5 +118,40 @@ public class HistoryContainer extends Session {
         return true;
     }
 
+    /**
+     * Get all actions in the history.
+     * @return A list of all actions.
+     */
+    public List<Action> getActions() {
+        List<Action> result = new ArrayList<>();
+        HistoryAction current = this.baseAction;
+        do {
+            if (current.action != null)
+                result.add(current.action);
+            current = current.next;
+        } while (current.next != null);
+
+        return result;
+    }
+
+    /**
+     * The last executed action that has not been undone.
+     * @return The last action.
+     */
+    public Action getLastAction() {
+        return this.currentAction.action;
+    }
+
+    /**
+     * Returns the next action that would have been executed
+     * when {@link #redo()} is being executed.
+     *
+     * @return {@code null} if there is no action to redo.
+     */
+    public Action getNextAction() {
+        if (this.currentAction.next == null)
+            return null;
+        return this.currentAction.next.action;
+    }
 
 }
