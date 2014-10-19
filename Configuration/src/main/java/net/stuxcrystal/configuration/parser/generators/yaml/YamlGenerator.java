@@ -35,14 +35,16 @@ import java.util.Map.Entry;
 
 public class YamlGenerator implements NodeTreeGenerator {
 
-    private Yaml parser;
+    private static Yaml parser;
 
-    public YamlGenerator() {
+    static {
         DumperOptions options = new DumperOptions();
         options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
         options.setDefaultScalarStyle(DumperOptions.ScalarStyle.PLAIN);
         parser = new Yaml(new Constructor(), new Representer(), options, new StringOnlyResolver());
     }
+
+    public YamlGenerator() {}
 
     public String getName() {
         return "yaml";

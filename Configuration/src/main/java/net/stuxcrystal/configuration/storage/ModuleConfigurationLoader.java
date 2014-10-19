@@ -5,6 +5,7 @@ import net.stuxcrystal.configuration.parser.ConfigurationHandler;
 import net.stuxcrystal.configuration.parser.Constructor;
 import net.stuxcrystal.configuration.parser.NodeTreeGenerator;
 import net.stuxcrystal.configuration.parser.exceptions.ConfigurationException;
+import net.stuxcrystal.configuration.parser.exceptions.FileException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -165,7 +166,7 @@ public class ModuleConfigurationLoader {
     /**
      * Loads the configuration file with the given name of the module.
      *
-     * @param name   The name of the configuration file.
+     * @param name   The name of the configuration file. (May be {@code null} on Main configurations).
      * @param world  The world that this configuration applies. (May be {@code null} to denote a global configuration).
      * @param type   The type of the configuration.
      * @param <T>    The return type.
@@ -197,6 +198,31 @@ public class ModuleConfigurationLoader {
     }
 
     /**
+     * Reads the main configuration of the module for the world.
+     * @param world   The world where the main configuration is valid.
+     * @param type    The type of the configuration.
+     * @param <T>     The type of the configuration.
+     * @return The parsed configuration.
+     * @throws IOException              If an IO-Operation fails.
+     * @throws ConfigurationException   If the configuration couldn't be parsed.
+     */
+    public <T> T getMainConfiguration(String world, Class<T> type) throws IOException, ConfigurationException {
+        return this.getConfiguration(null, world, type);
+    }
+
+    /**
+     * Reads the main configuration of the module for the world.
+     * @param type    The type of the configuration.
+     * @param <T>     The type of the configuration.
+     * @return The parsed configuration.
+     * @throws IOException              If an IO-Operation fails.
+     * @throws ConfigurationException   If the configuration couldn't be parsed.
+     */
+    public <T> T getMainConfiguration(Class<T> type) throws IOException, ConfigurationException {
+        return this.getMainConfiguration(null, type);
+    }
+
+    /**
      * Returns input stream for the file with the given name.
      *
      * @param name    The name of the file.
@@ -221,8 +247,29 @@ public class ModuleConfigurationLoader {
     }
 
     /**
+     * Returns the input stream for main configuration of the world.
+     *
+     * @param world             The world where this configuration applies.
+     * @return The stream to the file.
+     * @throws IOException If an IO-Operation fails.
+     */
+    public InputStream getMainConfigurationInputStream(String world) throws IOException {
+        return this.getInputStream(null, world);
+    }
+
+    /**
+     * Returns the input stream for main configuration of the world.
+
+     * @return The stream to the file.
+     * @throws IOException If an IO-Operation fails.
+     */
+    public InputStream getMainConfigurationInputStream() throws IOException {
+        return this.getMainConfigurationInputStream(null);
+    }
+
+    /**
      * Can you write to the file.
-     * @param name   The name of the configuration file.
+     * @param name   The name of the configuration file. (May be {@code null} if you want to use the main configuration).
      * @param world  The world that this configuration applies. (May be {@code null} to denote a global configuration).
      * @return {@code true} true if you can write to the file.
      */
@@ -279,5 +326,47 @@ public class ModuleConfigurationLoader {
      */
     public OutputStream getOutputStream(String name) throws IOException {
         return this.getOutputStream(name, null);
+    }
+
+    /**
+     * Returns the output stream of the main configuration file of the world.
+     *
+     * @param world  The name of the world.
+     * @return The OutputStream to write data into.
+     * @throws IOException If an IO-Operation fails.
+     */
+    public OutputStream getMainConfigurationOutputStream(String world) throws IOException {
+        return this.getOutputStream(null, world);
+    }
+
+    /**
+     * Returns the output stream of the main configuration
+     * @return The OutputStream to write data into.
+     * @throws IOException If an IO-Operation fails.
+     */
+    public OutputStream getMainConfigurationOutputStream() throws IOException {
+        return this.getOutputStream(null);
+    }
+
+    /**
+     * Loads the configuration file and writes its contents back to the harddrive.
+     *
+     * @param name   The name of the configuration file. (May be {@code null} if you want to use the main configuration).
+     * @param world  The world that this configuration applies. (May be {@code null} to denote a global configuration).
+     * @param type   The type of the configuration file.
+     * @param <T>    The type of the configuration file.
+     * @return The configuration
+     */
+    public <T> T loadAndUpdate(String name, String world, Class<T> type) throws ConfigurationException {
+        try {
+            T result = this.getConfiguration(world, name, type);
+            if (this.canWrite(name, world)) {
+                this.writeConfiguration(name, world, result);
+            }
+            return result;
+        } catch (IOException e) {
+            throw new FileException("Failed to parse file.");
+        }
+
     }
 }

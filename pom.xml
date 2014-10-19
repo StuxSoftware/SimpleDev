@@ -27,6 +27,9 @@
         <module>Canary</module>
         <module>BungeeCord</module>
         <module>Configuration</module>
+
+        <!-- Example Project -->
+        <module>ExampleProject</module>
     </modules>
 
     <packaging>pom</packaging>

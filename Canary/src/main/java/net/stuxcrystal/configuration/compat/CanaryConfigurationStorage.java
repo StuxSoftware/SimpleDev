@@ -64,9 +64,17 @@ public class CanaryConfigurationStorage implements StorageBackend {
 
     @Override
     public ConfigurationLocation getConfiguration(String[] module, String world, String name) {
+        if ("config".equalsIgnoreCase(name))
+            throw new IllegalArgumentException("'config' is a reserved name for configurations.");
+
         String moduleName = CanaryConfigurationStorage.getModuleName(module);
 
-        String ext = null;
+        // Add config extension to module main configurations.
+        if (name == null && moduleName != null)
+            name = "config";
+
+        // We will use xml as a default.
+        String ext = "xml";
         if (name != null) {
             moduleName = CanaryConfigurationStorage.getModuleName(moduleName, name);
             ext = CanaryConfigurationStorage.getFileExtension(name);
@@ -77,22 +85,17 @@ public class CanaryConfigurationStorage implements StorageBackend {
 
         // Use the corrent configuration.
         if (moduleName == null) {
-
             if (world == null) {
                 file = this.plugin.getConfig();
             } else {
                 file = this.plugin.getWorldConfig(Canary.getServer().getWorld(world));
             }
-
-
         } else {
-
             if (world == null) {
                 file = this.plugin.getModuleConfig(moduleName);
             } else {
                 file = this.plugin.getWorldModuleConfig(moduleName, Canary.getServer().getWorld(world));
             }
-
         }
 
         File result;
@@ -102,7 +105,7 @@ public class CanaryConfigurationStorage implements StorageBackend {
         else {
             // Strip the extension if we care about the file extension.
             File pre = new File(file.getFilePath());
-            result = new File(pre.getParentFile(), CanaryConfigurationStorage.stripExtension(pre.getName())+ext);
+            result = new File(pre.getParentFile(), CanaryConfigurationStorage.stripExtension(pre.getName())+"." + ext);
         }
 
         return new FileConfigurationLocation(result);

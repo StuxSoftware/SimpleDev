@@ -15,10 +15,8 @@
 
 package net.stuxcrystal.configuration.parser;
 
-import net.stuxcrystal.configuration.parser.generators.xml.XmlGenerator;
-import net.stuxcrystal.configuration.parser.generators.yaml.YamlGenerator;
-
 import net.stuxcrystal.configuration.parser.types.*;
+import org.apache.commons.lang.ClassUtils;
 
 /**
  * Basic constructor.
@@ -37,6 +35,16 @@ public class BaseConstructor implements Constructor {
      */
     public void addedTypes(ConfigurationHandler loader) {}
 
+    private void registerTreeGeneratorClass(ConfigurationHandler loader, String classname) {
+        try {
+            Class<?> cls = ClassUtils.getClass(this.getClass().getClassLoader(), classname);
+            loader.addTreeGenerator((NodeTreeGenerator) cls.newInstance());
+        } catch (ReflectiveOperationException e) {
+            loader.getLoggingInterface().debug("Not installing: " + loader);
+            loader.getLoggingInterface().debugException(e);
+        }
+    }
+
     /**
      * Loads all existing generators.
      *
@@ -46,9 +54,9 @@ public class BaseConstructor implements Constructor {
     public final void loadGenerators(ConfigurationHandler loader) {
         addedGenerators(loader);
 
-        // Adds predefined generators.
-        loader.addTreeGenerator(new YamlGenerator());                 // ".yml" and ".yaml"
-        loader.addTreeGenerator(new XmlGenerator());                  // ".xml"
+        // Adds predefined generators if they are supported.
+        this.registerTreeGeneratorClass(loader, "net.stuxcrystal.configuration.parser.generators.xml.XmlGenerator;");
+        this.registerTreeGeneratorClass(loader, "import net.stuxcrystal.configuration.parser.generators.yaml.YamlGenerator");
     }
 
     /**

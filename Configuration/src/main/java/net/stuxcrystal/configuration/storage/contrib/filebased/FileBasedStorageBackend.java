@@ -64,12 +64,10 @@ public class FileBasedStorageBackend implements StorageBackend {
     public ConfigurationLocation getConfiguration(String[] module, String world, String name) {
         File directory = FileBasedStorageBackend.join(this.baseDirectory, module);
 
-        if (module.length == 0) {
-            if (name == null)
-                name = "config";
-            else if (name.equalsIgnoreCase("config"))
-                throw new IllegalArgumentException("'config' is a reserved configuration name.");
-        }
+        if (name == null)
+            name = "config";
+        else if (name.equalsIgnoreCase("config"))
+            throw new IllegalArgumentException("'config' is a reserved configuration name.");
 
         if (world != null)
             directory = FileBasedStorageBackend.join(directory, world);

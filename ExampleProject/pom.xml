@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>SimpleDev</artifactId>
+        <groupId>net.stuxcrystal</groupId>
+        <version>2.0.0-SNAPSHOT</version>
+        <relativePath>../../SimpleDev/pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>net.stuxcrystal.SimpleDev</groupId>
+    <artifactId>ExampleProject</artifactId>
+
+    <repositories>
+        <!-- Bukkit -->
+        <repository>
+            <id>bukkit-repo</id>
+            <url>http://repo.bukkit.org/content/groups/public/</url>
+        </repository>
+
+        <!-- Canary Mod Recode -->
+        <repository>
+            <id>vi-repo</id>
+            <name>Visual Illusions Repository</name>
+            <url>http://repo.visualillusionsent.net/repository/public/</url>
+            <snapshots><enabled>true</enabled></snapshots>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>net.stuxcrystal.simpledev.core</groupId>
+            <artifactId>commands</artifactId>
+            <version>2.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.stuxcrystal.simpledev.core</groupId>
+            <artifactId>configuration</artifactId>
+            <version>2.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <!-- Bukkit. -->
+        <dependency>
+            <groupId>org.bukkit</groupId>
+            <artifactId>bukkit</artifactId>
+            <version>1.6.4-R2.0</version>
+            <type>jar</type>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>net.stuxcrystal.simpledev</groupId>
+            <artifactId>bukkit</artifactId>
+            <version>1.6.4-R2.0-2.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <!-- Canary Mod -->
+        <dependency>
+            <groupId>net.stuxcrystal.simpledev</groupId>
+            <artifactId>canary</artifactId>
+            <version>1.1.2-2.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <!-- Canary Mod (Please note that this library uses Recode.) -->
+        <dependency>
+            <groupId>net.canarymod</groupId>
+            <artifactId>CanaryLib</artifactId>
+            <version>1.1.2</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+</project>
