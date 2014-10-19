@@ -43,7 +43,6 @@
             <artifactId>CanaryLib</artifactId>
             <version>1.1.2</version>
             <scope>provided</scope>
-            <optional>true</optional>
         </dependency>
 
     </dependencies>
