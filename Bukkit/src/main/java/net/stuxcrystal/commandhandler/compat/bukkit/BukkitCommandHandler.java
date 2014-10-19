@@ -61,7 +61,7 @@ public class BukkitCommandHandler extends CommandHandler implements CommandExecu
         net.stuxcrystal.commandhandler.CommandExecutor<?> sender = ((BukkitPluginBackend) this.backend).wrapSender(_sender);
 
         if (!this.execute(sender, arguments[0], (String[]) ArrayUtils.remove(arguments, 0)))
-            sender.sendMessage(_(sender, "cmd.notfound"));
+            sender.sendMessage(T(sender, "cmd.notfound"));
 
         return true;
     }

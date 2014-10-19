@@ -64,7 +64,7 @@ public class CanaryCommandHandler extends CommandHandler {
         }
 
         if (!this.execute(executor, name, args))
-            executor.sendMessage(_(executor, "cmd.notfound"));
+            executor.sendMessage(T(executor, "cmd.notfound"));
 
     }
 }

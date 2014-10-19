@@ -146,7 +146,7 @@ public class CommandHandler {
      * @param values  The values that are used in the message.
      * @return The translated message.
      */
-    protected String _(CommandExecutor sender, String key, Object... values) {
+    protected String T(CommandExecutor sender, String key, Object... values) {
         return this.getTranslationManager().translate(sender, key, values);
     }
 
