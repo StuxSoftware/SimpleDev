@@ -48,7 +48,7 @@ public class BungeeCommandHandler extends CommandHandler {
 
         String name;
         if (args.length == 0) {
-            name = " ";
+            name = CommandHandler.FALLBACK_COMMAND_NAME;
             args = new String[0];
         } else {
             name = args[0];

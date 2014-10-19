@@ -7,7 +7,15 @@ import net.stuxcrystal.commandhandler.arguments.ArgumentParser;
 import java.util.List;
 
 /**
- * The command container.
+ * <p>The command container.</p>
+ *
+ * <p>
+ *     <b>Make sure that no return value is null!</b>
+ * </p>
+ *
+ * <p>
+ *     The default fallback command name is " ".
+ * </p>
  */
 public interface CommandContainer {
 
@@ -66,13 +74,18 @@ public interface CommandContainer {
     public String getSupportedFlags();
 
     /**
-     * Returns the minimal count of arguments that need to be passed.
+     * <p>Returns the minimal count of arguments that need to be passed.</p>
+     *
+     * <p>{@code -1} means we don't care.</p>
+     *
      * @return The minimal count of arguments.
      */
     public int getMinimalArgumentCount();
 
     /**
-     * Returns the maximal count of arguments that can be used.
+     * <p>Returns the maximal count of arguments that can be used.</p>
+     *
+     * * <p>{@code -1} means we don't care.</p>
      * @return The maximal count of arguments.
      */
     public int getMaximalArgumentCount();

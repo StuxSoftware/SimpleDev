@@ -38,6 +38,13 @@ import java.util.Map;
 public class CommandHandler {
 
     /**
+     * The default fallback command name.
+     */
+    public static final String FALLBACK_COMMAND_NAME = " ";
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
      * Contains the manager for commands.
      */
     private CommandManager commands = new CommandManager();
@@ -115,7 +122,7 @@ public class CommandHandler {
      * @param localization    The translation manager.
      * @param parent     The parent command handler.
      */
-    public CommandHandler(CommandBackend backend, TranslationManager localization, CommandHandler parent) {
+    private CommandHandler(CommandBackend backend, TranslationManager localization, CommandHandler parent) {
         this.backend = backend;
         this.localization = localization;
         this.parent = parent;
@@ -126,6 +133,19 @@ public class CommandHandler {
             this.argument = new ArgumentHandler();
             this.components = new ComponentManager();
         }
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * <p>Creates a new child handler from this command handler.</p>
+     *
+     * <p>Can be used in sub-commands and child command handlers.</p>
+     *
+     * @return The child handler.
+     */
+    public CommandHandler createChildHandler() {
+        return new CommandHandler(this.getServerBackend(), this.getTranslationManager(), this);
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -153,7 +173,7 @@ public class CommandHandler {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Registers the commands.<p />
+     * Registers the commands.
      * Also prepares subcommands.
      *
      * @param container The container for the methods.

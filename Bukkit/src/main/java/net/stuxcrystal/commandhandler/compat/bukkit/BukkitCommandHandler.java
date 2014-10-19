@@ -55,7 +55,7 @@ public class BukkitCommandHandler extends CommandHandler implements CommandExecu
     public boolean onCommand(CommandSender _sender, org.bukkit.command.Command command, String label, String[] arguments) {
         if (arguments.length == 0) {
             // Make a command out of it.
-            arguments = new String[]{" "};
+            arguments = new String[]{CommandHandler.FALLBACK_COMMAND_NAME};
         }
 
         net.stuxcrystal.commandhandler.CommandExecutor<?> sender = ((BukkitPluginBackend) this.backend).wrapSender(_sender);

@@ -29,7 +29,7 @@ public class AnnotationCommandLoader implements CommandLoader {
     }
 
     @Override
-    public <T> CommandContainer[] register(CommandHandler registrar, Object container) {
+    public List<CommandContainer> register(CommandHandler registrar, Object container) {
         if (container instanceof Class<?>) {
             if (CommandListener.class.isAssignableFrom((Class<?>)container)) {
                 container = newInstance((Class<?>) container);
@@ -37,6 +37,9 @@ public class AnnotationCommandLoader implements CommandLoader {
                 return null;
             }
         }
+
+        if (!(container instanceof CommandListener))
+            return null;
 
         List<CommandContainer> commands = new ArrayList<>();
 
@@ -55,11 +58,7 @@ public class AnnotationCommandLoader implements CommandLoader {
                 SubCommand command = method.getAnnotation(SubCommand.class);
 
                 // Create a sub-handler.
-                subhandler = new CommandHandler(
-                        registrar.getServerBackend(),
-                        registrar.getTranslationManager(),
-                        registrar
-                );
+                subhandler = registrar.createChildHandler();
 
                 // Populate the command handler.
                 Class<?>[] classes = command.value();
@@ -78,6 +77,6 @@ public class AnnotationCommandLoader implements CommandLoader {
             }
         }
 
-        return commands.toArray(new CommandContainer[commands.size()]);
+        return commands;
     }
 }

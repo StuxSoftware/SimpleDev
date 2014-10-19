@@ -4,6 +4,7 @@ import net.stuxcrystal.commandhandler.CommandExecutor;
 import net.stuxcrystal.commandhandler.CommandHandler;
 import net.stuxcrystal.commandhandler.arguments.ArgumentParser;
 import net.stuxcrystal.commandhandler.commands.contrib.annotations.AnnotationCommandLoader;
+import net.stuxcrystal.commandhandler.commands.contrib.raw.CommandContainerLoader;
 import net.stuxcrystal.commandhandler.translations.TranslationManager;
 
 import java.util.ArrayList;
@@ -23,7 +24,13 @@ public class CommandManager {
     /**
      * The list of loaders.
      */
-    private List<CommandLoader> loaders = new ArrayList<CommandLoader>(Arrays.asList(new AnnotationCommandLoader()));
+    private List<CommandLoader> loaders = new ArrayList<>(Arrays.asList(
+            // Implementation for old @Command classes.
+            new AnnotationCommandLoader(),
+
+            // Implementation for raw command containers.
+            new CommandContainerLoader()
+    ));
 
     /**
      * Executes this specific command.
@@ -187,7 +194,10 @@ public class CommandManager {
      */
     public void registerCommands(CommandHandler registrar, Object obj) {
         for (CommandLoader loader : loaders) {
-            this.commands.addAll(Arrays.asList(loader.register(registrar, obj)));
+            List<CommandContainer> containers = loader.register(registrar, obj);
+            if (containers == null)
+                continue;
+            this.commands.addAll(containers);
         }
     }
 

@@ -65,7 +65,7 @@ public class BranchAnnotationCommand extends AnnotationBasedCommand {
         // Parse the command.
         if (parser.count() == 0) {
             // An empty name represents a call without an argument
-            name = "";
+            name = CommandHandler.FALLBACK_COMMAND_NAME;
             args = new String[0];
         } else if (parser.count() == 1) {
             name = parser.getString(0);
