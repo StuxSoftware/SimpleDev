@@ -24,9 +24,14 @@ public class InterBanCommands implements CommandListener {
         InterBan.getInstance().executeAction(new BanAction(executor, ce, true));
     }
 
+    /**
+     * Unbans a user.
+     * @param executor   The executor.
+     * @param arguments  The arguments.
+     */
     @Command(minSize = 1, maxSize = 1, permission = "interban.unban")
     public void unban(CommandExecutor executor, ArgumentParser arguments) {
-        // Get the player who is to be banned.
+        // Get the player who is to be unbanned
         CommandExecutor ce = arguments.getArgument(0, CommandExecutor.class);
 
         // Execute the action.

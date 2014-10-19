@@ -1,6 +1,7 @@
 package net.stuxcrystal.simpledev.example;
 
 import net.stuxcrystal.commandhandler.CommandHandler;
+import net.stuxcrystal.commandhandler.commands.contrib.builder.CommandBuilder;
 import net.stuxcrystal.commandhandler.history.Action;
 import net.stuxcrystal.configuration.ConfigurationLoader;
 import net.stuxcrystal.configuration.parser.exceptions.ConfigurationException;
@@ -45,6 +46,7 @@ public class InterBan {
      * @param cl      The configuration loader.
      */
     public InterBan(CommandHandler handler, ConfigurationLoader cl) {
+        // Make this a singleton.
         if (InterBan.INSTANCE != null)
             throw new UnsupportedOperationException("Singleton already instantiated.");
         InterBan.INSTANCE = this;
@@ -53,6 +55,7 @@ public class InterBan {
         this.commands = handler;
         this.cf = cl;
 
+        // Extract the logger.
         this.logger = this.commands.getServerBackend().getLogger();
     }
 
@@ -66,8 +69,10 @@ public class InterBan {
      */
     public void executeAction(Action action) {
         if (this.ibc.enableHistory) {
+            // Use the history if enabled.
             action.getOwner().getHistory().execute(action);
         } else {
+            // Otherwise, directly execute the action.
             action.firstExecution();
         }
     }
@@ -76,6 +81,7 @@ public class InterBan {
      * Enables the interban plugin.
      */
     public void enable() {
+        // Read (and create when necessary) the configuration.
         try {
             this.ibc = this.cf.loadAndUpdate(null, null, InterBanConfig.class);
         } catch (ConfigurationException e) {
@@ -83,9 +89,15 @@ public class InterBan {
             return;
         }
 
+        // Register Commands.
         this.commands.registerCommands(InterBanCommands.class);
-        if (this.ibc.enableHistory)
-            this.commands.registerCommands(InterBanHistoryCommands.class);
+
+        // We use the command builder to build a simple subcommand.
+        if (this.ibc.enableHistory) {
+            CommandHandler ch = this.commands.createChildHandler();
+            ch.registerCommands(InterBanHistoryCommands.class);
+            this.commands.registerCommands(new CommandBuilder().name("banhistory").create(ch));
+        }
     }
 
 }

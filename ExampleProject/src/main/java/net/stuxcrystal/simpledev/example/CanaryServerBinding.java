@@ -17,12 +17,20 @@ import net.stuxcrystal.configuration.compat.CanaryConfigurationLoader;
  */
 public class CanaryServerBinding extends Plugin implements ComponentContainer, CommandListener {
 
+    /**
+     * Contains all commands.
+     */
     CanaryCommandHandler canaryCommandHandler;
 
     @Override
     public boolean enable() {
+        // Create the command handler.
         this.canaryCommandHandler = new CanaryCommandHandler(this);
+
+        // Since this class implements our extension methods we register 'this'.
         this.canaryCommandHandler.registerComponent(this);
+
+        // Create the interban instance.
         new InterBan(this.canaryCommandHandler, new CanaryConfigurationLoader(this));
         return true;
     }
@@ -40,6 +48,9 @@ public class CanaryServerBinding extends Plugin implements ComponentContainer, C
      */
     @Command(aliases = {"iban"}, description = "Base-Command of interban", permissions = {}, toolTip = "Base-Command of Interban")
     public void interban(MessageReceiver receiver, String[] parameters) {
+        // We have to use subcommands. :(
+
+        // Redirect to our command-handler.
         this.canaryCommandHandler.executeSubCommand(receiver, parameters);
     }
 

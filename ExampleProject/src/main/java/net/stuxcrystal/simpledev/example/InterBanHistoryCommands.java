@@ -10,11 +10,21 @@ import net.stuxcrystal.commandhandler.commands.contrib.annotations.CommandListen
  */
 public class InterBanHistoryCommands implements CommandListener{
 
+    /**
+     * Undo the last action.
+     * @param executor         The last action of the executor.
+     * @param argumentParser   The arguments.
+     */
     @Command(minSize = 0, maxSize = 0, permission = "interban.history.undo")
     public void undo(CommandExecutor executor, ArgumentParser argumentParser) {
         executor.getHistory().undo();
     }
 
+    /**
+     * Rdo the last action.
+     * @param executor         The last action of the executor.
+     * @param argumentParser   The arguments.
+     */
     @Command(minSize = 0, maxSize = 0, permission = "interban.history.redo")
     public void redo(CommandExecutor executor, ArgumentParser argumentParser) {
         executor.getHistory().redo();

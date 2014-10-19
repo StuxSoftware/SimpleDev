@@ -34,11 +34,13 @@ public class BanAction extends Action {
 
     @Override
     public void undo() {
+        // Use getComponent(BanExtension.class) to get our ban function.
         this.executor.<BanExtension>getComponent(BanExtension.class).ban(!this.newState);
     }
 
     @Override
     public void redo() {
+        // Use getComponent(BanExtension.class) to get our ban function.
         this.executor.<BanExtension>getComponent(BanExtension.class).ban(this.newState);
     }
 

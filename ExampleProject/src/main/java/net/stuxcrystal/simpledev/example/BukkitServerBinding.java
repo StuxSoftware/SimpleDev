@@ -17,12 +17,20 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class BukkitServerBinding extends JavaPlugin implements ComponentContainer {
 
+    /**
+     * The command handler that contains the commands for us.
+     */
     BukkitCommandHandler ch;
 
     @Override
     public void onEnable() {
+        // Create a new one.
         this.ch = new BukkitCommandHandler(this);
+
+        // Since this class defines the extension methods, we register our class to the command-handler.
         this.ch.registerComponent(this);
+
+        // Create the InterBan instance.
         new InterBan(this.ch, new BukkitConfigurationLoader(this));
     }
 
@@ -33,6 +41,7 @@ public class BukkitServerBinding extends JavaPlugin implements ComponentContaine
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String args[]) {
+        // Forward all command calls to the command handler to handle the commands.
         return this.ch.onCommand(sender, command, label, args);
     }
 

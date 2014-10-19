@@ -1,0 +1,5 @@
+main-class=net.stuxcrystal.simpledev.example.CanaryServerBinding
+name=InterBan
+author=StuxCrystal
+version=1.0.0-2.0.0-SNAPSHOT
+language=java

@@ -1,0 +1,9 @@
+name: InterBan
+version: 1.0.0-2.0.0-SNAPSHOT
+main: net.stuxcrystal.simpledev.example.BukkitServerBinding
+author: StuxCrystal
+
+commands:
+  ban: {}
+  unban: {}
+  banhistory: {}

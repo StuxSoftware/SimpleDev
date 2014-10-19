@@ -1,7 +1,9 @@
 package net.stuxcrystal.simpledev.example;
 
 /**
- * The extension to interface with ban systems.
+ * <p>The extension to interface with ban systems.</p>
+ *
+ * Used to allow easy calling of the extension methods.
  */
 public interface BanExtension {
 
