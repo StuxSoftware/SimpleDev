@@ -1,6 +1,5 @@
 package net.stuxcrystal.simpledev.example;
 
-import net.stuxcrystal.commandhandler.CommandExecutor;
 import net.stuxcrystal.commandhandler.CommandHandler;
 import net.stuxcrystal.commandhandler.history.Action;
 import net.stuxcrystal.configuration.ConfigurationLoader;
