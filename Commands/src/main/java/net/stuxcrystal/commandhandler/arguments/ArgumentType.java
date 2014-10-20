@@ -25,6 +25,4 @@ public interface ArgumentType {
      */
     public abstract Object convert(String value, Class<?> toClass, CommandExecutor executor, CommandBackend backend);
 
-
-
 }
