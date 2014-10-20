@@ -32,6 +32,7 @@ public class BukkitCommandHandler extends CommandHandler implements CommandExecu
      */
     public BukkitCommandHandler(Plugin plugin) {
         super(new BukkitPluginBackend(plugin));
+        this.initHandler();
     }
 
     /**
@@ -41,6 +42,7 @@ public class BukkitCommandHandler extends CommandHandler implements CommandExecu
      */
     public BukkitCommandHandler(BukkitCommandHandler handler) {
         super(handler);
+        this.initHandler();
     }
 
     /**
