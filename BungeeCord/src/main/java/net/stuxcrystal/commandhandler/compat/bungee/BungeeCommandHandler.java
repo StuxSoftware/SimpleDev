@@ -17,6 +17,7 @@ public class BungeeCommandHandler extends CommandHandler {
      */
     public BungeeCommandHandler(Plugin plugin) {
         super(new BungeePluginBackend(plugin));
+        this.initHandler();
     }
 
     /**
@@ -25,6 +26,14 @@ public class BungeeCommandHandler extends CommandHandler {
      */
     public BungeeCommandHandler(BungeeCommandHandler handler) {
         super(handler);
+        this.initHandler();
+    }
+
+    /**
+     * Adds Bungee-Specific command-loaders.
+     */
+    private void initHandler() {
+        this.registerCommandLoader(new BungeeCommandLoader());
     }
 
     /**
