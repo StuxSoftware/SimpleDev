@@ -1,4 +1,7 @@
-package net.stuxcrystal.commandhandler;
+package net.stuxcrystal.commandhandler.contrib.sessions;
+
+import net.stuxcrystal.commandhandler.CommandExecutor;
+import net.stuxcrystal.commandhandler.CommandHandler;
 
 /**
  * Represents a session.<p />

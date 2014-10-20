@@ -1,4 +1,4 @@
-package net.stuxcrystal.commandhandler.history;
+package net.stuxcrystal.commandhandler.contrib.history;
 
 import net.stuxcrystal.commandhandler.CommandExecutor;
 

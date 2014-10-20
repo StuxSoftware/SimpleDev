@@ -1,6 +1,6 @@
-package net.stuxcrystal.commandhandler.history;
+package net.stuxcrystal.commandhandler.contrib.history;
 
-import net.stuxcrystal.commandhandler.Session;
+import net.stuxcrystal.commandhandler.contrib.sessions.Session;
 
 import java.util.ArrayList;
 import java.util.List;

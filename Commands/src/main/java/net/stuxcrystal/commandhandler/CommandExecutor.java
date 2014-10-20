@@ -17,42 +17,17 @@ package net.stuxcrystal.commandhandler;
 
 import net.stuxcrystal.commandhandler.component.ComponentProxy;
 import net.stuxcrystal.commandhandler.contrib.DefaultPermissionHandler;
-import net.stuxcrystal.commandhandler.history.History;
-import net.stuxcrystal.commandhandler.history.HistoryComponent;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
+import net.stuxcrystal.commandhandler.contrib.history.History;
+import net.stuxcrystal.commandhandler.contrib.history.HistoryComponent;
+import net.stuxcrystal.commandhandler.contrib.sessions.SessionManager;
+import net.stuxcrystal.commandhandler.contrib.sessions.Sessions;
 
 /**
  * Represents the sender of a command.
  */
 public abstract class CommandExecutor<T> {
 
-    /**
-     * Map of all recognized sessions handled by the command-executor.<p />
-     *
-     * The sessions are stored in a static variable because multiple CommandExecutors can access the same
-     * handle.<p />
-     *
-     * The access to the sessions is thread-safe.
-     */
-    private static final Map<String, Map<Class<? extends Session>, Session>> SESSIONS = Collections.synchronizedMap(
-            new HashMap<String, Map<Class<? extends Session>, Session>>()
-    );
 
-    /**
-     * Sessions for a console-object.<p />
-     *
-     * Designed to handle only one type of Non-Player-Sessions.<p />
-     *
-     * The access to the sessions is thread-safe.
-     */
-    private static final Map<Class<? extends Session>, Session> CONSOLE_SESSIONS = Collections.synchronizedMap(
-            new HashMap<Class<? extends Session>, Session>()
-    );
 
     /**
      * The CommandHandler providing the handler.
@@ -141,6 +116,16 @@ public abstract class CommandExecutor<T> {
     }
 
     /**
+     * Returns the manager for sessions.
+     * @return The history for sessions.
+     */
+    public Sessions getSessions() {
+        if (!this.getCommandHandler().isComponentRegistered(SessionManager.class))
+            this.getCommandHandler().registerComponent(new SessionManager(this.getCommandHandler()));
+        return this.getComponent(Sessions.class);
+    }
+
+    /**
      * Compare the underlying handles.
      *
      * @param otherObject an other object.
@@ -152,14 +137,24 @@ public abstract class CommandExecutor<T> {
         T me = this.getHandle();
         Object other = ((CommandExecutor) otherObject).getHandle();
 
-        if (me == null || other == null) return false;
-        return me.equals(other);
+        return (me == null) == (other == null) && me != null && me.equals(other);
+    }
+
+    /**
+     * Creates a string representation for the executor.
+     * @return The string that contains data for the executor.
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("CommandExecutor[").append(this.getHandle().toString()).append("]");
+        return sb.toString();
     }
 
     /**
      * Use the hash code of the underlying object.
      *
-     * @return
+     * @return The hash-code of the object.
      */
     @Override
     public int hashCode() {
@@ -173,115 +168,6 @@ public abstract class CommandExecutor<T> {
      */
     public CommandBackend getBackend() {
         return this.handler.backend;
-    }
-
-    /**
-     * Creates a new session.
-     */
-    protected <S extends Session> S createSession(Class<S> cls) {
-
-        S session;
-        try {
-            session = cls.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            // Log Exception.
-            this.getBackend().getLogger().log(Level.WARNING, "Failed to create session of " + cls, e);
-            return null;
-        }
-
-        session.initialize(this);
-        return session;
-
-    }
-
-    /**
-     * Returns the session with the given type.
-     * @param sessions The session-container of this command-executor.
-     * @param cls      The class that contains the session-container.
-     * @param <S>      The type of the session object.
-     * @return The session-object or null if the creation of the session failed.
-     */
-    @SuppressWarnings("unchecked")
-    private <S extends Session> S _getSession(Map<Class<? extends Session>, Session> sessions, Class<S> cls) {
-        S result = (S) sessions.get(cls);
-        if (result == null || result.isSessionExpired()) {
-            result = this.createSession(cls);
-            if (result == null) return null;
-            sessions.put(cls, result);
-        }
-
-        return result;
-    }
-
-    /**
-     * Returns the session using this object.<p />
-     *
-     * The implementation of this session depends on the type of the CommandExecutor.<br />
-     * If the CommandExecutor is a Player, the CommandExecutor will use the name of the Player to
-     * identify the right Session-Map.<p />
-     *
-     * If the type of the CommandExecutor is <i>not</i> a Player, a separate Session-Map is stored. This
-     * Map is shared between all Non-Player-Executors as the type of the executor cannot be resolved
-     * from a platform-neutral viewpoint.<p />
-     *
-     * Sessions are stored by a synchronized map are identified by the Class of the implementing type.
-     *
-     * @param cls The class object.
-     * @param <S> The type of the session.
-     * @return null if the creation of the session failed.
-     */
-    public final <S extends Session> S getSession(Class<S> cls) {
-        Map<Class<? extends Session>, Session> sessions;
-        if (this.isPlayer()) {
-            // Fixed bug with name resolving.
-            sessions = SESSIONS.get(this.getName());
-            if (sessions == null) {
-                SESSIONS.put(
-                        this.getName(),
-                        (sessions = Collections.synchronizedMap(new HashMap<Class<? extends Session>, Session>()))
-                );
-            }
-        } else {
-            sessions = CONSOLE_SESSIONS;
-        }
-
-        return _getSession(sessions, cls);
-    }
-
-    /**
-     * Removes expired sessions from a command-executor.
-     * @param sessions The sessions of an command-executor.
-     */
-    public static void _cleanupSessions(Map<Class<? extends Session>, Session> sessions) {
-        ArrayList<Class<? extends Session>> expired = new ArrayList<>();
-        for (Map.Entry<Class<? extends Session>, Session> session : sessions.entrySet()) {
-            if (session.getValue().isSessionExpired()) expired.add(session.getKey());
-        }
-
-        for (Class<? extends Session> cls : expired) {
-            // Multi-Threading-Case: A new session is created while cleaning up.
-            if (!sessions.get(cls).isSessionExpired()) continue;
-            sessions.remove(expired);
-        }
-    }
-
-    /**
-     * Cleans-up all sessions.
-     */
-    public static void cleanupSessions() {
-        _cleanupSessions(CONSOLE_SESSIONS);
-
-        ArrayList<String> remove = new ArrayList<>();
-        for (Map.Entry<String, Map<Class<? extends Session>, Session>> handles : SESSIONS.entrySet()) {
-            _cleanupSessions(handles.getValue());
-            if (handles.getValue().size() == 0) remove.add(handles.getKey());
-        }
-
-        for (String handle : remove) {
-            // Multi-Threading-Case: A new session is created while cleaning up.
-            if (SESSIONS.get(handle).size() > 0) continue;
-            SESSIONS.remove(handle);
-        }
     }
 
     /**
