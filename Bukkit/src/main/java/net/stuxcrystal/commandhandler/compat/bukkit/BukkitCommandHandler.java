@@ -44,6 +44,13 @@ public class BukkitCommandHandler extends CommandHandler implements CommandExecu
     }
 
     /**
+     * Initializes the command handler.
+     */
+    private void initHandler() {
+        this.registerCommandLoader(new BukkitCommandLoader());
+    }
+
+    /**
      * Simple command handler for subcommands.
      *
      * @param _sender   The sender that sends the command.
@@ -78,5 +85,14 @@ public class BukkitCommandHandler extends CommandHandler implements CommandExecu
     public boolean commandSwitch(CommandSender _sender, @SuppressWarnings("unused") org.bukkit.command.Command command, String label, String[] arguments) {
         net.stuxcrystal.commandhandler.CommandExecutor<?> sender = ((BukkitPluginBackend) this.backend).wrapSender(_sender);
         return this.execute(sender, label, arguments);
+    }
+
+    /**
+     * Register the native command.
+     * @param name      The name of the command.
+     * @param executor  The executor used.
+     */
+    public void registerCommand(String name, CommandExecutor executor) {
+        this.registerCommands(new BukkitCommandExecutorContainer(name, executor));
     }
 }
