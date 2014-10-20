@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Defines a session that can undo and redo things.
+ * Defines a session that can undoAction and redoAction things.
  */
 public class HistoryContainer extends Session {
 
@@ -84,7 +84,7 @@ public class HistoryContainer extends Session {
 
     /**
      * Redo the next action.
-     * @return false if there was no action to redo, true otherwise.
+     * @return false if there was no action to redoAction, true otherwise.
      */
     public boolean redo() {
         this.updateAccessTime();
@@ -102,7 +102,7 @@ public class HistoryContainer extends Session {
 
     /**
      * Undo the last action.
-     * @return true if there was no action to undo, true otherwise.
+     * @return true if there was no action to undoAction, true otherwise.
      */
     public boolean undo() {
         this.updateAccessTime();
@@ -146,7 +146,7 @@ public class HistoryContainer extends Session {
      * Returns the next action that would have been executed
      * when {@link #redo()} is being executed.
      *
-     * @return {@code null} if there is no action to redo.
+     * @return {@code null} if there is no action to redoAction.
      */
     public Action getNextAction() {
         if (this.currentAction.next == null)

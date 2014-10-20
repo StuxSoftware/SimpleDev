@@ -10,7 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Platform-Independent Ban and Kick-System that allows the player to undo and redo their or
+ * Platform-Independent Ban and Kick-System that allows the player to undoAction and redoAction their or
  * other commands.
  */
 public class InterBan {

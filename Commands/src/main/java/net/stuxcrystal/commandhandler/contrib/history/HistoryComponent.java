@@ -17,7 +17,7 @@ public class HistoryComponent implements ComponentContainer {
      * @return {@code true} if the action has been undone.
      */
     @Component
-    public static boolean undo(CommandExecutor executor) {
+    public static boolean undoAction(CommandExecutor executor) {
         HistoryContainer container = executor.getSessions().getSession(HistoryContainer.class);
         return container.undo();
     }
@@ -28,7 +28,7 @@ public class HistoryComponent implements ComponentContainer {
      * @return {@code true} if the action has been redone.
      */
     @Component
-    public static boolean redo(CommandExecutor executor) {
+    public static boolean redoAction(CommandExecutor executor) {
         HistoryContainer container = executor.getSessions().getSession(HistoryContainer.class);
         return container.redo();
     }
@@ -71,9 +71,9 @@ public class HistoryComponent implements ComponentContainer {
 
     /**
      * Returns the next action that would have been executed
-     * when {@link #redo(net.stuxcrystal.commandhandler.CommandExecutor)} is being executed.
+     * when {@link #redoAction(net.stuxcrystal.commandhandler.CommandExecutor)} is being executed.
      *
-     * @return {@code null} if there is no action to redo.
+     * @return {@code null} if there is no action to redoAction.
      */
     @Component
     public static Action getNextAction(CommandExecutor executor) {

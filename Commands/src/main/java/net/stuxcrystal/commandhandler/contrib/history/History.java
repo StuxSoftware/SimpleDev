@@ -10,12 +10,12 @@ public interface History {
     /**
      * Undos the last action.
      */
-    public boolean undo();
+    public boolean undoAction();
 
     /**
      * Redos the next action.
      */
-    public boolean redo();
+    public boolean redoAction();
 
     /**
      * Execute this action.
@@ -38,9 +38,9 @@ public interface History {
 
     /**
      * Returns the next action that would have been executed
-     * when {@link #redo()} is being executed.
+     * when {@link #redoAction()} is being executed.
      *
-     * @return {@code null} if there is no action to redo.
+     * @return {@code null} if there is no action to redoAction.
      */
     public Action getNextAction();
 }

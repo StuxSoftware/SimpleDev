@@ -15,9 +15,9 @@ public class InterBanHistoryCommands implements CommandListener{
      * @param executor         The last action of the executor.
      * @param argumentParser   The arguments.
      */
-    @Command(minSize = 0, maxSize = 0, permission = "interban.history.undo")
+    @Command(minSize = 0, maxSize = 0, permission = "interban.history.undoAction")
     public void undo(CommandExecutor executor, ArgumentParser argumentParser) {
-        executor.getHistory().undo();
+        executor.getHistory().undoAction();
     }
 
     /**
@@ -25,9 +25,9 @@ public class InterBanHistoryCommands implements CommandListener{
      * @param executor         The last action of the executor.
      * @param argumentParser   The arguments.
      */
-    @Command(minSize = 0, maxSize = 0, permission = "interban.history.redo")
+    @Command(minSize = 0, maxSize = 0, permission = "interban.history.redoAction")
     public void redo(CommandExecutor executor, ArgumentParser argumentParser) {
-        executor.getHistory().redo();
+        executor.getHistory().redoAction();
     }
 
 }

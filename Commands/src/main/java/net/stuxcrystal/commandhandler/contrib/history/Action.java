@@ -31,7 +31,7 @@ public abstract class Action {
     /**
      * Called on the first execution of the action.<p />
      *
-     * Default: Calls redo.
+     * Default: Calls redoAction.
      */
     public void firstExecution() {
         this.redo();
