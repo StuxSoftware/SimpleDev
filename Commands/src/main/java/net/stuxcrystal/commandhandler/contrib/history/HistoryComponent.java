@@ -1,7 +1,6 @@
-package net.stuxcrystal.commandhandler.history;
+package net.stuxcrystal.commandhandler.contrib.history;
 
 import net.stuxcrystal.commandhandler.CommandExecutor;
-import net.stuxcrystal.commandhandler.CommandHandler;
 import net.stuxcrystal.commandhandler.component.Component;
 import net.stuxcrystal.commandhandler.component.ComponentContainer;
 
@@ -19,7 +18,7 @@ public class HistoryComponent implements ComponentContainer {
      */
     @Component
     public static boolean undo(CommandExecutor executor) {
-        HistoryContainer container = (HistoryContainer)executor.getSession(HistoryContainer.class);
+        HistoryContainer container = executor.getSessions().getSession(HistoryContainer.class);
         return container.undo();
     }
 
@@ -30,7 +29,7 @@ public class HistoryComponent implements ComponentContainer {
      */
     @Component
     public static boolean redo(CommandExecutor executor) {
-        HistoryContainer container = (HistoryContainer)executor.getSession(HistoryContainer.class);
+        HistoryContainer container = executor.getSessions().getSession(HistoryContainer.class);
         return container.redo();
     }
 
@@ -42,7 +41,7 @@ public class HistoryComponent implements ComponentContainer {
      */
     @Component
     public static void executeAction(CommandExecutor executor, Action action) {
-        HistoryContainer container = (HistoryContainer)executor.getSession(HistoryContainer.class);
+        HistoryContainer container = executor.getSessions().getSession(HistoryContainer.class);
         container.execute(action);
     }
 
@@ -54,7 +53,7 @@ public class HistoryComponent implements ComponentContainer {
      */
     @Component
     public static List<Action> getActions(CommandExecutor executor) {
-        HistoryContainer container = (HistoryContainer)executor.getSession(HistoryContainer.class);
+        HistoryContainer container = executor.getSessions().getSession(HistoryContainer.class);
         return container.getActions();
     }
 
@@ -66,7 +65,7 @@ public class HistoryComponent implements ComponentContainer {
      */
     @Component
     public static Action getLastAction(CommandExecutor executor) {
-        HistoryContainer container = (HistoryContainer)executor.getSession(HistoryContainer.class);
+        HistoryContainer container = executor.getSessions().getSession(HistoryContainer.class);
         return container.getLastAction();
     }
 
@@ -78,7 +77,7 @@ public class HistoryComponent implements ComponentContainer {
      */
     @Component
     public static Action getNextAction(CommandExecutor executor) {
-        HistoryContainer container = (HistoryContainer)executor.getSession(HistoryContainer.class);
+        HistoryContainer container = executor.getSessions().getSession(HistoryContainer.class);
         return container.getNextAction();
     }
 
