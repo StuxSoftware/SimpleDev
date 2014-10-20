@@ -27,10 +27,10 @@ public abstract class Session {
     private long lastAccessTime = -1;
 
     /**
-     * The time for a session to expire.<br />
+     * The time for a session to expire (in milliseconds).<br />
      * If the expire-time is 0, the session will never expire.
      */
-    private long expireTime = 30*60*1000;             // Half an hour.
+    private long expireTime = 0;
 
     /**
      * Was the session forced to be expired?
