@@ -1,4 +1,4 @@
-package net.stuxcrystal.commandhandler.contrib.scheduler;
+package net.stuxcrystal.commandhandler.contrib.scheduler.fallback;
 
 import net.stuxcrystal.commandhandler.CommandHandler;
 
@@ -10,7 +10,7 @@ public class TaskExecutor implements Runnable {
     /**
      * Contains the task to execute.
      */
-    private final Task task;
+    private final BasicTask task;
 
     /**
      * The handler that executes the task.
@@ -22,7 +22,7 @@ public class TaskExecutor implements Runnable {
      * @param task    The task executor.
      * @param handler The handler that executes the task.
      */
-    public TaskExecutor(Task task, CommandHandler handler) {
+    public TaskExecutor(BasicTask task, CommandHandler handler) {
         this.task = task;
         this.handler = handler;
     }

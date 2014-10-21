@@ -1,4 +1,4 @@
-package net.stuxcrystal.commandhandler.contrib.scheduler;
+package net.stuxcrystal.commandhandler.contrib.scheduler.fallback;
 
 import net.stuxcrystal.commandhandler.CommandHandler;
 
