@@ -13,7 +13,7 @@
  * specific language governing permissions and limitations under the License.
  */
 
-package net.stuxcrystal.commandhandler.compat.bukkit;
+package net.stuxcrystal.commandhandler.compat.bukkit.contrib;
 
 import net.stuxcrystal.commandhandler.CommandExecutor;
 import net.stuxcrystal.commandhandler.translations.TranslationHandler;

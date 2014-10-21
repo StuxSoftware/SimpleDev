@@ -1,4 +1,4 @@
-package net.stuxcrystal.commandhandler.compat.bukkit;
+package net.stuxcrystal.commandhandler.compat.bukkit.contrib.commands;
 
 import net.stuxcrystal.commandhandler.CommandHandler;
 import net.stuxcrystal.commandhandler.commands.CommandContainer;

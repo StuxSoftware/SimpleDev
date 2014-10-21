@@ -57,7 +57,6 @@ public class BukkitSchedulerWrapper implements SchedulerImplementation {
         return btw;
     }
 
-
     /**
      * Schedules a new synchronous task.
      * @param backend   The backend the task runs on.

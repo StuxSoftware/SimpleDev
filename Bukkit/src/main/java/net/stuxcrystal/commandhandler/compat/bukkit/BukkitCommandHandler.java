@@ -16,6 +16,8 @@
 package net.stuxcrystal.commandhandler.compat.bukkit;
 
 import net.stuxcrystal.commandhandler.CommandHandler;
+import net.stuxcrystal.commandhandler.compat.bukkit.contrib.commands.BukkitCommandExecutorContainer;
+import net.stuxcrystal.commandhandler.compat.bukkit.contrib.commands.BukkitCommandLoader;
 import net.stuxcrystal.commandhandler.compat.bukkit.scheduler.BukkitSchedulerWrapper;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.command.CommandExecutor;
