@@ -22,11 +22,14 @@
     <version>2.0.0-SNAPSHOT</version>
 
     <modules>
-        <module>Commands</module>
+        <!-- Bindings -->
         <module>Bukkit</module>
         <module>Canary</module>
         <module>BungeeCord</module>
+
+        <!-- Core -->
         <module>Configuration</module>
+        <module>Commands</module>
 
         <!-- Example Project -->
         <module>ExampleProject</module>
