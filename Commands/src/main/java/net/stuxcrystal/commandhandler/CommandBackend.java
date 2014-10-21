@@ -16,7 +16,7 @@
 package net.stuxcrystal.commandhandler;
 
 import net.stuxcrystal.commandhandler.contrib.scheduler.Scheduler;
-import net.stuxcrystal.commandhandler.contrib.scheduler.TaskComponent;
+import net.stuxcrystal.commandhandler.contrib.scheduler.fallback.TaskComponent;
 import net.stuxcrystal.commandhandler.utils.HandleWrapper;
 
 import java.util.logging.Logger;
