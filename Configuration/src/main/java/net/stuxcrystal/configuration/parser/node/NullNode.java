@@ -59,7 +59,7 @@ public class NullNode extends Node<Void> {
 
     @Override
     public String[] getComments() {
-        return new String[0];  //To change body of implemented methods use File | Settings | File Templates.
+        return new String[0];
     }
 
     @Override
