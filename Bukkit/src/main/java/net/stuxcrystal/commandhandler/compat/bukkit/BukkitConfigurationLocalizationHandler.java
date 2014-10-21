@@ -36,7 +36,7 @@ public class BukkitConfigurationLocalizationHandler implements TranslationHandle
     /**
      * Initializes the command handler.
      *
-     * @param configuration
+     * @param configuration The configuration to use.
      */
     public BukkitConfigurationLocalizationHandler(MemoryConfiguration configuration) {
         update(configuration);
@@ -47,7 +47,7 @@ public class BukkitConfigurationLocalizationHandler implements TranslationHandle
      *
      * @param sender The sender that sent the command.
      * @param key    The Key of the translation.
-     * @return
+     * @return The translation value.
      */
     @Override
     public String getTranslation(CommandExecutor sender, String key) {
