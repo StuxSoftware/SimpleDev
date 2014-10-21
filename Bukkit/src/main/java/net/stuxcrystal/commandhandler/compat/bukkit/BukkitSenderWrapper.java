@@ -24,36 +24,28 @@ import org.bukkit.entity.Player;
  * Wraps a CommandSender.
  */
 public class BukkitSenderWrapper extends CommandExecutor<CommandSender> {
-
-    final CommandSender sender;
-
+    
     BukkitSenderWrapper(CommandSender sender, CommandHandler backend) {
-        super(backend);
-        this.sender = sender;
+        super(sender, backend);
     }
 
     @Override
     public String getName() {
-        return this.sender.getName();
+        return this.getHandle().getName();
     }
 
     @Override
     public void sendMessage(String... message) {
-        this.sender.sendMessage(message);
+        this.getHandle().sendMessage(message);
     }
 
     @Override
     public boolean isPlayer() {
-        return this.sender instanceof Player;
+        return this.getHandle() instanceof Player;
     }
 
     @Override
     public boolean isOp() {
-        return this.sender.isOp();
-    }
-
-    @Override
-    public CommandSender getHandle() {
-        return this.sender;
+        return this.getHandle().isOp();
     }
 }
