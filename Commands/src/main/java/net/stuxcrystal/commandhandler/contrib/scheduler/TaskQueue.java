@@ -25,7 +25,7 @@ public class TaskQueue extends Thread {
     /**
      * Executes the task.
      */
-    private List<Task> tasks = new ArrayList<>();
+    private List<BasicTask> tasks = new ArrayList<>();
 
     /**
      * <p>Contains a weak reference to a command handler.</p>
@@ -54,7 +54,7 @@ public class TaskQueue extends Thread {
      * Register a new task.
      * @param task The task to register.
      */
-    public void addTask(Task task) {
+    public void addTask(BasicTask task) {
         this.tasks.add(task);
     }
 
@@ -68,7 +68,7 @@ public class TaskQueue extends Thread {
             // Check if we want to execute this task.
             long cTime = System.currentTimeMillis();
 
-            Task task;
+            BasicTask task;
             for (int i = 0; i<this.tasks.size(); i++) {
                 // Gets the task.
                 task = this.tasks.get(i);
