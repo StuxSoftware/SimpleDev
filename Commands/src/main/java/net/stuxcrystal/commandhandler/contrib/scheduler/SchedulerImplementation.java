@@ -1,11 +1,12 @@
 package net.stuxcrystal.commandhandler.contrib.scheduler;
 
 import net.stuxcrystal.commandhandler.CommandBackend;
+import net.stuxcrystal.commandhandler.component.ComponentContainer;
 
 /**
  * Defines an implementation for a scheduler.
  */
-public interface SchedulerImplementation {
+public interface SchedulerImplementation extends ComponentContainer {
 
     /**
      * <p>Internal function to determine if a scheduler has been added to the system.</p>
