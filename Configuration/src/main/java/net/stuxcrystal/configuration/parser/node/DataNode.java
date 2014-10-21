@@ -15,6 +15,8 @@
 
 package net.stuxcrystal.configuration.parser.node;
 
+import java.lang.ref.WeakReference;
+
 /**
  * A data node can only have this types: <pre>{@link String} or {@link Node}[]</pre>.
  *
@@ -40,7 +42,7 @@ public class DataNode extends Node<String> {
     /**
      * The parent node.
      */
-    private Node<?> node;
+    private WeakReference<Node<?>> node;
 
     public DataNode(String data) {
         this.data = data;
@@ -72,7 +74,7 @@ public class DataNode extends Node<String> {
 
     @Override
     public Node<?> getParent() {
-        return this.node;
+        return this.node.get();
     }
 
     @Override
@@ -88,7 +90,7 @@ public class DataNode extends Node<String> {
 
     @Override
     public void setParent(Node<?> parent) {
-        this.node = parent;
+        this.node = new WeakReference<Node<?>>(parent);
     }
 
     @Override

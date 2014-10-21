@@ -15,6 +15,8 @@
 
 package net.stuxcrystal.configuration.parser.node;
 
+import java.lang.ref.WeakReference;
+
 /**
  * Node without data.
  */
@@ -22,7 +24,7 @@ public class NullNode extends Node<Void> {
 
     private String name;
 
-    private Node<?> parent;
+    private WeakReference<Node<?>> parent;
 
 
     @Override
@@ -67,12 +69,12 @@ public class NullNode extends Node<Void> {
 
     @Override
     public Node<?> getParent() {
-        return parent;
+        return this.parent.get();
     }
 
     @Override
     public void setParent(Node<?> parent) {
-        this.parent = parent;
+        this.parent = new WeakReference<Node<?>>(parent);
     }
 
     public String toString() {

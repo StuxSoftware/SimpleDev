@@ -15,6 +15,8 @@
 
 package net.stuxcrystal.configuration.parser.node;
 
+import java.lang.ref.WeakReference;
+
 /**
  * Represents a parent node.
  *
@@ -41,10 +43,10 @@ public class MapNode extends Node<Node<?>[]> {
     /**
      * The parent node.
      */
-    private Node<?> parent;
+    private WeakReference<Node<?>> parent;
 
     MapNode(Node<?> parent, Node<?>[] nodes, String[] value, String name) {
-        this.parent = parent;
+        this.parent = new WeakReference<Node<?>>(parent);
         this.children = nodes;
         this.value = value;
         this.name = name;
@@ -85,7 +87,7 @@ public class MapNode extends Node<Node<?>[]> {
 
     @Override
     public Node<?> getParent() {
-        return this.parent;
+        return this.parent.get();
     }
 
     @Override
@@ -105,7 +107,7 @@ public class MapNode extends Node<Node<?>[]> {
 
     @Override
     public void setParent(Node<?> parent) {
-        this.parent = parent;
+        this.parent = new WeakReference<Node<?>>(parent);
     }
 
 }
