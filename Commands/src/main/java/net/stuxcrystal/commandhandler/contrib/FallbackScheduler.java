@@ -9,7 +9,11 @@ public class FallbackScheduler {
 
     private boolean shown = false;
 
-    public FallbackScheduler() {}
+    private Thread main;
+
+    public FallbackScheduler() {
+        this.main = Thread.currentThread();
+    }
 
     public void schedule(CommandHandler handler, Runnable runnable) {
         if (!shown) {
@@ -25,5 +29,9 @@ public class FallbackScheduler {
         Thread thread = new Thread(runnable);
         thread.setDaemon(true);
         thread.start();
+    }
+
+    public boolean isMainThread() {
+        return Thread.currentThread().equals(this.main);
     }
 }

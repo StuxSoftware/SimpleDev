@@ -6,15 +6,19 @@ import net.md_5.bungee.api.plugin.Plugin;
 import net.stuxcrystal.commandhandler.CommandBackend;
 import net.stuxcrystal.commandhandler.CommandExecutor;
 import net.stuxcrystal.commandhandler.CommandHandler;
+import net.stuxcrystal.commandhandler.contrib.FallbackScheduler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 /**
  * Backend for BungeeCord Plugins.
  */
 public class BungeePluginBackend extends CommandBackend<Plugin, CommandSender> {
+
+    private FallbackScheduler fallbackScheduler;
 
     /**
      * Creates a new handle.
@@ -23,8 +27,8 @@ public class BungeePluginBackend extends CommandBackend<Plugin, CommandSender> {
      */
     protected BungeePluginBackend(Plugin handle) {
         super(handle);
+        this.fallbackScheduler = new FallbackScheduler();
     }
-
 
     @Override
     public Logger getLogger() {
@@ -32,9 +36,19 @@ public class BungeePluginBackend extends CommandBackend<Plugin, CommandSender> {
     }
 
     @Override
-    public void schedule(Runnable runnable) {
+    public void scheduleAsync(Runnable runnable) {
         // Fortunately this API supports scheduling asynchronous tasks.
         this.getHandle().getProxy().getScheduler().runAsync(this.getHandle(), runnable);
+    }
+
+    @Override
+    public void scheduleSync(Runnable runnable) {
+        this.getHandle().getProxy().getScheduler().schedule(this.getHandle(), runnable, 0, TimeUnit.MILLISECONDS);
+    }
+
+    @Override
+    public boolean inMainThread() {
+        return this.fallbackScheduler.isMainThread();
     }
 
     @Override

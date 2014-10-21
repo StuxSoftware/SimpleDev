@@ -55,7 +55,7 @@ public class CommandManager {
         // Execute Command.
         if (command.isAsyncCommand())
             // Asynchronous execution if Command.async is true
-            executor.getBackend().schedule(new RawCommandExecutionTask(command, executor, args));
+            executor.getBackend().scheduleAsync(new RawCommandExecutionTask(command, executor, args));
         else
             // Synchronous execution if Command.async is false.
             command.execute(executor, args);
@@ -93,7 +93,7 @@ public class CommandManager {
         // Execute Command.
         if (command.isAsyncCommand())
             // Asynchronous execution if Command.async is true
-            executor.getBackend().schedule(new ParsedCommandExecutionTask(command, executor, parser));
+            executor.getBackend().scheduleAsync(new ParsedCommandExecutionTask(command, executor, parser));
         else
             // Synchronous execution if Command.async is false.
             command.execute(executor, parser);

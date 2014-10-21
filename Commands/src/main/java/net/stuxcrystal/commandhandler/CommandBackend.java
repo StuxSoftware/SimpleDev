@@ -68,10 +68,23 @@ public abstract class CommandBackend<T, P> extends HandleWrapper<T> {
     /**
      * Schedules an asynchronous task.
      *
-     * @param runnable The runnable that should run the
+     * @param runnable The runnable that should be executed
      */
-    @Deprecated
-    public abstract void schedule(Runnable runnable);
+    public abstract void scheduleAsync(Runnable runnable);
+
+    /**
+     * Schedules a task that runs in the server main thread.
+     *
+     * @param runnable The runnable that should be executed.
+     */
+    public abstract void scheduleSync(Runnable runnable);
+
+    /**
+     * Checks if the called of the method is currently in the main thread of the server.
+     *
+     * @return {@code true} if the task currently runs in the main thread.
+     */
+    public abstract boolean inMainThread();
     
     /**
      * Returns all players that are currently logged in.

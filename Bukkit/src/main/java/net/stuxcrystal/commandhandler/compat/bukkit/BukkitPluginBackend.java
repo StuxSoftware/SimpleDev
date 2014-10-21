@@ -17,7 +17,7 @@ package net.stuxcrystal.commandhandler.compat.bukkit;
 
 import net.stuxcrystal.commandhandler.CommandBackend;
 import net.stuxcrystal.commandhandler.CommandExecutor;
-import net.stuxcrystal.commandhandler.CommandHandler;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -43,10 +43,20 @@ public class BukkitPluginBackend extends CommandBackend<Plugin,CommandSender> {
     }
 
     @Override
-    public void schedule(Runnable runnable) {
+    public void scheduleAsync(Runnable runnable) {
         this.getHandle().getServer().getScheduler().runTaskAsynchronously(this.getHandle(), runnable);
     }
-    
+
+    @Override
+    public void scheduleSync(Runnable runnable) {
+        this.getHandle().getServer().getScheduler().runTask(this.getHandle(), runnable);
+    }
+
+    @Override
+    public boolean inMainThread() {
+        return Bukkit.isPrimaryThread();
+    }
+
     @Override
     public CommandExecutor<?>[] getPlayers() {
         Player[] players = this.getHandle().getServer().getOnlinePlayers();

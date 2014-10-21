@@ -19,6 +19,7 @@ import net.canarymod.Canary;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.plugin.Plugin;
+import net.canarymod.tasks.ServerTask;
 import net.stuxcrystal.commandhandler.CommandBackend;
 import net.stuxcrystal.commandhandler.CommandExecutor;
 import net.stuxcrystal.commandhandler.CommandHandler;
@@ -51,8 +52,23 @@ public class CanaryPluginBackend extends CommandBackend<Plugin, MessageReceiver>
     }
 
     @Override
-    public void schedule(Runnable runnable) {
+    public void scheduleAsync(Runnable runnable) {
         this.scheduler.schedule(this.getCommandHandler(), runnable);
+    }
+
+    @Override
+    public void scheduleSync(final Runnable runnable) {
+        Canary.getServer().addSynchronousTask(new ServerTask(this.getHandle(), 0) {
+            @Override
+            public void run() {
+                runnable.run();
+            }
+        });
+    }
+
+    @Override
+    public boolean inMainThread() {
+        return this.scheduler.isMainThread();
     }
 
     @Override
