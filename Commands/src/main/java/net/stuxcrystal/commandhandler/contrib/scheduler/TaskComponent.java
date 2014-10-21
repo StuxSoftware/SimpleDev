@@ -52,7 +52,7 @@ public class TaskComponent implements ComponentContainer, SchedulerImplementatio
     @Component
     public synchronized Task scheduleTask(CommandBackend backend, Runnable runnable, int delay, int repeat, boolean async) {
         TaskQueue queue = this.getQueue(backend);
-        Task task = new Task(runnable, async, repeat);
+        BasicTask task = new BasicTask(runnable, async, repeat);
         task.setNextDelay(delay);
         queue.addTask(task);
         return task;
@@ -140,7 +140,7 @@ public class TaskComponent implements ComponentContainer, SchedulerImplementatio
      */
     @Component
     public Task runTask(CommandBackend backend, Runnable runnable) {
-        Task task = new Task(runnable, null, 0);
+        BasicTask task = new BasicTask(runnable, null, 0);
         task.setNextDelay(0);
 
         // Make our life simpler by directly executing the task when in main thread.
@@ -165,7 +165,7 @@ public class TaskComponent implements ComponentContainer, SchedulerImplementatio
      */
     @Component
     public Task runTaskAsync(CommandBackend backend, Runnable runnable) {
-        Task task = new Task(runnable, null, 0);
+        BasicTask task = new BasicTask(runnable, null, 0);
         task.setNextDelay(0);
         backend.scheduleAsync(new TaskExecutor(task, backend.getCommandHandler()));
         return task;
