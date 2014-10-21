@@ -5,8 +5,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.stuxcrystal.commandhandler.CommandBackend;
 import net.stuxcrystal.commandhandler.CommandExecutor;
-import net.stuxcrystal.commandhandler.CommandHandler;
-import net.stuxcrystal.commandhandler.contrib.FallbackScheduler;
+import net.stuxcrystal.commandhandler.contrib.scheduler.FallbackSchedulerBackend;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +17,7 @@ import java.util.logging.Logger;
  */
 public class BungeePluginBackend extends CommandBackend<Plugin, CommandSender> {
 
-    private FallbackScheduler fallbackScheduler;
+    private FallbackSchedulerBackend fallbackScheduler;
 
     /**
      * Creates a new handle.
@@ -27,7 +26,7 @@ public class BungeePluginBackend extends CommandBackend<Plugin, CommandSender> {
      */
     protected BungeePluginBackend(Plugin handle) {
         super(handle);
-        this.fallbackScheduler = new FallbackScheduler();
+        this.fallbackScheduler = new FallbackSchedulerBackend();
     }
 
     @Override

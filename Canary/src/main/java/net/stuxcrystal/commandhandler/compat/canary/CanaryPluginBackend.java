@@ -22,8 +22,7 @@ import net.canarymod.plugin.Plugin;
 import net.canarymod.tasks.ServerTask;
 import net.stuxcrystal.commandhandler.CommandBackend;
 import net.stuxcrystal.commandhandler.CommandExecutor;
-import net.stuxcrystal.commandhandler.CommandHandler;
-import net.stuxcrystal.commandhandler.contrib.FallbackScheduler;
+import net.stuxcrystal.commandhandler.contrib.scheduler.FallbackSchedulerBackend;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -33,7 +32,7 @@ import java.util.logging.Logger;
  */
 public class CanaryPluginBackend extends CommandBackend<Plugin, MessageReceiver> {
 
-    private FallbackScheduler scheduler;
+    private FallbackSchedulerBackend scheduler;
 
     /**
      * Creates a new handle.
@@ -42,7 +41,7 @@ public class CanaryPluginBackend extends CommandBackend<Plugin, MessageReceiver>
      */
     protected CanaryPluginBackend(Plugin handle) {
         super(handle);
-        this.scheduler = new FallbackScheduler();
+        this.scheduler = new FallbackSchedulerBackend();
     }
 
 

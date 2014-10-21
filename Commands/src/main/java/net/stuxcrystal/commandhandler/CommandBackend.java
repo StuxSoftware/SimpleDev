@@ -15,6 +15,8 @@
 
 package net.stuxcrystal.commandhandler;
 
+import net.stuxcrystal.commandhandler.contrib.scheduler.Scheduler;
+import net.stuxcrystal.commandhandler.contrib.scheduler.TaskComponent;
 import net.stuxcrystal.commandhandler.utils.HandleWrapper;
 
 import java.util.logging.Logger;
@@ -122,6 +124,16 @@ public abstract class CommandBackend<T, P> extends HandleWrapper<T> {
         return null;
     }
 
-
+    /**
+     * Returns the scheduler for this object.
+     * @return The scheduler for this object.
+     */
+    public Scheduler getScheduler() {
+        if (!this.getCommandHandler().hasFunction("__scheduler_exists", CommandBackend.class)) {
+            this.getCommandHandler().registerComponent(new TaskComponent());
+            this.getLogger().warning("Beware the default scheduler is not exact...");
+        }
+        return this.getComponent(Scheduler.class);
+    }
 
 }

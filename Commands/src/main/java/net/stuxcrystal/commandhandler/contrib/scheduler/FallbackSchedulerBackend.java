@@ -1,17 +1,17 @@
-package net.stuxcrystal.commandhandler.contrib;
+package net.stuxcrystal.commandhandler.contrib.scheduler;
 
 import net.stuxcrystal.commandhandler.CommandHandler;
 
 /**
  * The fallback scheduler
  */
-public class FallbackScheduler {
+public class FallbackSchedulerBackend {
 
     private boolean shown = false;
 
     private Thread main;
 
-    public FallbackScheduler() {
+    public FallbackSchedulerBackend() {
         this.main = Thread.currentThread();
     }
 

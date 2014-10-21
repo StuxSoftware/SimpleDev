@@ -446,4 +446,15 @@ public class CommandHandler {
         return this.getRootCommandHandler().components.call(name, self, params);
     }
 
+    /**
+     * Checks if the function has already been registered.
+     * @param name      The name of the function.
+     * @param wrapper   The class the function extends.
+     * @param types     The types of the class.
+     * @return {@code true} if the function has been registered.
+     */
+    public boolean hasFunction(String name, Class<? extends HandleWrapper> wrapper, Class<?>... types) {
+        return this.getRootCommandHandler().components.hasMethod(name, wrapper, types);
+    }
+
 }

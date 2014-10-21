@@ -154,6 +154,42 @@ public class ComponentManager {
     }
 
     /**
+     * Checks if the method exists.
+     *
+     * @param name          The name of the extension function.
+     * @param wrapper       The wrapper.
+     * @param paramTypes    The param types.
+     * @return {@code true} if so.
+     */
+    public boolean hasMethod(String name, Class<? extends HandleWrapper> wrapper, Class<?>... paramTypes) {
+        component_iterator:
+        for (ComponentMethod m : this.methods) {
+            // Check name.
+            if (!m.getName().equals(name))
+                continue;
+
+            // Check self parameter.
+            if (!m.getSelfParameter().isAssignableFrom(wrapper))
+                continue;
+
+            Class<?>[] types = m.getParameters();
+            // Check parameter length.
+            if (paramTypes.length != types.length)
+                continue;
+
+            // Check instances.
+            for (int i = 0; i<types.length; i++) {
+                if (!types[i].isAssignableFrom(paramTypes[i]))
+                    continue component_iterator;
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Actually calls the method.
      * @param method The method that has been called.
      * @param params The params that were passed.
