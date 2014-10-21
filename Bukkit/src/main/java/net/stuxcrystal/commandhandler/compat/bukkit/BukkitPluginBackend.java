@@ -80,7 +80,7 @@ public class BukkitPluginBackend extends CommandBackend<Plugin,CommandSender> {
      *
      * @param executor The executor.
      * @param node     The node to use.
-     * @return
+     * @return {@code true} if the user has permission to do that.
      */
     @Override
     public Boolean hasPermission(CommandExecutor<?> executor, String node) {
