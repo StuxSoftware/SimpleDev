@@ -7,6 +7,7 @@ import net.stuxcrystal.commandhandler.CommandExecutor;
 import net.stuxcrystal.commandhandler.CommandHandler;
 import net.stuxcrystal.commandhandler.compat.bungee.contrib.BungeeCommand;
 import net.stuxcrystal.commandhandler.compat.bungee.contrib.commands.BungeeCommandLoader;
+import net.stuxcrystal.commandhandler.compat.bungee.scheduler.BungeeSchedulerWrapper;
 import org.apache.commons.lang.ArrayUtils;
 
 /**
@@ -36,6 +37,7 @@ public class BungeeCommandHandler extends CommandHandler {
      */
     private void initHandler() {
         this.registerCommandLoader(new BungeeCommandLoader());
+        this.registerComponent(new BungeeSchedulerWrapper((BungeePluginBackend)this.getServerBackend()));
     }
 
     /**
