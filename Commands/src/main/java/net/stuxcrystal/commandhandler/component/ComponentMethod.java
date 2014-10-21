@@ -27,6 +27,11 @@ public class ComponentMethod {
     ComponentContainer container;
 
     /**
+     * Contains the parameter types.
+     */
+    Class<?>[] params;
+
+    /**
      * Creates a new container for the component data.
      * @param method     The method.
      * @param container  The container.
@@ -35,6 +40,7 @@ public class ComponentMethod {
         this.method = method;
         this.container = container;
         this.component = component;
+        this.params = (Class<?>[]) ArrayUtils.remove(this.method.getParameterTypes(), 0);
     }
 
     /**
@@ -46,11 +52,19 @@ public class ComponentMethod {
     }
 
     /**
-     * Returns the actual type of the self arguments.
+     * Returns the actual type of the self parameter.
      * @return The type of the argument.
      */
-    public Class<?> getSelfArgument() {
+    public Class<?> getSelfParameter() {
         return this.method.getParameterTypes()[0];
+    }
+
+    /**
+     * Returns all arguments.
+     * @return All arguments.
+     */
+    public Class<?>[] getParameters() {
+        return this.params;
     }
 
     /**

@@ -3,7 +3,6 @@ package net.stuxcrystal.commandhandler.component;
 import net.stuxcrystal.commandhandler.CommandHandler;
 import net.stuxcrystal.commandhandler.utils.HandleWrapper;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
@@ -121,11 +120,27 @@ public class ComponentManager {
     public <T> T call(String name, HandleWrapper self, Object[] params) throws Throwable {
         // Find suitable method for handler wrapper.
         ComponentMethod method = null;
+
+        component_iterator:
         for (ComponentMethod m : this.methods) {
+            // Check name.
             if (!m.getName().equals(name))
                 continue;
-            if (!m.getSelfArgument().isInstance(self))
+
+            // Check self parameter.
+            if (!m.getSelfParameter().isInstance(self))
                 continue;
+
+            Class<?>[] types = m.getParameters();
+            // Check parameter length.
+            if (params.length != types.length)
+                continue;
+
+            // Check instances.
+            for (int i = 0; i<types.length; i++) {
+                if (!types[i].isInstance(params[i]))
+                    continue component_iterator;
+            }
 
             method = m;
             break;
