@@ -25,6 +25,7 @@ import net.stuxcrystal.commandhandler.component.ComponentManager;
 import net.stuxcrystal.commandhandler.contrib.DefaultPermissionHandler;
 import net.stuxcrystal.commandhandler.exceptions.ExceptionHandler;
 import net.stuxcrystal.commandhandler.translations.TranslationManager;
+import net.stuxcrystal.commandhandler.utils.HandleWrapper;
 import org.apache.commons.lang.ArrayUtils;
 
 import java.util.ArrayList;
@@ -436,13 +437,13 @@ public class CommandHandler {
     /**
      * Calls a component method.
      * @param name      The name of the method.
-     * @param executor  The executor associated with the method.
+     * @param self      The object that is associated with the object.
      * @param params    The parameters.
      * @param <T>       The return type.
      * @return The result of the method.
      */
-    public <T> T callComponent(String name, CommandExecutor executor, Object... params) {
-        return this.getRootCommandHandler().components.call(name, executor, params);
+    public <T> T callComponent(String name, HandleWrapper self, Object... params) throws Throwable {
+        return this.getRootCommandHandler().components.call(name, self, params);
     }
 
 }

@@ -15,6 +15,8 @@
 
 package net.stuxcrystal.commandhandler;
 
+import net.stuxcrystal.commandhandler.utils.HandleWrapper;
+
 import java.util.logging.Logger;
 
 /**
@@ -23,57 +25,78 @@ import java.util.logging.Logger;
  * @param <T> The type of the backend.
  * @param <P> The type of the player.
  */
-public interface CommandBackend<T, P> {
+public abstract class CommandBackend<T, P> extends HandleWrapper<T> {
+
+    /**
+     * Contains the command handler of the backend.
+     */
+    private CommandHandler handler;
+
+    /**
+     * Creates a new handle.
+     *
+     * @param handle The handle in the backend.
+     */
+    protected CommandBackend(T handle) {
+        super(handle);
+    }
 
     /**
      * Sets the command handler for the plugin.
      * @param handler The new command handler.
      */
-    public void setCommandHandler(CommandHandler handler);
+    void setCommandHandler(CommandHandler handler) {
+        this.handler = handler;
+    }
+
+    /**
+     * Returns the command handler of the backend.
+     * @return The command-handler of the backend.
+     */
+    @Override
+    public CommandHandler getCommandHandler() {
+        return this.handler;
+    }
 
     /**
      * Called if the logger has to be used.
      *
      * @return Reference to the logger.
      */
-    public Logger getLogger();
+    public abstract Logger getLogger();
 
     /**
      * Schedules an asynchronous task.
      *
-     * @param runnable
+     * @param runnable The runnable that should run the
      */
-    public void schedule(Runnable runnable);
+    @Deprecated
+    public abstract void schedule(Runnable runnable);
     
     /**
      * Returns all players that are currently logged in.
      */
-    public CommandExecutor<?>[] getPlayers();
+    public abstract CommandExecutor<?>[] getPlayers();
 
     /**
      * Returns an CommandExecutor by the given name.
      *
      * @param name The name of the executor. If null or empty, the console executor will be returned.
      */
-    public CommandExecutor<?> getExecutor(String name);
+    public abstract CommandExecutor<?> getExecutor(String name);
 
     /**
      * Wraps a player object.
      * @param player The player (sender) to wrap.
      * @return The wrapped player.
      */
-    public CommandExecutor<?> wrapPlayer(P player);
+    public abstract CommandExecutor<?> wrapPlayer(P player);
 
     /**
      * Returns an CommandExecutor that represents the console.
      * @return The Executor-Object that represents the console.
      */
-    public CommandExecutor<?> getConsole();
-
-    /**
-     * @return The handle.
-     */
-    public T getHandle();
+    public abstract CommandExecutor<?> getConsole();
 
     /**
      * Checks if the user has the permission.
@@ -82,6 +105,10 @@ public interface CommandBackend<T, P> {
      * @param node     The node to use.
      * @return null, if the given backend does not support permissions.
      */
-    public Boolean hasPermission(CommandExecutor<?> executor, String node);
+    public Boolean hasPermission(CommandExecutor<?> executor, String node) {
+        return null;
+    }
+
+
 
 }

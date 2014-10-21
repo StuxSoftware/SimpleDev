@@ -1,13 +1,12 @@
 package net.stuxcrystal.commandhandler.component;
 
-import net.stuxcrystal.commandhandler.CommandExecutor;
+import net.stuxcrystal.commandhandler.utils.HandleWrapper;
 import org.apache.commons.lang.ArrayUtils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
 /**
  * A manager for components.
@@ -54,15 +53,23 @@ public class ComponentManager {
         }
 
         /**
+         * Returns the actual type of the self arguments.
+         * @return The type of the argument.
+         */
+        public Class<?> getSelfArgument() {
+            return this.method.getParameterTypes()[0];
+        }
+
+        /**
          * Calls the method.
-         * @param executor    The executor to resolve.
+         * @param selfArg     The object which extension function will be called.
          * @param params      The parameters for the function.
          * @param <T>         Trick to allow dynamic return types.
          * @return            The result of the method.
          * @throws ReflectiveOperationException If an reflective operation exception occurs.
          */
         @SuppressWarnings("unchecked")
-        public <T> T call(CommandExecutor executor, Object[] params) throws ReflectiveOperationException {
+        public <T> T call(Object selfArg, Object[] params) throws ReflectiveOperationException {
             if (!this.method.isAccessible())
                 this.method.setAccessible(true);
 
@@ -74,14 +81,14 @@ public class ComponentManager {
             else
                 throw new ReflectiveOperationException("Failed to get component instance.");
 
-            return (T)this.method.invoke(self, ArrayUtils.add(params, 0, executor));
+            return (T)this.method.invoke(self, ArrayUtils.add(params, 0, selfArg));
         }
     }
 
     /**
      * Components of the command handler.
      */
-    private Map<String, ComponentMethod> components = new HashMap<>();
+    private List<ComponentMethod> methods = new ArrayList<>();
 
     /**
      * Actual registered classes.
@@ -111,10 +118,23 @@ public class ComponentManager {
             if (!method.isAnnotationPresent(Component.class))
                 continue;
 
-            this.components.put(
-                    method.getName(),
-                    new ComponentMethod(method, component, method.getAnnotation(Component.class))
-            );
+            Class<?>[] params = method.getParameterTypes();
+
+            // Empty function parameters are not supported.
+            if (params.length == 0)
+                throw new IllegalArgumentException(
+                        "Illegal method format of '" + method.getName() + "': " +
+                                "No parameters."
+                );
+
+            // The first argument must be the self argument.
+            if (!HandleWrapper.class.isAssignableFrom(params[0]))
+                throw new IllegalArgumentException(
+                        "Illegal method format of '" + method.getName() + "': " +
+                                "First parameter must be a subclass of HandlerWrapper"
+                );
+
+            this.methods.add(new ComponentMethod(method, component, method.getAnnotation(Component.class)));
         }
 
         this.classes.add(componentType);
@@ -149,18 +169,33 @@ public class ComponentManager {
      * Calls the extension function.
      *
      * @param name      The name of the extension function.
-     * @param executor  The executor to that is used for the commands.
+     * @param self      The object which is the context of the commands.
      * @param params    The additional parameters.
      * @param <T> The return type.
      * @return The function return.
      */
-    public <T> T call(String name, CommandExecutor executor, Object[] params) {
-        ComponentMethod method = this.components.get(name);
+    public <T> T call(String name, HandleWrapper self, Object[] params) throws Throwable {
+        // Find suitable method for handler wrapper.
+        ComponentMethod method = null;
+        for (ComponentMethod m : this.methods) {
+            if (!m.getName().equals(name))
+                continue;
+            if (!m.getSelfArgument().isInstance(self))
+                continue;
+
+            method = m;
+            break;
+        }
+
+        // If none was found, throw IllegalArgumentException.
         if (method == null)
             throw new IllegalArgumentException("Unknown extension method.");
 
+        // Call the method.
         try {
-            return method.call(executor, params);
+            return method.call(self, params);
+        } catch (InvocationTargetException e) {
+            throw e.getCause();
         } catch (ReflectiveOperationException e) {
             throw new ComponentAccessException(e);
         }

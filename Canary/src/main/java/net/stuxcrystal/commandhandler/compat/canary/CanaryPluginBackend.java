@@ -30,32 +30,29 @@ import java.util.logging.Logger;
 /**
  * Backend for the Canary-Mod-Server.
  */
-public class CanaryPluginBackend implements CommandBackend<Plugin, MessageReceiver> {
+public class CanaryPluginBackend extends CommandBackend<Plugin, MessageReceiver> {
 
     private FallbackScheduler scheduler;
 
-    final Plugin plugin;
-
-    private CommandHandler handler;
-
-    public CanaryPluginBackend(Plugin plugin) {
-        this.plugin = plugin;
+    /**
+     * Creates a new handle.
+     *
+     * @param handle The handle in the backend.
+     */
+    protected CanaryPluginBackend(Plugin handle) {
+        super(handle);
+        this.scheduler = new FallbackScheduler();
     }
 
-    @Override
-    public void setCommandHandler(CommandHandler handler) {
-        this.handler = handler;
-        this.scheduler = new FallbackScheduler(handler);
-    }
 
     @Override
     public Logger getLogger() {
-        return JULToLog4jBridge.bridge(this.plugin.getLogman());
+        return JULToLog4jBridge.bridge(this.getHandle().getLogman());
     }
 
     @Override
     public void schedule(Runnable runnable) {
-        this.scheduler.schedule(runnable);
+        this.scheduler.schedule(this.getCommandHandler(), runnable);
     }
 
     @Override
@@ -88,11 +85,6 @@ public class CanaryPluginBackend implements CommandBackend<Plugin, MessageReceiv
     }
 
     @Override
-    public Plugin getHandle() {
-        return this.plugin;
-    }
-
-    @Override
     public Boolean hasPermission(CommandExecutor<?> executor, String node) {
         if (!(executor instanceof CanarySenderWrapper)) return null;
         return ((CanarySenderWrapper) executor).getHandle().hasPermission(node);
@@ -100,6 +92,6 @@ public class CanaryPluginBackend implements CommandBackend<Plugin, MessageReceiv
 
     CommandExecutor<?> wrapReceiver(MessageReceiver receiver) {
         if (receiver == null) return null;
-        return new CanarySenderWrapper(receiver, handler);
+        return new CanarySenderWrapper(receiver, this.getCommandHandler());
     }
 }

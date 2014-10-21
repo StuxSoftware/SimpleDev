@@ -15,35 +15,31 @@
 
 package net.stuxcrystal.commandhandler;
 
-import net.stuxcrystal.commandhandler.component.ComponentProxy;
 import net.stuxcrystal.commandhandler.contrib.DefaultPermissionHandler;
 import net.stuxcrystal.commandhandler.contrib.history.History;
 import net.stuxcrystal.commandhandler.contrib.history.HistoryComponent;
 import net.stuxcrystal.commandhandler.contrib.sessions.SessionManager;
 import net.stuxcrystal.commandhandler.contrib.sessions.Sessions;
+import net.stuxcrystal.commandhandler.utils.HandleWrapper;
 
 /**
  * Represents the sender of a command.
  */
-public abstract class CommandExecutor<T> {
-
-
+public abstract class CommandExecutor<T> extends HandleWrapper<T> {
 
     /**
      * The CommandHandler providing the handler.
      */
     private final CommandHandler handler;
 
-    /**
-     * The component proxy for the object.
-     */
-    private final ComponentProxy proxy = new ComponentProxy(this);
 
     /**
      * The handler.
+     * @param handle  The handle that is wrapped by the wrapper.
      * @param handler The handler providing the permission handler.
      */
-    public CommandExecutor(CommandHandler handler) {
+    public CommandExecutor(T handle, CommandHandler handler) {
+        super(handle);
         this.handler = handler;
     }
 
@@ -88,17 +84,11 @@ public abstract class CommandExecutor<T> {
     public abstract boolean isOp();
 
     /**
-     * Used to return a handle.
-     *
-     * @return The object that this executor wraps.
-     */
-    public abstract T getHandle();
-
-    /**
      * Returns the command handler that is associated with
      * this executor.
      * @return The command handler that is associated with this executor.
      */
+    @Override
     public CommandHandler getCommandHandler() {
         return this.handler;
     }
@@ -168,13 +158,4 @@ public abstract class CommandExecutor<T> {
         return this.handler.backend;
     }
 
-    /**
-     * Returns the extension for the player.
-     * @param interfaceClass The extension class.
-     * @param <R>            The extension class.
-     * @return The type.
-     */
-    public <R> R getComponent(Class<R> interfaceClass) {
-        return this.proxy.createInstance(interfaceClass);
-    }
 }

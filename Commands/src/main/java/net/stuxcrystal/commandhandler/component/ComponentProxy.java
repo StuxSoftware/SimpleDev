@@ -1,6 +1,6 @@
 package net.stuxcrystal.commandhandler.component;
 
-import net.stuxcrystal.commandhandler.CommandExecutor;
+import net.stuxcrystal.commandhandler.utils.HandleWrapper;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -12,16 +12,16 @@ import java.lang.reflect.Proxy;
 public class ComponentProxy implements InvocationHandler {
 
     /**
-     * The command executor for the component proxy.
+     * The command handle for the component proxy.
      */
-    private final CommandExecutor executor;
+    private final HandleWrapper handle;
 
     /**
      * Creates a new component proxy.
-     * @param executor The executor to implement.
+     * @param self The handle to implement.
      */
-    public ComponentProxy(CommandExecutor executor) {
-        this.executor = executor;
+    public ComponentProxy(HandleWrapper self) {
+        this.handle = self;
     }
 
     /**
@@ -30,11 +30,11 @@ public class ComponentProxy implements InvocationHandler {
      * @param method  The method that is proxied.
      * @param args    The arguments.
      * @return The object to invoke.
-     * @throws Throwable If an I/O-Operation fails.
+     * @throws Throwable If the underlying component function fails.
      */
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        return this.executor.getCommandHandler().callComponent(method.getName(), this.executor, args);
+        return this.handle.getCommandHandler().callComponent(method.getName(), this.handle, args);
     }
 
     /**

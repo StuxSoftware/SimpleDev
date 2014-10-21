@@ -27,34 +27,29 @@ import java.util.logging.Logger;
 /**
  * Represents a backend backend.
  */
-public class BukkitPluginBackend implements CommandBackend<Plugin, CommandSender> {
-
-    private final Plugin plugin;
-
-    private CommandHandler handler;
-
-    public BukkitPluginBackend(Plugin plugin) {
-        this.plugin = plugin;
-    }
-
-    @Override
-    public void setCommandHandler(CommandHandler handler) {
-        this.handler = handler;
+public class BukkitPluginBackend extends CommandBackend<Plugin,CommandSender> {
+    /**
+     * Creates a new handle.
+     *
+     * @param handle The handle in the backend.
+     */
+    protected BukkitPluginBackend(Plugin handle) {
+        super(handle);
     }
 
     @Override
     public Logger getLogger() {
-        return this.plugin.getLogger();
+        return this.getHandle().getLogger();
     }
 
     @Override
     public void schedule(Runnable runnable) {
-        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, runnable);
+        this.getHandle().getServer().getScheduler().runTaskAsynchronously(this.getHandle(), runnable);
     }
     
     @Override
     public CommandExecutor<?>[] getPlayers() {
-        Player[] players = this.plugin.getServer().getOnlinePlayers();
+        Player[] players = this.getHandle().getServer().getOnlinePlayers();
         CommandExecutor[] executors = new CommandExecutor[players.length];
         for (int i = 0; i<players.length; i++) {
             executors[i] = wrapSender(players[i]);
@@ -66,8 +61,8 @@ public class BukkitPluginBackend implements CommandBackend<Plugin, CommandSender
     public CommandExecutor<?> getExecutor(String name) {
 
         if (name == null || name.isEmpty())
-            return wrapSender(this.plugin.getServer().getConsoleSender());
-        return wrapSender(this.plugin.getServer().getPlayer(name));
+            return wrapSender(this.getHandle().getServer().getConsoleSender());
+        return wrapSender(this.getHandle().getServer().getPlayer(name));
     }
 
     @Override
@@ -77,12 +72,7 @@ public class BukkitPluginBackend implements CommandBackend<Plugin, CommandSender
 
     @Override
     public CommandExecutor<?> getConsole() {
-        return wrapSender(this.plugin.getServer().getConsoleSender());
-    }
-
-    @Override
-    public Plugin getHandle() {
-        return plugin;
+        return wrapSender(this.getHandle().getServer().getConsoleSender());
     }
 
     /**
@@ -100,6 +90,6 @@ public class BukkitPluginBackend implements CommandBackend<Plugin, CommandSender
 
     CommandExecutor<?> wrapSender(CommandSender sender) {
         if (sender == null) return null;
-        return new BukkitSenderWrapper(sender, handler);
+        return new BukkitSenderWrapper(sender, this.getCommandHandler());
     }
 }

@@ -14,41 +14,32 @@ import java.util.logging.Logger;
 /**
  * Backend for BungeeCord Plugins.
  */
-public class BungeePluginBackend implements CommandBackend<Plugin, CommandSender> {
+public class BungeePluginBackend extends CommandBackend<Plugin, CommandSender> {
 
     /**
-     * Reference to the plugin.
+     * Creates a new handle.
+     *
+     * @param handle The handle in the backend.
      */
-    private final Plugin plugin;
-
-    /**
-     * Represents the underlying command handler.
-     */
-    private CommandHandler handler = null;
-
-    public BungeePluginBackend(Plugin plugin) {
-        this.plugin = plugin;
+    protected BungeePluginBackend(Plugin handle) {
+        super(handle);
     }
 
-    @Override
-    public void setCommandHandler(CommandHandler handler) {
-        this.handler = handler;
-    }
 
     @Override
     public Logger getLogger() {
-        return this.plugin.getLogger();
+        return this.getHandle().getLogger();
     }
 
     @Override
     public void schedule(Runnable runnable) {
         // Fortunately this API supports scheduling asynchronous tasks.
-        this.plugin.getProxy().getScheduler().runAsync(this.plugin, runnable);
+        this.getHandle().getProxy().getScheduler().runAsync(this.getHandle(), runnable);
     }
 
     @Override
     public CommandExecutor<?>[] getPlayers() {
-        List<ProxiedPlayer> players = new ArrayList<>(this.plugin.getProxy().getPlayers());
+        List<ProxiedPlayer> players = new ArrayList<>(this.getHandle().getProxy().getPlayers());
         CommandExecutor[] executors = new CommandExecutor[players.size()];
         for (int i = 0; i<players.size(); i++) {
             executors[i] = wrapPlayer(players.get(i));
@@ -59,24 +50,19 @@ public class BungeePluginBackend implements CommandBackend<Plugin, CommandSender
     @Override
     public CommandExecutor<?> getExecutor(String name) {
         if (name == null || name.isEmpty() || "console".equalsIgnoreCase(name))
-            return wrapPlayer(this.plugin.getProxy().getConsole());
-        return wrapPlayer(this.plugin.getProxy().getPlayer(name));
+            return wrapPlayer(this.getHandle().getProxy().getConsole());
+        return wrapPlayer(this.getHandle().getProxy().getPlayer(name));
     }
 
     @Override
     public CommandExecutor<?> wrapPlayer(CommandSender player) {
         if (player == null) return null;
-        return new BungeeSenderWrapper(handler, player);
+        return new BungeeSenderWrapper(this.getCommandHandler(), player);
     }
 
     @Override
     public CommandExecutor<?> getConsole() {
-        return wrapPlayer(this.plugin.getProxy().getConsole());
-    }
-
-    @Override
-    public Plugin getHandle() {
-        return this.plugin;
+        return wrapPlayer(this.getHandle().getProxy().getConsole());
     }
 
     @Override

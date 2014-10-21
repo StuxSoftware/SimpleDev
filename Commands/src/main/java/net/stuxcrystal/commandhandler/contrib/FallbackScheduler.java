@@ -7,19 +7,15 @@ import net.stuxcrystal.commandhandler.CommandHandler;
  */
 public class FallbackScheduler {
 
-    private final CommandHandler handler;
-
     private boolean shown = false;
 
-    public FallbackScheduler(CommandHandler handler) {
-        this.handler = handler;
-    }
+    public FallbackScheduler() {}
 
-    public void schedule(Runnable runnable) {
+    public void schedule(CommandHandler handler, Runnable runnable) {
         if (!shown) {
-            this.handler.getServerBackend().getLogger().warning(
-                    this.handler.getTranslationManager().translate(
-                            this.handler.getServerBackend().getConsole(),
+            handler.getServerBackend().getLogger().warning(
+                    handler.getTranslationManager().translate(
+                            handler.getServerBackend().getConsole(),
                             "internal.threading.no-scheduler"
                     )
             );
