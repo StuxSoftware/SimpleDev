@@ -6,12 +6,6 @@ package net.stuxcrystal.commandhandler.contrib.scheduler;
 public interface Task {
 
     /**
-     * Returns the period between each execution.
-     * @return The period between each execution.
-     */
-    public int getRepeatPeriod();
-
-    /**
      * Cancels the task.
      */
     public void cancel();

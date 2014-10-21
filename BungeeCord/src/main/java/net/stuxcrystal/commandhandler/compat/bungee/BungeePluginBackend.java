@@ -42,12 +42,13 @@ public class BungeePluginBackend extends CommandBackend<Plugin, CommandSender> {
 
     @Override
     public void scheduleSync(Runnable runnable) {
-        this.getHandle().getProxy().getScheduler().schedule(this.getHandle(), runnable, 0, TimeUnit.MILLISECONDS);
+        // There is no such thing as synchronous task.
+        this.scheduleAsync(runnable);
     }
 
     @Override
     public boolean inMainThread() {
-        return this.fallbackScheduler.isMainThread();
+        return true;
     }
 
     @Override

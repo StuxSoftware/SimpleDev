@@ -1,16 +1,17 @@
-package net.stuxcrystal.commandhandler.compat.bungee;
+package net.stuxcrystal.commandhandler.compat.bungee.contrib;
 
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Command;
+import net.stuxcrystal.commandhandler.compat.bungee.BungeeCommandHandler;
 
 /**
  * Represents a command for BungeeCord.
  */
-public class BungeeCordCommand extends Command {
+public class BungeeCommand extends Command {
 
     private BungeeCommandHandler bch;
 
-    public BungeeCordCommand(String name, BungeeCommandHandler bch) {
+    public BungeeCommand(String name, BungeeCommandHandler bch) {
         super(name);
         this.bch = bch;
     }

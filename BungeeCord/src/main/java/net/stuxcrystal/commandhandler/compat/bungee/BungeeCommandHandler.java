@@ -5,6 +5,8 @@ import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.stuxcrystal.commandhandler.CommandExecutor;
 import net.stuxcrystal.commandhandler.CommandHandler;
+import net.stuxcrystal.commandhandler.compat.bungee.contrib.BungeeCommand;
+import net.stuxcrystal.commandhandler.compat.bungee.contrib.commands.BungeeCommandLoader;
 import org.apache.commons.lang.ArrayUtils;
 
 /**
@@ -75,6 +77,6 @@ public class BungeeCommandHandler extends CommandHandler {
      * @return The command instance.
      */
     public Command asCommand(String name) {
-        return new BungeeCordCommand(name, this);
+        return new BungeeCommand(name, this);
     }
 }

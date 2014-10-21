@@ -1,34 +1,28 @@
-package net.stuxcrystal.commandhandler.compat.bukkit.scheduler;
+package net.stuxcrystal.commandhandler.compat.bungee.scheduler;
 
+import net.md_5.bungee.api.scheduler.ScheduledTask;
 import net.stuxcrystal.commandhandler.contrib.scheduler.Task;
-import org.bukkit.Bukkit;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Wraps a task in bukkit.
+ * Wrapper for bungeecord tasks.
  */
-public class BukkitTaskWrapper implements Task {
+public class BungeeTaskWrapper implements Task {
 
     AtomicBoolean completed = new AtomicBoolean(false);
 
     private AtomicBoolean cancelled = new AtomicBoolean(false);
 
-    private int id;
+    ScheduledTask task;
 
-    public BukkitTaskWrapper() {
-
+    public BungeeTaskWrapper() {
+        this.task = task;
     }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
 
     @Override
     public void cancel() {
-        Bukkit.getScheduler().cancelTask(this.id);
+        this.task.cancel();
         this.cancelled.set(true);
     }
 

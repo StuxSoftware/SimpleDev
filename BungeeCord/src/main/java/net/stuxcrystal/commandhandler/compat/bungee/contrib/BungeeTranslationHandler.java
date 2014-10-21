@@ -1,4 +1,4 @@
-package net.stuxcrystal.commandhandler.compat.bungee;
+package net.stuxcrystal.commandhandler.compat.bungee.contrib;
 
 import net.md_5.bungee.api.ProxyServer;
 import net.stuxcrystal.commandhandler.CommandExecutor;

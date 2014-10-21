@@ -1,4 +1,4 @@
-package net.stuxcrystal.commandhandler.compat.bungee;
+package net.stuxcrystal.commandhandler.compat.bungee.contrib.commands;
 
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Command;
