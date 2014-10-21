@@ -134,7 +134,7 @@ public class CommandHandler {
         if (parent == null) {
             this.backend.setCommandHandler(this);
             this.argument = new ArgumentHandler();
-            this.components = new ComponentManager();
+            this.components = new ComponentManager(this);
         }
     }
 

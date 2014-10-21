@@ -1,89 +1,19 @@
 package net.stuxcrystal.commandhandler.component;
 
+import net.stuxcrystal.commandhandler.CommandHandler;
 import net.stuxcrystal.commandhandler.utils.HandleWrapper;
-import org.apache.commons.lang.ArrayUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 
 /**
  * A manager for components.
  */
 public class ComponentManager {
-
-    /**
-     * Container for components.
-     */
-    class ComponentMethod {
-
-        /**
-         * May be used for other things later.
-         */
-        private Component component;
-
-        /**
-         * Represents the method to call.
-         */
-        private Method method;
-
-        /**
-         * The container of the component.
-         */
-        private ComponentContainer container;
-
-        /**
-         * Creates a new container for the component data.
-         * @param method     The method.
-         * @param container  The container.
-         */
-        public ComponentMethod(Method method, ComponentContainer container, Component component) {
-            this.method = method;
-            this.container = container;
-            this.component = component;
-        }
-
-        /**
-         * Returns the name of the component.
-         * @return The name of the component.
-         */
-        public String getName() {
-            return this.method.getName();
-        }
-
-        /**
-         * Returns the actual type of the self arguments.
-         * @return The type of the argument.
-         */
-        public Class<?> getSelfArgument() {
-            return this.method.getParameterTypes()[0];
-        }
-
-        /**
-         * Calls the method.
-         * @param selfArg     The object which extension function will be called.
-         * @param params      The parameters for the function.
-         * @param <T>         Trick to allow dynamic return types.
-         * @return            The result of the method.
-         * @throws ReflectiveOperationException If an reflective operation exception occurs.
-         */
-        @SuppressWarnings("unchecked")
-        public <T> T call(Object selfArg, Object[] params) throws ReflectiveOperationException {
-            if (!this.method.isAccessible())
-                this.method.setAccessible(true);
-
-            Object self;
-            if (Modifier.isStatic(this.method.getModifiers()))
-                self = null;
-            else if (container != null)
-                self = container;
-            else
-                throw new ReflectiveOperationException("Failed to get component instance.");
-
-            return (T)this.method.invoke(self, ArrayUtils.add(params, 0, selfArg));
-        }
-    }
 
     /**
      * Components of the command handler.
@@ -94,6 +24,19 @@ public class ComponentManager {
      * Actual registered classes.
      */
     private HashSet<Class<? extends ComponentContainer>> classes = new HashSet<>();
+
+    /**
+     * The command handler this manager belongs to.
+     */
+    private final CommandHandler handler;
+
+    /**
+     * Creates a new instance of the component manager.
+     * @param handler The handler that belongs to the component manager.
+     */
+    public ComponentManager(CommandHandler handler) {
+        this.handler = handler;
+    }
 
     /**
      * Registers the methods of the component.
@@ -174,6 +117,7 @@ public class ComponentManager {
      * @param <T> The return type.
      * @return The function return.
      */
+    @SuppressWarnings("unchecked")
     public <T> T call(String name, HandleWrapper self, Object[] params) throws Throwable {
         // Find suitable method for handler wrapper.
         ComponentMethod method = null;
@@ -191,13 +135,45 @@ public class ComponentManager {
         if (method == null)
             throw new IllegalArgumentException("Unknown extension method.");
 
-        // Call the method.
-        try {
+        return (T)this.call(method, self, params);
+    }
+
+    /**
+     * Actually calls the method.
+     * @param method The method that has been called.
+     * @param params The params that were passed.
+     * @return The result of the call. (Or a future in case of asynchronous functions)
+     */
+    @SuppressWarnings({"rawtype", "unchecked"})
+    private Object call(ComponentMethod method, Object self, Object[] params) throws Throwable {
+        // If we don't care if we're in another thread, we will just call the method.
+        if (method.component.syncstate() == SynchronizationState.IGNORE)
             return method.call(self, params);
-        } catch (InvocationTargetException e) {
-            throw e.getCause();
-        } catch (ReflectiveOperationException e) {
-            throw new ComponentAccessException(e);
+
+        ComponentExecutor executor = new ComponentExecutor(method, self, params);
+
+        if (method.component.syncstate() == SynchronizationState.SYNCHRONOUS) {
+            // If the task is already running in the main thread, just call the method.
+            if (this.handler.getServerBackend().inMainThread())
+                return executor.call();
+
+            FutureTask future = new FutureTask(executor);
+
+            // Call the method.
+            this.handler.getServerBackend().scheduleSync(future);
+
+            // Await the result.
+            try {
+                return future.get();
+            } catch (ExecutionException e) {
+                // Rethrow the old exception.
+                throw e.getCause();
+            }
+        } else {
+            // Just execute the task asynchronously.
+            FutureTask future = new FutureTask(executor);
+            this.handler.getServerBackend().scheduleAsync(future);
+            return future;
         }
     }
 }
