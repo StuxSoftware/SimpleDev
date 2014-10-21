@@ -25,38 +25,30 @@ import net.stuxcrystal.commandhandler.CommandHandler;
  */
 public class CanarySenderWrapper extends CommandExecutor<MessageReceiver> {
 
-    final MessageReceiver receiver;
-
     public CanarySenderWrapper(MessageReceiver receiver, CommandHandler backend) {
-        super(backend);
-        this.receiver = receiver;
+        super(receiver, backend);
     }
 
     @Override
     public String getName() {
-        return this.receiver.getName();
+        return this.getHandle().getName();
     }
 
     @Override
     public void sendMessage(String... message) {
         for (String line : message)
-            this.receiver.message(parseMessage(line));
+            this.getHandle().message(parseMessage(line));
     }
 
     @Override
     public boolean isPlayer() {
-        return this.receiver instanceof Player;
+        return this.getHandle() instanceof Player;
     }
 
     @Override
     public boolean isOp() {
         if (!this.isPlayer()) return true;
-        return ((Player) this.receiver).isAdmin();
-    }
-
-    @Override
-    public MessageReceiver getHandle() {
-        return this.receiver;
+        return ((Player) this.getHandle()).isAdmin();
     }
 
     public String parseMessage(String msg) {

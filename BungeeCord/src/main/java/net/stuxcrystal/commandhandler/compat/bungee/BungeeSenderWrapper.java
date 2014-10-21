@@ -12,16 +12,13 @@ import net.stuxcrystal.commandhandler.CommandHandler;
  */
 public class BungeeSenderWrapper extends CommandExecutor<CommandSender> {
 
-    private final CommandSender sender;
-
     /**
      * The handler.
      *
      * @param handler The handler providing the permission handler.
      */
     public BungeeSenderWrapper(CommandHandler handler, CommandSender sender) {
-        super(handler);
-        this.sender = sender;
+        super(sender, handler);
     }
 
     @Override
@@ -45,10 +42,5 @@ public class BungeeSenderWrapper extends CommandExecutor<CommandSender> {
     @Override
     public boolean isOp() {
         return !this.isPlayer();
-    }
-
-    @Override
-    public CommandSender getHandle() {
-        return this.sender;
     }
 }
