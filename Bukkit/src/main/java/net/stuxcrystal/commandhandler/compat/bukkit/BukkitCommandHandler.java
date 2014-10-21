@@ -16,6 +16,7 @@
 package net.stuxcrystal.commandhandler.compat.bukkit;
 
 import net.stuxcrystal.commandhandler.CommandHandler;
+import net.stuxcrystal.commandhandler.compat.bukkit.scheduler.BukkitSchedulerWrapper;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -50,6 +51,7 @@ public class BukkitCommandHandler extends CommandHandler implements CommandExecu
      */
     private void initHandler() {
         this.registerCommandLoader(new BukkitCommandLoader());
+        this.registerComponent(new BukkitSchedulerWrapper((BukkitPluginBackend)this.getServerBackend()));
     }
 
     /**
