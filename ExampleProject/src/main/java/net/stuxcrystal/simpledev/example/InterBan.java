@@ -1,8 +1,8 @@
 package net.stuxcrystal.simpledev.example;
 
-import net.stuxcrystal.simpledev.commandhandler.CommandHandler;
-import net.stuxcrystal.simpledev.commandhandler.commands.contrib.builder.CommandBuilder;
-import net.stuxcrystal.simpledev.commandhandler.contrib.history.Action;
+import net.stuxcrystal.simpledev.commands.CommandHandler;
+import net.stuxcrystal.simpledev.commands.commands.contrib.builder.CommandBuilder;
+import net.stuxcrystal.simpledev.commands.contrib.history.Action;
 import net.stuxcrystal.simpledev.configuration.ConfigurationLoader;
 import net.stuxcrystal.simpledev.configuration.parser.exceptions.ConfigurationException;
 

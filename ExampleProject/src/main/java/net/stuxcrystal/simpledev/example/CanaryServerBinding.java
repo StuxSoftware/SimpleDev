@@ -7,10 +7,10 @@ import net.canarymod.commandsys.Command;
 import net.canarymod.commandsys.CommandDependencyException;
 import net.canarymod.commandsys.CommandListener;
 import net.canarymod.plugin.Plugin;
-import net.stuxcrystal.simpledev.commandhandler.CommandExecutor;
-import net.stuxcrystal.simpledev.commandhandler.compat.canary.CanaryCommandHandler;
-import net.stuxcrystal.simpledev.commandhandler.component.Component;
-import net.stuxcrystal.simpledev.commandhandler.component.ComponentContainer;
+import net.stuxcrystal.simpledev.commands.CommandExecutor;
+import net.stuxcrystal.simpledev.commands.compat.canary.CanaryCommandHandler;
+import net.stuxcrystal.simpledev.commands.component.Component;
+import net.stuxcrystal.simpledev.commands.component.ComponentContainer;
 import net.stuxcrystal.simpledev.configuration.compat.CanaryConfigurationLoader;
 
 /**

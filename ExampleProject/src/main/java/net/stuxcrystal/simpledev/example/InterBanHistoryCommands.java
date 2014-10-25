@@ -1,9 +1,9 @@
 package net.stuxcrystal.simpledev.example;
 
-import net.stuxcrystal.simpledev.commandhandler.CommandExecutor;
-import net.stuxcrystal.simpledev.commandhandler.arguments.ArgumentParser;
-import net.stuxcrystal.simpledev.commandhandler.commands.contrib.annotations.Command;
-import net.stuxcrystal.simpledev.commandhandler.commands.contrib.annotations.CommandListener;
+import net.stuxcrystal.simpledev.commands.CommandExecutor;
+import net.stuxcrystal.simpledev.commands.arguments.ArgumentParser;
+import net.stuxcrystal.simpledev.commands.commands.contrib.annotations.Command;
+import net.stuxcrystal.simpledev.commands.commands.contrib.annotations.CommandListener;
 
 /**
  * The commands for the history in interban.

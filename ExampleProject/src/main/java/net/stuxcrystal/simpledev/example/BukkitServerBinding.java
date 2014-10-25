@@ -1,9 +1,9 @@
 package net.stuxcrystal.simpledev.example;
 
-import net.stuxcrystal.simpledev.commandhandler.CommandExecutor;
-import net.stuxcrystal.simpledev.commandhandler.compat.bukkit.BukkitCommandHandler;
-import net.stuxcrystal.simpledev.commandhandler.component.Component;
-import net.stuxcrystal.simpledev.commandhandler.component.ComponentContainer;
+import net.stuxcrystal.simpledev.commands.CommandExecutor;
+import net.stuxcrystal.simpledev.commands.compat.bukkit.BukkitCommandHandler;
+import net.stuxcrystal.simpledev.commands.component.Component;
+import net.stuxcrystal.simpledev.commands.component.ComponentContainer;
 import net.stuxcrystal.simpledev.configuration.compat.BukkitConfigurationLoader;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
