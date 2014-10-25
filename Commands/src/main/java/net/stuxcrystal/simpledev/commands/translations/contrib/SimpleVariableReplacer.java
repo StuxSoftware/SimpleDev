@@ -1,7 +1,5 @@
 package net.stuxcrystal.simpledev.commands.translations.contrib;
 
-import net.stuxcrystal.simpledev.commands.translations.VariableReplacer;
-
 import java.util.Map;
 
 /**

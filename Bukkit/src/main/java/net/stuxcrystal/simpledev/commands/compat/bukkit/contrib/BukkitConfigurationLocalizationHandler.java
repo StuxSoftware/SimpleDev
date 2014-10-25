@@ -16,8 +16,8 @@
 package net.stuxcrystal.simpledev.commands.compat.bukkit.contrib;
 
 import net.stuxcrystal.simpledev.commands.CommandExecutor;
-import net.stuxcrystal.simpledev.commands.translations.TranslationHandler;
-import net.stuxcrystal.simpledev.commands.translations.TranslationManager;
+import net.stuxcrystal.simpledev.commands.translations.contrib.SimpleTranslationManager;
+import net.stuxcrystal.simpledev.commands.translations.contrib.TranslationHandler;
 import org.bukkit.configuration.MemoryConfiguration;
 
 import java.util.Map;
@@ -62,6 +62,6 @@ public class BukkitConfigurationLocalizationHandler implements TranslationHandle
     public void update(MemoryConfiguration configuration) {
         this.section = configuration;
         // A little hack to enforce a cast from Map<String, String> to Map<String, Object>.
-        this.section.addDefaults((Map<String, Object>) (Map) TranslationManager.getDefaults());
+        this.section.addDefaults((Map<String, Object>) (Map) SimpleTranslationManager.getDefaults());
     }
 }

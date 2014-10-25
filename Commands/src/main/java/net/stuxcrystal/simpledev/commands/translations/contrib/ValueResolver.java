@@ -1,4 +1,4 @@
-package net.stuxcrystal.simpledev.commands.translations;
+package net.stuxcrystal.simpledev.commands.translations.contrib;
 
 import net.stuxcrystal.simpledev.commands.CommandExecutor;
 

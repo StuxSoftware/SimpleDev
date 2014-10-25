@@ -25,6 +25,7 @@ import net.stuxcrystal.simpledev.commands.component.ComponentManager;
 import net.stuxcrystal.simpledev.commands.contrib.DefaultPermissionHandler;
 import net.stuxcrystal.simpledev.commands.exceptions.ExceptionHandler;
 import net.stuxcrystal.simpledev.commands.translations.TranslationManager;
+import net.stuxcrystal.simpledev.commands.translations.contrib.SimpleTranslationManager;
 import net.stuxcrystal.simpledev.commands.utils.HandleWrapper;
 import org.apache.commons.lang.ArrayUtils;
 
@@ -100,7 +101,7 @@ public class CommandHandler {
      * @param backend The backend that handles the command handler.
      */
     public CommandHandler(CommandBackend backend) {
-        this(backend, new TranslationManager(), null);
+        this(backend, new SimpleTranslationManager(), null);
     }
 
     /**

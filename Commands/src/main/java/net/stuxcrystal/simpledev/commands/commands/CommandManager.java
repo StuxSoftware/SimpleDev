@@ -5,7 +5,7 @@ import net.stuxcrystal.simpledev.commands.CommandHandler;
 import net.stuxcrystal.simpledev.commands.arguments.ArgumentParser;
 import net.stuxcrystal.simpledev.commands.commands.contrib.annotations.AnnotationCommandLoader;
 import net.stuxcrystal.simpledev.commands.commands.contrib.raw.CommandContainerLoader;
-import net.stuxcrystal.simpledev.commands.translations.TranslationManager;
+import net.stuxcrystal.simpledev.commands.translations.contrib.SimpleTranslationManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,7 +68,7 @@ public class CommandManager {
      * @param args      The arguments.
      */
     private void executeParsed(CommandContainer command, CommandExecutor executor, String[] args) {
-        TranslationManager mgr = executor.getCommandHandler().getTranslationManager();
+        SimpleTranslationManager mgr = executor.getCommandHandler().getTranslationManager();
 
         // Check argument data.
         ArgumentParser parser = new ArgumentParser(executor, executor.getCommandHandler(), args);

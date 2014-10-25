@@ -3,7 +3,7 @@ package net.stuxcrystal.simpledev.commands.commands.contrib.annotations;
 import net.stuxcrystal.simpledev.commands.CommandExecutor;
 import net.stuxcrystal.simpledev.commands.CommandHandler;
 import net.stuxcrystal.simpledev.commands.arguments.ArgumentParser;
-import net.stuxcrystal.simpledev.commands.translations.TranslationManager;
+import net.stuxcrystal.simpledev.commands.translations.contrib.SimpleTranslationManager;
 
 import java.lang.reflect.Method;
 
@@ -48,7 +48,7 @@ public class BranchAnnotationCommand extends AnnotationBasedCommand {
     @Override
     public void execute(CommandExecutor executor, ArgumentParser parser) {
         CommandHandler handler = executor.getCommandHandler();
-        TranslationManager manager = handler.getTranslationManager();
+        SimpleTranslationManager manager = handler.getTranslationManager();
 
         if (this.subcommand.time() == CallTime.PRE) {
             if (!_execute(executor, parser)) {

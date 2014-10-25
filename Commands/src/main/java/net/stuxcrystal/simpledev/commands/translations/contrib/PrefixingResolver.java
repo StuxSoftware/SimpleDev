@@ -1,7 +1,6 @@
 package net.stuxcrystal.simpledev.commands.translations.contrib;
 
 import net.stuxcrystal.simpledev.commands.CommandExecutor;
-import net.stuxcrystal.simpledev.commands.translations.ValueResolver;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

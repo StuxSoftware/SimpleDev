@@ -1,7 +1,6 @@
 package net.stuxcrystal.simpledev.commands.translations.contrib;
 
 import net.stuxcrystal.simpledev.commands.CommandExecutor;
-import net.stuxcrystal.simpledev.commands.translations.TranslationHandler;
 
 import java.util.Map;
 
