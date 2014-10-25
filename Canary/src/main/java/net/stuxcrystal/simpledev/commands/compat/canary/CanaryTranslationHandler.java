@@ -17,7 +17,7 @@ package net.stuxcrystal.simpledev.commands.compat.canary;
 
 import net.canarymod.Translator;
 import net.stuxcrystal.simpledev.commands.CommandExecutor;
-import net.stuxcrystal.simpledev.commands.translations.TranslationHandler;
+import net.stuxcrystal.simpledev.commands.translations.contrib.TranslationHandler;
 
 /**
  * Translation handler for canary mod.
