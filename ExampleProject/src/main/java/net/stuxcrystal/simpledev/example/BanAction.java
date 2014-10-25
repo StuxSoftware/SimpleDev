@@ -1,7 +1,7 @@
 package net.stuxcrystal.simpledev.example;
 
-import net.stuxcrystal.commandhandler.CommandExecutor;
-import net.stuxcrystal.commandhandler.contrib.history.Action;
+import net.stuxcrystal.simpledev.commandhandler.CommandExecutor;
+import net.stuxcrystal.simpledev.commandhandler.contrib.history.Action;
 
 /**
  * The actual ban action.

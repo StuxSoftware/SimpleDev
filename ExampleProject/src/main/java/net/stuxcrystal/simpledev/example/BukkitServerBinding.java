@@ -1,12 +1,10 @@
 package net.stuxcrystal.simpledev.example;
 
-import net.stuxcrystal.commandhandler.CommandExecutor;
-import net.stuxcrystal.commandhandler.CommandHandler;
-import net.stuxcrystal.commandhandler.compat.bukkit.BukkitCommandHandler;
-import net.stuxcrystal.commandhandler.component.Component;
-import net.stuxcrystal.commandhandler.component.ComponentContainer;
-import net.stuxcrystal.configuration.compat.BukkitConfigurationLoader;
-import net.stuxcrystal.simpledev.example.InterBan;
+import net.stuxcrystal.simpledev.commandhandler.CommandExecutor;
+import net.stuxcrystal.simpledev.commandhandler.compat.bukkit.BukkitCommandHandler;
+import net.stuxcrystal.simpledev.commandhandler.component.Component;
+import net.stuxcrystal.simpledev.commandhandler.component.ComponentContainer;
+import net.stuxcrystal.simpledev.configuration.compat.BukkitConfigurationLoader;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

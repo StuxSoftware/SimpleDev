@@ -1,7 +1,7 @@
 package net.stuxcrystal.simpledev.example;
 
-import net.stuxcrystal.configuration.parser.annotations.Configuration;
-import net.stuxcrystal.configuration.parser.annotations.Value;
+import net.stuxcrystal.simpledev.configuration.parser.annotations.Configuration;
+import net.stuxcrystal.simpledev.configuration.parser.annotations.Value;
 
 /**
  * The configuration.

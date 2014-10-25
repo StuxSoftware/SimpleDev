@@ -1,10 +1,10 @@
 package net.stuxcrystal.simpledev.example;
 
-import net.stuxcrystal.commandhandler.CommandHandler;
-import net.stuxcrystal.commandhandler.commands.contrib.builder.CommandBuilder;
-import net.stuxcrystal.commandhandler.contrib.history.Action;
-import net.stuxcrystal.configuration.ConfigurationLoader;
-import net.stuxcrystal.configuration.parser.exceptions.ConfigurationException;
+import net.stuxcrystal.simpledev.commandhandler.CommandHandler;
+import net.stuxcrystal.simpledev.commandhandler.commands.contrib.builder.CommandBuilder;
+import net.stuxcrystal.simpledev.commandhandler.contrib.history.Action;
+import net.stuxcrystal.simpledev.configuration.ConfigurationLoader;
+import net.stuxcrystal.simpledev.configuration.parser.exceptions.ConfigurationException;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
