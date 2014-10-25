@@ -6,7 +6,7 @@ import net.stuxcrystal.simpledev.commands.arguments.ArgumentParser;
 import net.stuxcrystal.simpledev.commands.commands.CommandContainer;
 import net.stuxcrystal.simpledev.commands.exceptions.DoNotExecuteException;
 import net.stuxcrystal.simpledev.commands.exceptions.ExceptionHandler;
-import net.stuxcrystal.simpledev.commands.translations.contrib.SimpleTranslationManager;
+import net.stuxcrystal.simpledev.commands.translations.TranslationManager;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -124,7 +124,7 @@ public abstract class AnnotationBasedCommand implements CommandContainer {
      */
     protected boolean _execute(CommandExecutor sender, ArgumentParser arguments) {
         CommandHandler handler = sender.getCommandHandler();
-        SimpleTranslationManager manager = handler.getTranslationManager();
+        TranslationManager manager = handler.getTranslationManager();
 
         try {
             this.method.invoke(this.instance, sender, arguments);

@@ -16,8 +16,8 @@
 package net.stuxcrystal.simpledev.commands.compat.bukkit.contrib;
 
 import net.stuxcrystal.simpledev.commands.CommandExecutor;
-import net.stuxcrystal.simpledev.commands.translations.contrib.SimpleTranslationManager;
-import net.stuxcrystal.simpledev.commands.translations.contrib.TranslationHandler;
+import net.stuxcrystal.simpledev.commands.translations.contrib.simple.SimpleTranslationManager;
+import net.stuxcrystal.simpledev.commands.translations.contrib.simple.TranslationHandler;
 import org.bukkit.configuration.MemoryConfiguration;
 
 import java.util.Map;

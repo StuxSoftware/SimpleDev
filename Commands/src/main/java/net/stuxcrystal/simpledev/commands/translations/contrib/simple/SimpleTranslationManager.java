@@ -13,7 +13,7 @@
  * specific language governing permissions and limitations under the License.
  */
 
-package net.stuxcrystal.simpledev.commands.translations.contrib;
+package net.stuxcrystal.simpledev.commands.translations.contrib.simple;
 
 import net.stuxcrystal.simpledev.commands.CommandExecutor;
 import net.stuxcrystal.simpledev.commands.translations.TranslationManager;

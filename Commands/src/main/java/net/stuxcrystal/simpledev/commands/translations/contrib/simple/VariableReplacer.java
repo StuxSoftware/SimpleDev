@@ -1,4 +1,4 @@
-package net.stuxcrystal.simpledev.commands.translations.contrib;
+package net.stuxcrystal.simpledev.commands.translations.contrib.simple;
 
 import java.util.Map;
 
