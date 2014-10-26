@@ -1,20 +1,16 @@
-package net.stuxcrystal.simpledev.i18n.contrib;
+package net.stuxcrystal.simpledev.i18n.contrib.resolvers;
 
 import net.stuxcrystal.simpledev.i18n.values.NotFoundException;
 import net.stuxcrystal.simpledev.i18n.values.ValueManager;
 import net.stuxcrystal.simpledev.i18n.values.ValueResolver;
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Resolver that supports basic types.
  */
 public class BaseTypeResolver implements ValueResolver {
+
     @Override
     public Object resolve(ValueManager manager, String name) throws NotFoundException {
-        if (StringUtils.isAlphanumeric(name)) {
-            return Integer.valueOf(name);
-        }
-
 
         switch (name) {
             // Null as a value.

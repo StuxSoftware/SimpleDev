@@ -15,4 +15,6 @@ public interface TranslationResolver {
      */
     public String getTranslation(Locale locale, String key);
 
+
+
 }
