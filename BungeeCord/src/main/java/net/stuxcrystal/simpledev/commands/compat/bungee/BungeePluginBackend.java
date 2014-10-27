@@ -16,8 +16,6 @@ import java.util.logging.Logger;
  */
 public class BungeePluginBackend extends CommandBackend<Plugin, CommandSender> {
 
-    private FallbackSchedulerBackend fallbackScheduler;
-
     /**
      * Creates a new handle.
      *
@@ -25,7 +23,6 @@ public class BungeePluginBackend extends CommandBackend<Plugin, CommandSender> {
      */
     protected BungeePluginBackend(Plugin handle) {
         super(handle);
-        this.fallbackScheduler = new FallbackSchedulerBackend();
     }
 
     @Override
