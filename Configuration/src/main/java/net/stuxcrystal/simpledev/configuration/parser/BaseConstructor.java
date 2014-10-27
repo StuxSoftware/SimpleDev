@@ -80,5 +80,7 @@ public class BaseConstructor implements Constructor {
         loader.addType(new StringType());                             // Simple strings.
         loader.addType(new FileType());                               // Paths.
         loader.addType(new SerializableType());                       // All other serializable types.
+
+        loader.addType(LazyValue.getValueType());                     // Lazy values.
     }
 }

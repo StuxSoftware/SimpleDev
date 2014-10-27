@@ -36,7 +36,7 @@ import java.util.Map;
 public class MapType implements ValueType<Map<String, ?>> {
 
     @Override
-    public boolean isValidType(Object object, Field field, Type cls) throws ReflectiveOperationException {
+    public boolean isValidType(Object object, Type cls) throws ReflectiveOperationException {
         if (!ReflectionUtil.toClass(cls).isAssignableFrom(Map.class))
             return false;
 
@@ -46,14 +46,14 @@ public class MapType implements ValueType<Map<String, ?>> {
 
     @Override
     @SuppressWarnings("unchecked")
-    public Map<String, ?> parse(Object object, Field field, ConfigurationParser parser, Type cls, Node<?> node) throws ReflectiveOperationException, ValueException {
+    public Map<String, ?> parse(Object object, ConfigurationParser parser, Type cls, Node<?> node) throws ReflectiveOperationException, ValueException {
         Map map = new LinkedHashMap();
         Type tKey = ReflectionUtil.getGenericArguments(cls)[0];
         Type tValue = ReflectionUtil.getGenericArguments(cls)[1];
         Node<?>[] children = ((Node<Node<?>[]>) node).getData();
         for (Node<?> cNode : children) {
-            Object key = parser.parseObject(object, field, tKey, new DataNode(cNode.getName()));
-            Object value = parser.parseObject(object, field, tValue, cNode);
+            Object key = parser.parseObject(object, tKey, new DataNode(cNode.getName()));
+            Object value = parser.parseObject(object, tValue, cNode);
             map.put(key, value);
         }
 
@@ -62,22 +62,22 @@ public class MapType implements ValueType<Map<String, ?>> {
 
     @Override
     @SuppressWarnings("unchecked")
-    public Node<?> dump(Object object, Field field, ConfigurationParser parser, Type cls, Object data) throws ReflectiveOperationException, ValueException {
+    public Node<?> dump(Object object, ConfigurationParser parser, Type cls, Map<String, ?> data) throws ReflectiveOperationException, ValueException {
         Type tKey = ReflectionUtil.getGenericArguments(cls)[0];
         Type tValue = ReflectionUtil.getGenericArguments(cls)[1];
 
-        Node<?>[] children = new Node<?>[((Map<?, ?>) data).size()];
+        Node<?>[] children = new Node<?>[data.size()];
         MapNode parent = new MapNode(null);
 
         int i = 0;
         for (Map.Entry<?, ?> entry : ((Map<?, ?>) data).entrySet()) {
             Object value = entry.getValue();
             Object rawKey = entry.getKey();
-            Node<?> node = parser.dumpObject(object, field, tValue, value);
+            Node<?> node = parser.dumpObject(object, tValue, value);
             node.setParent(parent);
             node.setComments(new String[0]);
             try {
-                node.setName(((Node<String>) parser.dumpObject(object, field, tKey, rawKey)).getData());
+                node.setName(((Node<String>) parser.dumpObject(object, tKey, rawKey)).getData());
             } catch (ClassCastException e) {
                 throw new ValueException("Maps only support simple data types.", e);
             }

@@ -269,7 +269,7 @@ public class ConfigurationHandler {
         ConfigurationParser parser = new ConfigurationParser(this);
         Node<?> nodes;
         try {
-            nodes = parser.dumpObject(null, null, configuration.getClass(), configuration);
+            nodes = parser.dumpObject(null, configuration.getClass(), configuration);
         } catch (ReflectiveOperationException e) {
             throw new ReflectionException(e);
         }
@@ -288,7 +288,7 @@ public class ConfigurationHandler {
         ConfigurationParser parser = new ConfigurationParser(this);
         Object o;
         try {
-            o = parser.parseObject(null, null, cls, nodes);
+            o = parser.parseObject(null, cls, nodes);
         } catch (ReflectiveOperationException e) {
             throw new ReflectionException(e);
         }

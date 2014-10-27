@@ -34,19 +34,17 @@ public interface ValueType<T> {
      * Should also support arrays.
      *
      * @param object The current object the parser is working on.
-     * @param field  the field the parser is working on.
      * @param cls    the class the parser is parsing.
      * @return true if the type can be parsed by this object.
      * @throws ReflectiveOperationException if a reflection-operation failed.
      */
-    public boolean isValidType(Object object, Field field, Type cls) throws ReflectiveOperationException;
+    public boolean isValidType(Object object, Type cls) throws ReflectiveOperationException;
 
     /**
      * Parses a value.<p />
      * Only use the field-argument to check data because arrays are using the same value.
      *
      * @param object The current object the parser is parsing.
-     * @param field  the field of the object to set.
      * @param parser The parser that parses object. (Used if you want to parse Array or Maps).
      * @param cls    Type type of the current value.
      * @param value  The current node to be parsed.
@@ -54,7 +52,7 @@ public interface ValueType<T> {
      * @throws ReflectiveOperationException if a reflection-Operation failed.
      * @throws net.stuxcrystal.simpledev.configuration.parser.exceptions.ValueException
      */
-    public T parse(Object object, Field field, ConfigurationParser parser, Type cls, Node<?> value) throws ReflectiveOperationException, ValueException;
+    public T parse(Object object, ConfigurationParser parser, Type cls, Node<?> value) throws ReflectiveOperationException, ValueException;
 
     /**
      * Dumps a field into a node.<p />
@@ -62,13 +60,12 @@ public interface ValueType<T> {
      * into this method.
      *
      * @param object The object the parser is parsing.
-     * @param field  The field the parser is parsing.
      * @param parser The parser that dumps the object.
      * @param cls    The type of the object.
      * @param data   The data to be parsed.
      * @return A node with the given data.
      * @throws ReflectiveOperationException if a reflection-operation failed.
      */
-    public Node<?> dump(Object object, Field field, ConfigurationParser parser, Type cls, Object data) throws ReflectiveOperationException, ValueException;
+    public Node<?> dump(Object object, ConfigurationParser parser, Type cls, T data) throws ReflectiveOperationException, ValueException;
 
 }

@@ -29,21 +29,21 @@ import java.lang.reflect.Type;
 public class FileType implements ValueType<File> {
 
     @Override
-    public boolean isValidType(Object object, Field field, Type cls) throws ReflectiveOperationException {
+    public boolean isValidType(Object object, Type cls) throws ReflectiveOperationException {
         return File.class.isAssignableFrom(ReflectionUtil.toClass(cls));
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public File parse(Object object, Field field, ConfigurationParser parser, Type type, Node<?> value) throws ReflectiveOperationException, ValueException {
+    public File parse(Object object, ConfigurationParser parser, Type type, Node<?> value) throws ReflectiveOperationException, ValueException {
         if (!value.hasChildren())
             throw new ValueException("The node has no values.");
         return new File(((Node<String>) value).getData());
     }
 
     @Override
-    public Node<?> dump(Object object, Field field, ConfigurationParser parser, Type type, Object data) throws ReflectiveOperationException, ValueException {
-        return new DataNode(((File) data).getPath());
+    public Node<?> dump(Object object, ConfigurationParser parser, Type type, File data) throws ReflectiveOperationException, ValueException {
+        return new DataNode(data.getPath());
     }
 
 

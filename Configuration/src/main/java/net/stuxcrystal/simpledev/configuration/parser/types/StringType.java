@@ -34,7 +34,7 @@ import java.lang.reflect.Type;
 public class StringType implements ValueType<String> {
 
     @Override
-    public boolean isValidType(Object object, Field field, Type cls) throws ReflectiveOperationException {
+    public boolean isValidType(Object object,  Type cls) throws ReflectiveOperationException {
         return String.class.isAssignableFrom(ReflectionUtil.toClass(cls));
     }
 
@@ -43,7 +43,7 @@ public class StringType implements ValueType<String> {
      */
     @Override
     @SuppressWarnings("unchecked")
-    public String parse(Object object, Field field, ConfigurationParser parser, Type type, Node<?> value) throws ReflectiveOperationException, ValueException {
+    public String parse(Object object, ConfigurationParser parser, Type type, Node<?> value) throws ReflectiveOperationException, ValueException {
         return ((Node<String>) value).getData();
     }
 
@@ -51,7 +51,7 @@ public class StringType implements ValueType<String> {
      * The data does not need to be converted.
      */
     @Override
-    public Node<?> dump(Object object, Field field, ConfigurationParser parser, Type type, Object data) throws ReflectiveOperationException, ValueException {
+    public Node<?> dump(Object object, ConfigurationParser parser, Type type, String data) throws ReflectiveOperationException, ValueException {
         return new DataNode(data.toString());
     }
 

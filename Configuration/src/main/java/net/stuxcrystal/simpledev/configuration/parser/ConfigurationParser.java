@@ -33,26 +33,29 @@ public class ConfigurationParser {
      */
     private final ConfigurationHandler loader;
 
-    public ConfigurationParser(ConfigurationHandler loader) {
+    /**
+     * Creates a new configuration parser.
+     * @param loader The loader to use.
+     */
+    ConfigurationParser(ConfigurationHandler loader) {
         this.loader = loader;
     }
 
     /**
      * Parses an object.
      *
-     * @param object The object that are being parsed.
-     * @param field  The field of the object that is being parsed.
+     * @param object The object that is being parsed.
      * @param cls    The type of the object.
      * @param node   The node to parse.
      * @return The parsed object.
      */
-    public Object parseObject(Object object, Field field, Type cls, Node<?> node) throws ReflectiveOperationException, ValueException {
+    public Object parseObject(Object object, Type cls, Node<?> node) throws ReflectiveOperationException, ValueException {
         if (node == null)
-            throw new IllegalStateException("The given node is null: " + field.getName());
+            throw new IllegalStateException("The given node is null: " + cls.getTypeName());
 
         for (ValueType<?> type : this.loader.types) {
-            if (type.isValidType(object, field, cls)) {
-                return type.parse(object, field, this, cls, node);
+            if (type.isValidType(object, cls)) {
+                return type.parse(object, this, cls, node);
             }
         }
 
@@ -63,7 +66,6 @@ public class ConfigurationParser {
      * Dumps an object.
      *
      * @param object The object the parser is currently parsing.
-     * @param field  The field of the object that is parsed.
      * @param cls    The class that is to be called.
      * @param o      The object that has to be dumped.
      * @return a node.
@@ -71,11 +73,11 @@ public class ConfigurationParser {
      * @throws net.stuxcrystal.simpledev.configuration.parser.exceptions.ValueException
      *                                      Incorrect usage.
      */
-    public Node<?> dumpObject(Object object, Field field, Type cls, Object o) throws ReflectiveOperationException, ValueException {
+    public Node<?> dumpObject(Object object, Type cls, Object o) throws ReflectiveOperationException, ValueException {
 
         for (ValueType<?> type : this.loader.types) {
-            if (type.isValidType(object, field, cls)) {
-                return type.dump(object, field, this, cls, o);
+            if (type.isValidType(object, cls)) {
+                return type.dump(object, this, cls, o);
             }
         }
         throw new ValueException("The parser does not know how to parse the object...");

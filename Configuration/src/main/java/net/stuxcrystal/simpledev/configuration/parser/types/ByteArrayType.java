@@ -20,10 +20,9 @@ import net.stuxcrystal.simpledev.configuration.parser.ValueType;
 import net.stuxcrystal.simpledev.configuration.parser.exceptions.ValueException;
 import net.stuxcrystal.simpledev.configuration.parser.node.DataNode;
 import net.stuxcrystal.simpledev.configuration.parser.node.Node;
+import net.stuxcrystal.simpledev.configuration.parser.utils.Base64;
 import net.stuxcrystal.simpledev.configuration.parser.utils.ReflectionUtil;
-import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 
 /**
@@ -32,19 +31,19 @@ import java.lang.reflect.Type;
 public class ByteArrayType implements ValueType<byte[]> {
 
     @Override
-    public boolean isValidType(Object object, Field field, Type cls) throws ReflectiveOperationException {
+    public boolean isValidType(Object object, Type cls) throws ReflectiveOperationException {
         Class<?> rawCls = ReflectionUtil.toClass(cls);
         return rawCls.isArray() && (rawCls.getComponentType().equals(Byte.class) || rawCls.getComponentType().equals(Byte.TYPE));
 
     }
 
     @Override
-    public byte[] parse(Object object, Field field, ConfigurationParser parser, Type cls, Node<?> value) throws ReflectiveOperationException, ValueException {
-        return Base64Coder.decode(((Node<String>) value).getData());
+    public byte[] parse(Object object, ConfigurationParser parser, Type cls, Node<?> value) throws ReflectiveOperationException, ValueException {
+        return Base64.decode(((Node<String>) value).getData());
     }
 
     @Override
-    public Node<?> dump(Object object, Field field, ConfigurationParser parser, Type cls, Object data) throws ReflectiveOperationException, ValueException {
-        return new DataNode(new String(Base64Coder.encode((byte[]) data)));
+    public Node<?> dump(Object object, ConfigurationParser parser, Type cls, byte[] data) throws ReflectiveOperationException, ValueException {
+        return new DataNode(new String(Base64.encode(data)));
     }
 }

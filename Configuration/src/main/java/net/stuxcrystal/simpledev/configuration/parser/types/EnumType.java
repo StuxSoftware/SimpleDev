@@ -28,22 +28,23 @@ import java.lang.reflect.Type;
 public class EnumType implements ValueType<Enum<?>> {
 
     @Override
-    public boolean isValidType(Object object, Field field, Type cls) throws ReflectiveOperationException {
+    public boolean isValidType(Object object, Type cls) throws ReflectiveOperationException {
         return ReflectionUtil.toClass(cls).isEnum();
     }
 
     @Override
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public Enum<?> parse(Object object, Field field, ConfigurationParser parser, Type type, Node<?> value) throws ReflectiveOperationException, ValueException {
+    public Enum<?> parse(Object object, ConfigurationParser parser, Type type, Node<?> value) throws ReflectiveOperationException, ValueException {
         Class<?> cls = ReflectionUtil.toClass(type);
         return (Enum<?>) convert(((Node<String>) value).getData(), cls);
     }
 
     @Override
-    public Node<?> dump(Object object, Field field, ConfigurationParser parser, Type type, Object data) throws ReflectiveOperationException, ValueException {
+    public Node<?> dump(Object object, ConfigurationParser parser, Type type, Enum<?> data) throws ReflectiveOperationException, ValueException {
         return new DataNode(data.toString());
     }
 
+    @SuppressWarnings("unchecked")
     public Object convert(String value, Class<?> toClass) {
         return Enum.valueOf((Class<Enum>) toClass, value);
     }

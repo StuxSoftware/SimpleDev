@@ -112,7 +112,7 @@ public class NumberType implements ValueType<Object> {
      * Returns true on primitive-types and types that derives from numbers.
      */
     @Override
-    public boolean isValidType(Object object, Field field, Type cls) throws ReflectiveOperationException {
+    public boolean isValidType(Object object, Type cls) throws ReflectiveOperationException {
         return ReflectionUtil.toClass(cls).isPrimitive() || isWrapper(ReflectionUtil.toClass(cls));
     }
 
@@ -121,7 +121,7 @@ public class NumberType implements ValueType<Object> {
      */
     @Override
     @SuppressWarnings("unchecked")
-    public Object parse(Object object, Field field, ConfigurationParser parser, Type type, Node<?> value) throws ReflectiveOperationException, ValueException {
+    public Object parse(Object object, ConfigurationParser parser, Type type, Node<?> value) throws ReflectiveOperationException, ValueException {
         return parseValue(ReflectionUtil.toClass(type), ((Node<String>) value).getData());
     }
 
@@ -129,7 +129,6 @@ public class NumberType implements ValueType<Object> {
      * Dumps a number
      *
      * @param object The object the parser is parsing.
-     * @param field  The field the parser is parsing.
      * @param parser
      * @param type
      * @param data   The data to be parsed.
@@ -138,7 +137,7 @@ public class NumberType implements ValueType<Object> {
      * @throws net.stuxcrystal.simpledev.configuration.parser.exceptions.ValueException
      */
     @Override
-    public Node<?> dump(Object object, Field field, ConfigurationParser parser, Type type, Object data) throws ReflectiveOperationException, ValueException {
+    public Node<?> dump(Object object, ConfigurationParser parser, Type type, Object data) throws ReflectiveOperationException, ValueException {
         return new DataNode(data.toString());
     }
 

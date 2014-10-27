@@ -31,13 +31,13 @@ import java.lang.reflect.Type;
 public class ArrayType implements ValueType<Object> {
 
     @Override
-    public boolean isValidType(Object object, Field field, Type cls) throws ReflectiveOperationException {
+    public boolean isValidType(Object object, Type cls) throws ReflectiveOperationException {
         return ReflectionUtil.toClass(cls).isArray();
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public Object parse(Object object, Field field, ConfigurationParser parser, Type type, Node<?> value) throws ReflectiveOperationException, ValueException {
+    public Object parse(Object object, ConfigurationParser parser, Type type, Node<?> value) throws ReflectiveOperationException, ValueException {
         Class<?> cls = ReflectionUtil.toClass(type);
 
         if (!value.hasChildren())
@@ -52,14 +52,14 @@ public class ArrayType implements ValueType<Object> {
         Node<?>[] children = ((Node<Node<?>[]>) value).getData();
         Object result = Array.newInstance(cls.getComponentType(), children.length);
         for (int i = 0; i < children.length; i++) {
-            Array.set(result, i, parser.parseObject(object, field, component, children[i]));
+            Array.set(result, i, parser.parseObject(object, component, children[i]));
         }
 
         return result;
     }
 
     @Override
-    public Node<?> dump(Object object, Field field, ConfigurationParser parser, Type type, Object data) throws ReflectiveOperationException, ValueException {
+    public Node<?> dump(Object object, ConfigurationParser parser, Type type, Object data) throws ReflectiveOperationException, ValueException {
         Type component;
 
         if (type instanceof GenericArrayType)
@@ -73,7 +73,7 @@ public class ArrayType implements ValueType<Object> {
         MapNode parent = new ArrayNode(null);
         for (int i = 0; i < length; i++) {
             Object obj = Array.get(data, i);
-            Node<?> node = parser.dumpObject(object, field, component, obj);
+            Node<?> node = parser.dumpObject(object, component, obj);
             node.setParent(parent);
             node.setComments(new String[0]);
             children[i] = node;

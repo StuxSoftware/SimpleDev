@@ -34,13 +34,13 @@ import java.util.NoSuchElementException;
 public class ConfigurationType implements ValueType<Object> {
 
     @Override
-    public boolean isValidType(Object object, Field field, Type cls) throws ReflectiveOperationException {
+    public boolean isValidType(Object object, Type cls) throws ReflectiveOperationException {
         return ReflectionUtil.toClass(cls).isAnnotationPresent(Configuration.class);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public Object parse(Object object, Field field, ConfigurationParser parser, Type type, Node<?> value) throws ReflectiveOperationException, ValueException {
+    public Object parse(Object object, ConfigurationParser parser, Type type, Node<?> value) throws ReflectiveOperationException, ValueException {
         Class<?> cls = ReflectionUtil.toClass(type);
         Object result = ReflectionUtil.newInstance(cls);
 
@@ -59,7 +59,7 @@ public class ConfigurationType implements ValueType<Object> {
             }
 
             try {
-                f.set(result, parser.parseObject(result, f, f.getGenericType(), getNode(((Node<Node<?>[]>) value), name)));
+                f.set(result, parser.parseObject(result, f.getGenericType(), getNode(((Node<Node<?>[]>) value), name)));
             } catch (NoSuchElementException e) {
                 parser.getConfigurationLoader().getLoggingInterface().debug("Node not found...");
                 parser.getConfigurationLoader().getLoggingInterface().debugException(e);
@@ -79,7 +79,7 @@ public class ConfigurationType implements ValueType<Object> {
     }
 
     @Override
-    public Node<?> dump(Object object, Field field, ConfigurationParser parser, Type type, Object data) throws ReflectiveOperationException, ValueException {
+    public Node<?> dump(Object object, ConfigurationParser parser, Type type, Object data) throws ReflectiveOperationException, ValueException {
         Class<?> cls = ReflectionUtil.toClass(type);
 
         MapNode parent = new MapNode(null);
@@ -100,7 +100,7 @@ public class ConfigurationType implements ValueType<Object> {
                 if (value.transientValue()) continue;
             }
 
-            Node<?> node = parser.dumpObject(data, f, f.getGenericType(), f.get(data));
+            Node<?> node = parser.dumpObject(data, f.getGenericType(), f.get(data));
             node.setName(name);
             node.setComments(comments);
             node.setParent(parent);

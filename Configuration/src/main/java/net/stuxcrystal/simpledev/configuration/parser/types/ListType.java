@@ -35,12 +35,12 @@ import java.util.List;
  */
 public class ListType implements ValueType<List<?>> {
     @Override
-    public boolean isValidType(Object object, Field field, Type cls) throws ReflectiveOperationException {
+    public boolean isValidType(Object object, Type cls) throws ReflectiveOperationException {
         return ReflectionUtil.toClass(cls).isAssignableFrom(List.class) && ReflectionUtil.getGenericArguments(cls).length == 1;
     }
 
     @Override
-    public List<?> parse(Object object, Field field, ConfigurationParser parser, Type cls, Node<?> value) throws ReflectiveOperationException, ValueException {
+    public List<?> parse(Object object, ConfigurationParser parser, Type cls, Node<?> value) throws ReflectiveOperationException, ValueException {
         Node<?>[] children = ((Node<Node<?>[]>) value).getData();
         if (children == null) return new ArrayList(0);
 
@@ -48,21 +48,21 @@ public class ListType implements ValueType<List<?>> {
         List data = new ArrayList(children.length);
 
         for (Node<?> node : children) {
-            data.add(parser.parseObject(object, field, type, node));
+            data.add(parser.parseObject(object, type, node));
         }
 
         return data;
     }
 
     @Override
-    public Node<?> dump(Object object, Field field, ConfigurationParser parser, Type cls, Object data) throws ReflectiveOperationException, ValueException {
+    public Node<?> dump(Object object, ConfigurationParser parser, Type cls, List<?> data) throws ReflectiveOperationException, ValueException {
         Type type = ReflectionUtil.getGenericArguments(cls)[0];
 
-        Node<?>[] children = new Node<?>[((List<?>) data).size()];
+        Node<?>[] children = new Node<?>[data.size()];
         MapNode parent = new ArrayNode(null);
-        for (int i = 0; i < ((List<?>) data).size(); i++) {
-            Object obj = ((List<?>) data).get(i);
-            Node<?> node = parser.dumpObject(object, field, type, obj);
+        for (int i = 0; i < data.size(); i++) {
+            Object obj = data.get(i);
+            Node<?> node = parser.dumpObject(object, type, obj);
             node.setParent(parent);
             node.setComments(new String[0]);
             children[i] = node;
