@@ -17,6 +17,9 @@ package net.stuxcrystal.simpledev.commands.translations.contrib.simple;
 
 import net.stuxcrystal.simpledev.commands.CommandExecutor;
 import net.stuxcrystal.simpledev.commands.translations.TranslationManager;
+import net.stuxcrystal.simpledev.commands.translations.ValueResolver;
+import net.stuxcrystal.simpledev.commands.translations.contrib.EnumResolver;
+import net.stuxcrystal.simpledev.commands.translations.contrib.PrefixingResolver;
 import net.stuxcrystal.simpledev.commands.utils.MessageColor;
 
 import java.util.*;
@@ -155,6 +158,7 @@ public class SimpleTranslationManager implements TranslationManager {
      * Adds an {@link ValueResolver} that is providing the default variables.
      * @param resolver The resolver to add.
      */
+    @Override
     public void addValueResolver(ValueResolver resolver) {
         this.resolvers.add(resolver);
     }
@@ -163,6 +167,7 @@ public class SimpleTranslationManager implements TranslationManager {
      * Removes an {@link ValueResolver} from this translation manager.
      * @param resolver The resolver to remove.
      */
+    @Override
     public void removeValueResolver(ValueResolver resolver) {
         this.resolvers.remove(resolver);
     }

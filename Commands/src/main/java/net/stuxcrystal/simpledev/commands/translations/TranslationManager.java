@@ -17,4 +17,16 @@ public interface TranslationManager {
      */
     public String translate(CommandExecutor executor, String key, Object... values);
 
+    /**
+     * Adds an {@link ValueResolver} that is providing the default variables.
+     * @param resolver The resolver to add.
+     */
+    public void addValueResolver(ValueResolver resolver);
+
+    /**
+     * Removes an {@link ValueResolver} from this translation manager.
+     * @param resolver The resolver to remove.
+     */
+    public void removeValueResolver(ValueResolver resolver);
+
 }
