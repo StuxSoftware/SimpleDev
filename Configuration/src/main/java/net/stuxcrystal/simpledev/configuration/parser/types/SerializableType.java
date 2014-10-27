@@ -29,7 +29,6 @@ import java.lang.reflect.Type;
 /**
  * Allows to store serializable data.
  */
-// TODO: Remove snakeyaml dependency.
 public class SerializableType implements ValueType<Object> {
     @Override
     public boolean isValidType(Object object, Type cls) throws ReflectiveOperationException {
