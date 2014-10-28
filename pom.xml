@@ -30,7 +30,6 @@
         <!-- Core -->
         <module>Configuration</module>
         <module>Commands</module>
-        <module>Internationalization</module>
 
         <!-- Example Project -->
         <module>ExampleProject</module>

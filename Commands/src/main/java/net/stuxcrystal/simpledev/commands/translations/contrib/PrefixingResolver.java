@@ -1,6 +1,7 @@
 package net.stuxcrystal.simpledev.commands.translations.contrib;
 
 import net.stuxcrystal.simpledev.commands.CommandExecutor;
+import net.stuxcrystal.simpledev.commands.translations.TranslationManager;
 import net.stuxcrystal.simpledev.commands.translations.ValueResolver;
 
 import java.util.LinkedHashMap;
@@ -35,14 +36,9 @@ public class PrefixingResolver implements ValueResolver {
     }
 
     @Override
-    public Map<String, String> getFormatMap(CommandExecutor executor) {
-        Map<String, String> proxied = this.resolver.getFormatMap(executor);
-        Map<String, String> newMap = new LinkedHashMap<>(proxied.size());
-
-        for (Map.Entry<String, String> entry : proxied.entrySet()) {
-            newMap.put(this.prefix + entry.getKey(), entry.getValue());
-        }
-
-        return newMap;
+    public Object get(TranslationManager manager, CommandExecutor<?> executor, String name) {
+        if (name.startsWith(prefix))
+            return this.resolver.get(manager, executor, name.substring(prefix.length()));
+        return null;
     }
 }

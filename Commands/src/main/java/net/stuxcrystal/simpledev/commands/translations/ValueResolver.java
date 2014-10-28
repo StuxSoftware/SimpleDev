@@ -11,9 +11,11 @@ public interface ValueResolver {
 
     /**
      * Contains the map for values.
-     * @param executor The executor of the translation.
+     * @param manager    The manager that uses the translation.
+     * @param executor   The executor that
+     * @param name       The name of the object.
      * @return The map with the values.
      */
-    public Map<String, String> getFormatMap(CommandExecutor executor);
+    public Object get(TranslationManager manager, CommandExecutor<?> executor, String name);
 
 }

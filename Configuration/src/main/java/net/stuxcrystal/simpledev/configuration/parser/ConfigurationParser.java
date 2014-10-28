@@ -73,9 +73,10 @@ public class ConfigurationParser {
      * @throws net.stuxcrystal.simpledev.configuration.parser.exceptions.ValueException
      *                                      Incorrect usage.
      */
+    @SuppressWarnings("unchecked")
     public Node<?> dumpObject(Object object, Type cls, Object o) throws ReflectiveOperationException, ValueException {
 
-        for (ValueType<?> type : this.loader.types) {
+        for (ValueType type : this.loader.types) {
             if (type.isValidType(object, cls)) {
                 return type.dump(object, this, cls, o);
             }

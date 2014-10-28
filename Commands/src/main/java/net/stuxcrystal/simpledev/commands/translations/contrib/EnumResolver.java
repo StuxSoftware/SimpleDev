@@ -1,8 +1,10 @@
 package net.stuxcrystal.simpledev.commands.translations.contrib;
 
 import net.stuxcrystal.simpledev.commands.CommandExecutor;
+import net.stuxcrystal.simpledev.commands.translations.TranslationManager;
 import net.stuxcrystal.simpledev.commands.translations.ValueResolver;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -13,25 +15,23 @@ import java.util.Map;
 public class EnumResolver implements ValueResolver {
 
     /**
-     * The reference to an enumeration.
+     * Contains all objects.
      */
-    private final Class<?> enumeration;
+    private final Map<String, Enum> constantMap;
 
     /**
      * The enumeration for the values.
      * @param enumeration The enumeration to add.
      */
     public EnumResolver(Class<?> enumeration) {
-        this.enumeration = enumeration;
+        this.constantMap = new HashMap<>(enumeration.getEnumConstants().length);
+        for (Enum constant : (Enum[])enumeration.getEnumConstants()) {
+            this.constantMap.put(constant.name(), constant);
+        }
     }
 
     @Override
-    public Map<String, String> getFormatMap(CommandExecutor executor) {
-        Enum[] constants = (Enum[])enumeration.getEnumConstants();
-        Map<String, String> result = new LinkedHashMap<>(constants.length);
-        for (Enum constant : constants) {
-            result.put(constant.name(), constant.toString());
-        }
-        return result;
+    public Enum get(TranslationManager manager, CommandExecutor<?> executor, String name) {
+        return this.constantMap.get(name);
     }
 }
