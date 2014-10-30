@@ -359,7 +359,7 @@ public class ModuleConfigurationLoader {
     }
 
     /**
-     * Loads the configuration file and writes its contents back to the harddrive.
+     * Loads the configuration file and writes its contents back to the backend.
      *
      * @param name   The name of the configuration file. (May be {@code null} if you want to use the main configuration).
      * @param world  The world that this configuration applies. (May be {@code null} to denote a global configuration).
