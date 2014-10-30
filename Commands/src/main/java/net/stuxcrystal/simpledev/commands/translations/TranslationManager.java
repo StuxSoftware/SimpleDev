@@ -75,7 +75,7 @@ public class TranslationManager {
         // Internal warnings.
         defaults.put(
                 "internal.threading.no-scheduler",
-                "[CommandHandler::Scheduler] Your platform does not support scheduling... Falling back to standard threads."
+                "[CommandHandler::Scheduler] Your platform does not support scheduling... Using internal scheduler."
         );
         defaults.put(
                 "internal.permissions.op-default",
