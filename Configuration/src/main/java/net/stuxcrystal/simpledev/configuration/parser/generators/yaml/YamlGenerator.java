@@ -51,8 +51,8 @@ public class YamlGenerator implements NodeTreeGenerator {
     }
 
     @Override
-    public boolean isValidFile(File file) throws IOException {
-        return file.getName().endsWith(".yml") || file.getName().endsWith(".yaml");
+    public boolean isValidFileName(String name) throws IOException {
+        return name.endsWith(".yml") || name.endsWith(".yaml");
     }
 
     @Override

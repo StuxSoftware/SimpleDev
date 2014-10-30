@@ -122,7 +122,7 @@ public class ConfigurationHandler {
      */
     @SuppressWarnings("unchecked")
     public <T> T parseFile(File file, Class<? extends T> cls) throws ConfigurationException {
-        NodeTreeGenerator usedGenerator = this.getTreeGenerator(file);
+        NodeTreeGenerator usedGenerator = this.getTreeGenerator(file.getName());
 
         if (usedGenerator == null)
             throw new ValueException("File type not supported.");
@@ -136,14 +136,14 @@ public class ConfigurationHandler {
 
     /**
      * Returns the generator for the file.
-     * @param file The file.
+     * @param name The name of the file.
      * @return The node tree generator.
      */
-    public NodeTreeGenerator getTreeGenerator(File file) throws ConfigurationException {
+    public NodeTreeGenerator getTreeGenerator(String name) throws ConfigurationException {
         NodeTreeGenerator usedGenerator = null;
         for (NodeTreeGenerator generator : this.generators) {
             try {
-                if (generator.isValidFile(file)) {
+                if (generator.isValidFileName(name)) {
                     usedGenerator = generator;
                     break;
                 }
@@ -187,7 +187,7 @@ public class ConfigurationHandler {
         FileBasedStorageBackend.createFile(file);
         Node<?> nodes = dumpConfiguration(configuration);
 
-        NodeTreeGenerator usedGenerator = this.getTreeGenerator(file);
+        NodeTreeGenerator usedGenerator = this.getTreeGenerator(file.getName());
 
         if (usedGenerator == null)
             throw new ValueException("File type not supported.");

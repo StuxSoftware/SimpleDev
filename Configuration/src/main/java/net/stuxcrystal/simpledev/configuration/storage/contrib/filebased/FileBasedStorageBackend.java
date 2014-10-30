@@ -12,16 +12,31 @@ import java.io.IOException;
 public class FileBasedStorageBackend implements StorageBackend {
 
     /**
+     * Makes the file canonical.
+     *
+     * @param file The file to make canonical.
+     * @return The new file object.
+     */
+    private static File toAbsoluteCanonicalFile(File file) {
+        file = file.getAbsoluteFile();
+        try {
+            file = file.getCanonicalFile();
+        } catch (IOException ignored) {
+        }
+        return file;
+    }
+
+    /**
      * Joins a file.
      * @param base   The base directory.
      * @param names  The path chunks to join.
      * @return File to the joined path.
      */
     private static File join(File base, String... names) {
-        File current = base;
+        StringBuilder sb = new StringBuilder(FileBasedStorageBackend.toAbsoluteCanonicalFile(base).getPath());
         for (String name : names)
-            current = new File(current, name);
-        return current;
+            sb.append(File.separator).append(name);
+        return new File(sb.toString());
     }
 
     /**
@@ -63,14 +78,23 @@ public class FileBasedStorageBackend implements StorageBackend {
     public ConfigurationLocation getConfiguration(String[] module, String world, String name) {
         File directory = FileBasedStorageBackend.join(this.baseDirectory, module);
 
+        // Disallow "worlds" as module-name.
+        for (String modName : module)
+            if ("worlds".equalsIgnoreCase(modName))
+                throw new IllegalArgumentException("'worlds' is an illegal name for a module.");
+
+        // Use config as default name.
         if (name == null)
             name = "config";
+        // Disallow config as module name.
         else if (name.equalsIgnoreCase("config"))
             throw new IllegalArgumentException("'config' is a reserved configuration name.");
 
+        // Make world specific file names.
         if (world != null)
             directory = FileBasedStorageBackend.join(directory, world);
 
+        // Add default file extension if there is no file extension.
         if (!name.contains(".")) {
             name += this.defaultEnding;
         }

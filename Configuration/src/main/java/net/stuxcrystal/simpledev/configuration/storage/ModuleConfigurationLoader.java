@@ -101,15 +101,24 @@ public class ModuleConfigurationLoader {
     }
 
     /**
-     * Returns the module path.
-     * @return The module path. Empty array on root modules.
+     * Returns the module path (Non-Recursive)
+     * @return The path to the module.
      */
     public String[] getModulePath() {
+        return this.getModulePath(false);
+    }
+
+    /**
+     * Returns the module path.
+     * @param recursive Should the path only determined until the first storage backend has been found?
+     * @return The module path. Empty array on root modules.
+     */
+    public String[] getModulePath(boolean recursive) {
         List<String> path = new ArrayList<>();
 
         // Get path.
         ModuleConfigurationLoader current = this;
-        while (current.getModuleName() != null) {
+        while (current.getModuleName() != null || (!recursive && current.backend == null)) {
             path.add(current.getModuleName());
             current = current.parent;
         }

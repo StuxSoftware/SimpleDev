@@ -35,8 +35,8 @@ public class XmlGenerator implements NodeTreeGenerator {
     }
 
     @Override
-    public boolean isValidFile(File file) throws IOException {
-        return file.getName().endsWith(".xml");
+    public boolean isValidFileName(String name) throws IOException {
+        return name.endsWith(".xml");
     }
 
     @Override

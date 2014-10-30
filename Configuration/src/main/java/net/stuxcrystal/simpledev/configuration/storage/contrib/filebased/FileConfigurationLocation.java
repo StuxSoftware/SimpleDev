@@ -55,8 +55,9 @@ public class FileConfigurationLocation implements ConfigurationLocation {
     @Override
     public NodeTreeGenerator getNodeTreeGenerator(ConfigurationHandler handler) {
         try {
-            return handler.getTreeGenerator(this.file);
+            return handler.getTreeGenerator(this.file.getName());
         } catch (ConfigurationException e) {
+            handler.getLoggingInterface().debugException(e);
             return null;
         }
     }

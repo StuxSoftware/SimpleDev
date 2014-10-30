@@ -41,11 +41,11 @@ public interface NodeTreeGenerator {
      * <p/>
      * This method has to be executed quietly.
      *
-     * @param file The file to be parsed.
+     * @param name The name of the file that should be parsed.
      * @return true if the file can be parsed using this node-tree-generator.
      * @throws java.io.IOException if an IO-Operation failed.
      */
-    public boolean isValidFile(File file) throws IOException;
+    public boolean isValidFileName(String name) throws IOException;
 
     /**
      * Parses a stream.
