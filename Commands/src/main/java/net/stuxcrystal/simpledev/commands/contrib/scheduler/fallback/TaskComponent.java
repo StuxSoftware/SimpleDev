@@ -7,6 +7,7 @@ import net.stuxcrystal.simpledev.commands.component.ComponentContainer;
 import net.stuxcrystal.simpledev.commands.contrib.scheduler.SchedulerImplementation;
 import net.stuxcrystal.simpledev.commands.contrib.scheduler.Task;
 
+import java.lang.ref.WeakReference;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -20,7 +21,7 @@ import java.util.logging.Level;
  *     used when accuracy is of primary importance to the task you use.
  * </p>
  */
-public class TaskComponent implements ComponentContainer, SchedulerImplementation {
+public class TaskComponent implements ComponentContainer, SchedulerImplementation, Runnable {
 
     /**
      * The task queue created lazily.
@@ -28,11 +29,35 @@ public class TaskComponent implements ComponentContainer, SchedulerImplementatio
     private ScheduledExecutorService queue;
 
     /**
-     * Creates a new task-component.
+     * A reference to the command handler.
      */
-    public TaskComponent() {
-        this.queue = Executors.newSingleThreadScheduledExecutor();
+    private WeakReference<CommandBackend> backend;
+
+    /**
+     * Make sure we have a weak reference to the actual backend.
+     * @param backend The backend to use.
+     * @return The internal scheduler.
+     */
+    private ScheduledExecutorService getInternalScheduler(CommandBackend backend) {
+        if (this.backend == null || this.backend.get() == null) {
+            this.backend = new WeakReference<>(backend);
+            if (this.queue != null) {
+                this.queue.shutdownNow();
+                this.queue = null;
+            }
+        }
+
+        if (!backend.equals(this.backend.get()))
+            throw new IllegalArgumentException("Invalid command backend.");
+
+        if (this.queue == null) {
+            this.queue = Executors.newSingleThreadScheduledExecutor();
+            this.queue.scheduleAtFixedRate(this, 100, 100, TimeUnit.MILLISECONDS);
+        }
+
+        return this.queue;
     }
+
     /**
      * Schedules a new task.
      * @param backend   The backend the task runs on.
@@ -169,4 +194,11 @@ public class TaskComponent implements ComponentContainer, SchedulerImplementatio
      */
     @Component
     public void __scheduler_exists() {}
+
+    @Override
+    public void run() {
+        if (this.backend.get() == null) {
+            this.queue.shutdownNow();
+        }
+    }
 }

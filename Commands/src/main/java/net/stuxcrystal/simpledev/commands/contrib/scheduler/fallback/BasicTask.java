@@ -4,6 +4,7 @@ import net.stuxcrystal.simpledev.commands.CommandBackend;
 import net.stuxcrystal.simpledev.commands.CommandHandler;
 import net.stuxcrystal.simpledev.commands.contrib.scheduler.Task;
 
+import java.lang.ref.WeakReference;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Level;
@@ -19,16 +20,16 @@ public class BasicTask implements Task {
     private class TaskRunner implements Runnable {
 
         /**
-         * The backend for commands.
+         * The backend for commands. (Weak reference to allow dereferencing)
          */
-        private final CommandBackend backend;
+        private final WeakReference<CommandBackend> backend;
 
         /**
          * Creates the backend.
          * @param backend The backend.
          */
         private TaskRunner(CommandBackend backend) {
-            this.backend = backend;
+            this.backend = new WeakReference<>(backend);
         }
 
         /**
@@ -36,7 +37,9 @@ public class BasicTask implements Task {
          */
         @Override
         public void run() {
-            BasicTask.this.execute(this.backend.getCommandHandler().getRootCommandHandler());
+            CommandBackend backend = this.backend.get();
+            if (backend != null)
+                BasicTask.this.execute(backend.getCommandHandler().getRootCommandHandler());
         }
     }
 
