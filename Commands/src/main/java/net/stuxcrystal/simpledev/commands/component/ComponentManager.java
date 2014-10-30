@@ -15,9 +15,9 @@ import java.util.concurrent.FutureTask;
 public class ComponentManager {
 
     /**
-     * Components of the command handler.
+     * Contains all methods.
      */
-    private List<ComponentMethod> methods = new ArrayList<>();
+    private LinkedHashMap<Method, ComponentMethod> methods = new LinkedHashMap<>();
 
     /**
      * Actual registered classes.
@@ -51,15 +51,27 @@ public class ComponentManager {
         }
 
         for (Method method : componentType.getDeclaredMethods()) {
+            // Make sure we didn't already check the method.
+            if (this.methods.containsKey(method))
+                continue;
+
+            // Make sure we can access the method.
             if (!method.isAccessible())
                 method.setAccessible(true);
 
+            // Make sure the method is not abstract.
+            if (Modifier.isAbstract(method.getModifiers()))
+                continue;
+
+            // Make sure we can actually call the method.
             if (!Modifier.isStatic(method.getModifiers()) && component==null)
                 continue;
 
+            // Check if the method is actually a component class.
             if (!method.isAnnotationPresent(Component.class))
                 continue;
 
+            // Get parameters.
             Class<?>[] params = method.getParameterTypes();
 
             // Empty function parameters are not supported.
@@ -76,7 +88,8 @@ public class ComponentManager {
                                 "First parameter must be a subclass of HandlerWrapper"
                 );
 
-            this.methods.add(new ComponentMethod(method, component, method.getAnnotation(Component.class)));
+            // Add the method.
+            this.methods.put(method, new ComponentMethod(method, component, method.getAnnotation(Component.class)));
         }
 
         this.classes.add(componentType);
@@ -118,37 +131,17 @@ public class ComponentManager {
      */
     @SuppressWarnings("unchecked")
     public <T> T call(String name, HandleWrapper self, Object[] params) throws Throwable {
-        // Find suitable method for handler wrapper.
-        ComponentMethod method = null;
+        // Resolve the parameters.
+        Class<?>[] types = new Class[params.length];
+        for (int i = 0; i<types.length; i++)
+            types[i] = params.getClass();
 
-        component_iterator:
-        for (ComponentMethod m : this.methods) {
-            // Check name.
-            if (!m.getName().equals(name))
-                continue;
-
-            // Check self parameter.
-            if (!m.getSelfParameter().isInstance(self))
-                continue;
-
-            Class<?>[] types = m.getParameters();
-            // Check parameter length.
-            if (params.length != types.length)
-                continue;
-
-            // Check instances.
-            for (int i = 0; i<types.length; i++) {
-                if (!types[i].isInstance(params[i]))
-                    continue component_iterator;
-            }
-
-            method = m;
-            break;
-        }
+        // Find most specific method for handler wrapper.
+        ComponentMethod method = this.getMethod(true, name, self.getClass(), types);
 
         // If none was found, throw IllegalArgumentException.
         if (method == null)
-            throw new IllegalArgumentException("Unknown extension method.");
+            throw new IllegalArgumentException("Unknown method.");
 
         return (T)this.call(method, self, params);
     }
@@ -162,8 +155,29 @@ public class ComponentManager {
      * @return {@code true} if so.
      */
     public boolean hasMethod(String name, Class<? extends HandleWrapper> wrapper, Class<?>... paramTypes) {
+        return this.getMethod(false, name, wrapper, paramTypes) != null;
+    }
+
+    /**
+     * <p>Returns the method we are searching for.</p>
+     * <p>
+     *     If resolve is true, we will return the most specific method that holds for these parameter types.
+     *     Please note that this will drastically slow down method resolution.
+     * </p>
+     *
+     * @param resolve       Just try to resolve the method.
+     * @param name          The name of the extension function.
+     * @param wrapper       The wrapper.
+     * @param paramTypes    The param types.
+     * @return The actual method that should be called.
+     */
+    private ComponentMethod getMethod(boolean resolve, String name, Class<? extends HandleWrapper> wrapper, Class<?>... paramTypes) {
+        // The result method.
+        HashSet<ComponentMethod> result = new HashSet<>();
+
+        // Check the
         component_iterator:
-        for (ComponentMethod m : this.methods) {
+        for (ComponentMethod m : this.methods.values()) {
             // Check name.
             if (!m.getName().equals(name))
                 continue;
@@ -183,17 +197,106 @@ public class ComponentManager {
                     continue component_iterator;
             }
 
-            return true;
+            // If we don't wanna find the method with the best suitable arguments,
+            if (!resolve)
+                return m;
+            else
+                result.add(m);
         }
 
-        return false;
+        // Return null if we found nothing
+        if (result.size() == 0)
+            return null;
+
+        // Return the only method left
+        if (result.size() == 1)
+            return result.toArray(new ComponentMethod[1])[0];
+
+        // Start to get the most specific method.
+        boolean methodDiscarded = true;
+        while (methodDiscarded) {
+            methodDiscarded = false;
+
+            // The current list of methods.
+            HashSet<ComponentMethod> current = new HashSet<>(result);
+            for (ComponentMethod upper : current) {
+                // The method has already been discarded.
+                if (!result.contains(upper))
+                    continue;
+
+                Class<?>[] upperParams = upper.getParameters();
+
+                // Iterate over the lover parameters.
+                lower_it:
+                for (ComponentMethod lower : current) {
+                    // Do not check the same method.
+                    if (upper == lower)
+                        continue;
+
+                    // The method has already been discarded.
+                    if (!result.contains(lower))
+                        continue;
+
+                    Class<?>[] lowerParams = lower.getParameters();
+
+                    for (int i = 0; i<upperParams.length; i++) {
+                        // Ignore parameters with the same parameter types.
+                        if (lowerParams[i].equals(upperParams[i]))
+                            continue;
+
+                        // If this function is more specific than the upper one,
+                        // do not remove this function.
+                        if (!lowerParams[i].isAssignableFrom(upperParams[i]))
+                            break;
+
+                        // If this is not the most specific function, discard the function.
+                        result.remove(lower);
+                        methodDiscarded = true;
+
+                        // And stop iterating over the parameters.
+                        break lower_it;
+                    }
+                }
+            }
+        }
+
+        ComponentMethod cm = null;
+
+        // Slow version: Determine the most specific method with the self parameter.
+        if (result.size() > 1) {
+            for (ComponentMethod method : result) {
+                // First method.
+                if (cm == null)
+                    cm = method;
+
+                    // Get the more specific of the two methods.
+                else if (cm.getSelfParameter().isAssignableFrom(method.getSelfParameter()))
+                    cm = method;
+            }
+
+            // cm cannot be null.
+            assert cm != null;
+
+            for (ComponentMethod method : result) {
+                if (method == cm)
+                    continue;
+                if (cm.getSelfParameter().equals(method.getSelfParameter()))
+                    throw new IllegalArgumentException("Ambiguous methods...");
+            }
+
+        // Fast: There is only one, we won't try to determine the actual method.
+        } else {
+            cm = result.toArray(new ComponentMethod[1])[0];
+        }
+
+        return cm;
     }
 
     /**
      * Actually calls the method.
      * @param method The method that has been called.
      * @param params The params that were passed.
-     * @return The result of the call. (Or a future in case of asynchronous functions)
+     * @return The result of the call.
      */
     @SuppressWarnings({"rawtype", "unchecked"})
     private Object call(ComponentMethod method, Object self, Object[] params) throws Throwable {
