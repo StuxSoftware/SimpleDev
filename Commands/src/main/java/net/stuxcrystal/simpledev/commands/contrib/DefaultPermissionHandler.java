@@ -49,6 +49,7 @@ public final class DefaultPermissionHandler implements PermissionHandler {
      * @return true If the executor has the permission.
      */
     @Override
+    @SuppressWarnings("unchecked")
     public boolean hasPermission(CommandExecutor<?> executor, String node) {
         Boolean result = this.handler.getServerBackend().hasPermission(executor, node);
         if (result == null) {
