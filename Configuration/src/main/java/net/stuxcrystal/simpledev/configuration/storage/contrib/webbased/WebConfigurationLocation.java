@@ -11,7 +11,12 @@ import java.io.OutputStream;
 import java.net.URI;
 
 /**
- * Represents a file which configuration location is on the web.
+ * <p>Represents a file which configuration location is on the web.</p>
+ * <p>
+ *     Designed to allow sub-modules to retrieve (or store) the configuration files online.
+ *     Particularly good for licensing stuff where you may download which configuration
+ *     may be used online.
+ * </p>
  */
 public class WebConfigurationLocation implements ConfigurationLocation {
 
