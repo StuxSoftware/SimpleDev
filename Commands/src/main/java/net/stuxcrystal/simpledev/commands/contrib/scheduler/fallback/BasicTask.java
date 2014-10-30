@@ -13,8 +13,41 @@ import java.util.logging.Level;
  */
 public class BasicTask implements Task {
 
+    /**
+     * Runnable that will be passed to the scheduler.
+     */
+    private class TaskRunner implements Runnable {
+
+        /**
+         * The backend for commands.
+         */
+        private final CommandBackend backend;
+
+        /**
+         * Creates the backend.
+         * @param backend The backend.
+         */
+        private TaskRunner(CommandBackend backend) {
+            this.backend = backend;
+        }
+
+        /**
+         * Runs the task.
+         */
+        @Override
+        public void run() {
+            BasicTask.this.execute(this.backend.getCommandHandler().getRootCommandHandler());
+        }
+    }
+
+    /**
+     * Internal bootstrapper for the task execution.
+     */
     private class Runner implements Runnable {
 
+        /**
+         * The command backend for the task.
+         */
         private final CommandBackend backend;
 
         private Runner(CommandBackend backend) {
@@ -62,7 +95,7 @@ public class BasicTask implements Task {
      * Creates a new task.
      * @param runnable  The runnable that should be called.
      * @param async     Should the task be executed asynchronously?
-     * @param repeat    The next task to execute.
+     * @param repeat    The repeat period time.
      */
     public BasicTask(Runnable runnable, Boolean async, int repeat) {
         this.runnable = runnable;
@@ -89,6 +122,15 @@ public class BasicTask implements Task {
     }
 
     /**
+     * Makes this task a runnable.
+     * @param backend The backend to pass.
+     * @return The runnable.
+     */
+    Runnable getRunnable(CommandBackend backend) {
+        return new TaskRunner(backend);
+    }
+
+    /**
      * Actually executes the runnables.
      */
     private void _execute(CommandBackend backend) {
@@ -100,22 +142,6 @@ public class BasicTask implements Task {
         }
 
         this.taskCompleted();
-    }
-
-    /**
-     * Sets the next execution time.
-     * @param delay The delay.
-     */
-    void setNextDelay(int delay) {
-        this.nextExecutionTime.set(System.currentTimeMillis() + delay);
-    }
-
-    /**
-     * Returns the next time when the task should be executed.
-     * @return The next execution time.
-     */
-    long getNextExecutionTime() {
-        return this.nextExecutionTime.get();
     }
 
     /**
@@ -132,8 +158,6 @@ public class BasicTask implements Task {
     private void taskCompleted() {
         if (this.getRepeatPeriod() > 0)
             this.completed.set(true);
-        else
-            this.setNextDelay(this.repeat);
     }
 
     /**

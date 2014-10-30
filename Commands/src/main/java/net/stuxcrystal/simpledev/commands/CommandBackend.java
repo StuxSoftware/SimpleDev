@@ -131,7 +131,7 @@ public abstract class CommandBackend<T, P> extends HandleWrapper<T> {
     public Scheduler getScheduler() {
         if (!this.getCommandHandler().hasFunction("__scheduler_exists", CommandBackend.class)) {
             this.getCommandHandler().registerComponent(new TaskComponent());
-            this.getLogger().warning("Beware the default scheduler is not exact...");
+            this.getLogger().warning("Beware that the delay may not be accurate.");
         }
         return this.getComponent(Scheduler.class);
     }

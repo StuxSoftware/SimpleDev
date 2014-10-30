@@ -7,6 +7,9 @@ import net.stuxcrystal.simpledev.commands.component.ComponentContainer;
 import net.stuxcrystal.simpledev.commands.contrib.scheduler.SchedulerImplementation;
 import net.stuxcrystal.simpledev.commands.contrib.scheduler.Task;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 /**
@@ -22,26 +25,14 @@ public class TaskComponent implements ComponentContainer, SchedulerImplementatio
     /**
      * The task queue created lazily.
      */
-    private TaskQueue queue;
+    private ScheduledExecutorService queue;
 
     /**
-     * Retrieves the task queue associated with the component.
-     *
-     * @param backend The backend used to create a new queue if needed.
-     * @return The task queue.
+     * Creates a new task-component.
      */
-    private TaskQueue getQueue(CommandBackend backend) {
-        CommandHandler handler = backend.getCommandHandler().getRootCommandHandler();
-        if (this.queue != null) {
-            if (!handler.equals(this.queue.getCommandHandler()))
-                throw new IllegalArgumentException("Incompatible command backend");
-        } else {
-            this.queue = new TaskQueue(handler);
-            this.queue.start();
-        }
-        return this.queue;
+    public TaskComponent() {
+        this.queue = Executors.newSingleThreadScheduledExecutor();
     }
-
     /**
      * Schedules a new task.
      * @param backend   The backend the task runs on.
@@ -53,10 +44,12 @@ public class TaskComponent implements ComponentContainer, SchedulerImplementatio
      */
     @Component
     public synchronized Task scheduleTask(CommandBackend backend, Runnable runnable, int delay, int repeat, boolean async) {
-        TaskQueue queue = this.getQueue(backend);
         BasicTask task = new BasicTask(runnable, async, repeat);
-        task.setNextDelay(delay);
-        queue.addTask(task);
+        if (repeat == 0) {
+            this.queue.schedule(task.getRunnable(backend), delay, TimeUnit.MILLISECONDS);
+        } else {
+            this.queue.scheduleAtFixedRate(task.getRunnable(backend), delay, repeat, TimeUnit.MILLISECONDS);
+        }
         return task;
     }
 
@@ -135,7 +128,7 @@ public class TaskComponent implements ComponentContainer, SchedulerImplementatio
     }
 
     /**
-     * Just runs a task.
+     * Just runs a task synchronized.
      * @param backend  The backend the task runs on.
      * @param runnable The runnable to schedule.
      * @return A new task object.
@@ -143,11 +136,10 @@ public class TaskComponent implements ComponentContainer, SchedulerImplementatio
     @Component
     public Task runTask(CommandBackend backend, Runnable runnable) {
         BasicTask task = new BasicTask(runnable, null, 0);
-        task.setNextDelay(0);
 
         // Make our life simpler by directly executing the task when in main thread.
         if (!backend.inMainThread())
-            backend.scheduleSync(new TaskExecutor(task, backend.getCommandHandler()));
+            backend.scheduleSync(task.getRunnable(backend));
         else {
             try {
                 task.execute(backend.getCommandHandler());
@@ -168,8 +160,7 @@ public class TaskComponent implements ComponentContainer, SchedulerImplementatio
     @Component
     public Task runTaskAsync(CommandBackend backend, Runnable runnable) {
         BasicTask task = new BasicTask(runnable, null, 0);
-        task.setNextDelay(0);
-        backend.scheduleAsync(new TaskExecutor(task, backend.getCommandHandler()));
+        backend.scheduleAsync(task.getRunnable(backend));
         return task;
     }
 
