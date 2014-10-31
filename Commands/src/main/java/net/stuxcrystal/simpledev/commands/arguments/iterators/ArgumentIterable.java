@@ -95,6 +95,7 @@ public abstract class ArgumentIterable extends AbstractArgumentIterable<String> 
      * @param start The first argument that is included in the slice.
      * @param stop  The first argument that should <b>not</b> be included in the slice.
      * @param step  The step or stride that should be between each object.
+     *              (If this value is negative, the list will be traversed in reverse order)
      * @return A slice of the arguments.
      */
     public ArgumentIterable slice(Integer start, Integer stop, Integer step) {
@@ -149,14 +150,6 @@ public abstract class ArgumentIterable extends AbstractArgumentIterable<String> 
      */
     public ArgumentIterable step(int step) {
         return this.slice(null, null, step);
-    }
-
-    /**
-     * Reverses the order of the arguments.
-     * @return The reversed order of the arguments.
-     */
-    public ArgumentIterable reverse() {
-        return this.step(-1);
     }
 
     /**
