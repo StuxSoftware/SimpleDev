@@ -150,7 +150,7 @@ class SliceIterable extends ArgumentIterable {
     public <T> T get(int index, Class<T> cls) {
         int rindex = this.getRealIndex(index);
         if (rindex == -1)
-            throw new ArrayIndexOutOfBoundsException(index);
+            throw new IndexOutOfBoundsException(this.outOfBoundsMsg(index));
         return this.getParent().get(this.slice.start + rindex * this.slice.step, cls);
     }
 }

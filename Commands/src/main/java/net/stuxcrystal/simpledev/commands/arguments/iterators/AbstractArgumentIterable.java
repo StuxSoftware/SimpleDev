@@ -78,7 +78,7 @@ public abstract class AbstractArgumentIterable<T> extends AbstractList<T> {
     public T get(int index, T def) {
         try {
             return this.get(index);
-        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+        } catch (NumberFormatException | IndexOutOfBoundsException e) {
             return def;
         }
     }
@@ -121,5 +121,14 @@ public abstract class AbstractArgumentIterable<T> extends AbstractList<T> {
                 return true;
         }
         return false;
+    }
+
+    /**
+     * Copied from JDK 8.
+     * @param index the index that has been passed.
+     * @return The message.
+     */
+    protected String outOfBoundsMsg(int index) {
+        return "Index: "+index+", Size: "+size();
     }
 }

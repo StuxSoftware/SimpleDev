@@ -136,7 +136,7 @@ public class ArgumentList extends ArgumentIterable {
         int preIndex = index;
         index = this.getRealIndex(index);
         if (index == -1)
-            throw new ArrayIndexOutOfBoundsException(preIndex);
+            throw new IndexOutOfBoundsException(this.outOfBoundsMsg(preIndex));
 
         // Make the Class-Instance the Class-Reference to the Wrapper-Type.
         if (clazz.isPrimitive()) {
@@ -195,10 +195,10 @@ public class ArgumentList extends ArgumentIterable {
         endIndex = this.getRealIndex(endIndex, true);         // Exclusive
 
         if (beginIndex < 0)
-            throw new ArrayIndexOutOfBoundsException(pBegin);
+            throw new IndexOutOfBoundsException(this.outOfBoundsMsg(pBegin));
 
         if (endIndex < 0)
-            throw new ArrayIndexOutOfBoundsException(pEnd);
+            throw new IndexOutOfBoundsException(this.outOfBoundsMsg(pEnd));
 
         String[] arguments = (String[]) ArrayUtils.subarray(this.arguments, beginIndex, endIndex);
         return StringUtils.join(arguments, " ");

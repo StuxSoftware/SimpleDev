@@ -60,7 +60,7 @@ public abstract class ArgumentIterable extends AbstractArgumentIterable<String> 
     public <T> T get(int index, Class<T> cls, T def) {
         try {
             return this.get(index, cls);
-        } catch (NumberFormatException | ArrayIndexOutOfBoundsException nfe) {
+        } catch (NumberFormatException | IndexOutOfBoundsException nfe) {
             return def;
         }
     }
@@ -109,6 +109,19 @@ public abstract class ArgumentIterable extends AbstractArgumentIterable<String> 
      */
     public ArgumentIterable slice(Integer start, Integer stop) {
         return this.slice(start, stop, null);
+    }
+
+    /**
+     * Since this list is unmodifiable, we just use our own slice-implementation that provides
+     * these features for us.
+     *
+     * @param fromIndex low endpoint (inclusive) of the subList
+     * @param toIndex   high endpoint (exclusive) of the subList
+     * @return The sublist for the abstract list.
+     */
+    @Override
+    public ArgumentIterable subList(int fromIndex, int toIndex) {
+        return this.slice(fromIndex, toIndex);
     }
 
     /**
@@ -492,6 +505,4 @@ public abstract class ArgumentIterable extends AbstractArgumentIterable<String> 
     protected int getRealIndex(int index) {
         return this.getRealIndex(index, false);
     }
-
-
 }
