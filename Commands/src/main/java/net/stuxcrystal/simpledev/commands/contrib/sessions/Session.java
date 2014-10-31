@@ -93,7 +93,7 @@ public abstract class Session {
      * @return Returns the CommandExecutor this session belongs to.
      */
     public CommandExecutor getCommandExecutor() {
-        return this.handler.getServerBackend().getExecutor(this.name);
+        return this.handler.getServerBackend().getExecutorExact(this.name);
     }
 
     /**

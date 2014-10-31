@@ -68,7 +68,7 @@ public class BukkitPluginBackend extends CommandBackend<Plugin,CommandSender> {
     }
 
     @Override
-    public CommandExecutor<?> getExecutor(String name) {
+    public CommandExecutor<?> getExecutorExact(String name) {
 
         if (name == null || name.isEmpty())
             return wrapSender(this.getHandle().getServer().getConsoleSender());

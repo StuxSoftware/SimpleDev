@@ -81,7 +81,7 @@ public class CanaryPluginBackend extends CommandBackend<Plugin, MessageReceiver>
     }
 
     @Override
-    public CommandExecutor<?> getExecutor(String name) {
+    public CommandExecutor<?> getExecutorExact(String name) {
         if (name == null || name.isEmpty() || "console".equalsIgnoreCase(name)) {
             return wrapReceiver(Canary.getServer());
         }

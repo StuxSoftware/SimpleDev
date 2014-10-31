@@ -58,7 +58,7 @@ public class BungeePluginBackend extends CommandBackend<Plugin, CommandSender> {
     }
 
     @Override
-    public CommandExecutor<?> getExecutor(String name) {
+    public CommandExecutor<?> getExecutorExact(String name) {
         if (name == null || name.isEmpty() || "console".equalsIgnoreCase(name))
             return wrapPlayer(this.getHandle().getProxy().getConsole());
         return wrapPlayer(this.getHandle().getProxy().getPlayer(name));

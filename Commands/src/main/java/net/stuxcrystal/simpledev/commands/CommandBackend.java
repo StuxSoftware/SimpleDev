@@ -18,6 +18,7 @@ package net.stuxcrystal.simpledev.commands;
 import net.stuxcrystal.simpledev.commands.contrib.scheduler.Scheduler;
 import net.stuxcrystal.simpledev.commands.contrib.scheduler.fallback.TaskComponent;
 import net.stuxcrystal.simpledev.commands.utils.HandleWrapper;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.logging.Logger;
 
@@ -98,7 +99,68 @@ public abstract class CommandBackend<T, P> extends HandleWrapper<T> {
      *
      * @param name The name of the executor. If null or empty, the console executor will be returned.
      */
-    public abstract CommandExecutor<?> getExecutor(String name);
+    public abstract CommandExecutor<?> getExecutorExact(String name);
+
+    /**
+     * <p>Tries to match a executor.</p>
+     * <p>
+     *     It tries to match the executor name using these criteria:
+     *     <ol>
+     *         <li>Empty string, {@code null} or "CONSOLE"(case ignored) will always return the console user.</li>
+     *         <li>The exact name</li>
+     *         <li>The exact name disregarding case.</li>
+     *         <li>The name starts with the passed parameter (respecting the case)</li>
+     *         <li>The name starts with the passed parameter (disregarding case)</li>
+     *         <li>The name contains the passed parameter (respecting the case)</li>
+     *         <li>The name contains the passed parameter (disregarding case)</li>
+     *     </ol>
+     * </p>
+     * @param name The name to match.
+     * @return An executor that has been found.
+     */
+    public CommandExecutor<?> getExecutor(String name) {
+        if (StringUtils.isBlank(name) || "CONSOLE".equalsIgnoreCase(name))
+            return this.getConsole();
+
+        CommandExecutor<?>[] executors = this.getPlayers();
+
+        // Check for the exact name.
+        for (CommandExecutor<?> executor : executors) {
+            if (executor.getName().equals(name))
+                return executor;
+        }
+        // Check for names
+        for (CommandExecutor<?> executor : executors) {
+            if (executor.getName().equalsIgnoreCase(name))
+                return executor;
+        }
+
+        // Check for names that starts with the given name.
+        for (CommandExecutor<?> executor : executors) {
+            if (executor.getName().startsWith(name))
+                return executor;
+        }
+
+        // Check for names that start with the given name.
+        for (CommandExecutor<?> executor : executors) {
+            if (executor.getName().toLowerCase().startsWith(name.toLowerCase()))
+                return executor;
+        }
+
+        // Search for any executor that contains the name.
+        for (CommandExecutor<?> executor : executors) {
+            if (executor.getName().contains(name))
+                return executor;
+        }
+
+        // Search for any executor that contains the name not regarding the name.
+        for (CommandExecutor<?> executor : executors) {
+            if (executor.getName().toLowerCase().contains(name.toLowerCase()))
+                return executor;
+        }
+
+        return null;
+    }
 
     /**
      * Wraps a player object.
