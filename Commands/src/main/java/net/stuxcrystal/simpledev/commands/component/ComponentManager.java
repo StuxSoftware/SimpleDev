@@ -171,11 +171,12 @@ public class ComponentManager {
      * @param paramTypes    The param types.
      * @return The actual method that should be called.
      */
+    // TODO: Test it.
     private ComponentMethod getMethod(boolean resolve, String name, Class<? extends HandleWrapper> wrapper, Class<?>... paramTypes) {
         // The result method.
         HashSet<ComponentMethod> result = new HashSet<>();
 
-        // Check the
+        // Get the resolving methods.
         component_iterator:
         for (ComponentMethod m : this.methods.values()) {
             // Check name.

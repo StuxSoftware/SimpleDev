@@ -42,23 +42,7 @@ public class CommandManager {
         if (command.parseArguments())
             this.executeParsed(command, executor, args);
         else
-            this.executeRaw(command, executor, args);
-    }
-
-    /**
-     * Executes the command without parsing.
-     * @param command   Executes the command.
-     * @param executor  The executor that executes the command
-     * @param args      The arguments that have been passed.
-     */
-    private void executeRaw(CommandContainer command, CommandExecutor executor, String[] args) {
-        // Execute Command.
-        if (command.isAsyncCommand())
-            // Asynchronous execution if Command.async is true
-            executor.getBackend().scheduleAsync(new RawCommandExecutionTask(command, executor, args));
-        else
-            // Synchronous execution if Command.async is false.
-            command.execute(executor, args);
+            this.call(new RawCommandExecutionTask(command, executor, args));
     }
 
     /**
@@ -90,13 +74,27 @@ public class CommandManager {
             return;
         }
 
-        // Execute Command.
-        if (command.isAsyncCommand())
-            // Asynchronous execution if Command.async is true
-            executor.getBackend().scheduleAsync(new ParsedCommandExecutionTask(command, executor, parser));
-        else
-            // Synchronous execution if Command.async is false.
-            command.execute(executor, parser);
+        this.call(new ParsedCommandExecutionTask(command, executor, parser));
+    }
+
+    /**
+     * <p>Executes the command container.</p>
+     * <p>
+     *     Makes sure the task is actually run in the correct thread.
+     * </p>
+     * @param task The task to execute.
+     */
+    private void call(CommandExecutionTask task) {
+        if (task.container.isAsyncCommand()) {
+            task.executor.getBackend().scheduleAsync(task);
+        } else {
+            // Make sure the task is executed synchronously.
+            if (!task.executor.getBackend().inMainThread()) {
+                task.executor.getBackend().scheduleSync(task);
+            } else {
+                task.run();
+            }
+        }
     }
 
     /**
