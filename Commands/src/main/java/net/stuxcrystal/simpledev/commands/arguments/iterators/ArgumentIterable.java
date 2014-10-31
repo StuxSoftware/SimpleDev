@@ -1,96 +1,26 @@
 package net.stuxcrystal.simpledev.commands.arguments.iterators;
 
-import net.stuxcrystal.simpledev.commands.arguments.ArgumentList;
-
 import java.util.*;
 
 /**
  * Implements an iterable for the argument parser.
  */
-public abstract class ArgumentIterable implements Iterable<String>,Collection<String> {
-
-    /**
-     * The iterator for the arguments.
-     */
-    public class ArgumentIterator<T> implements Iterator<T> {
-
-        /**
-         * The current index.
-         */
-        private int index = 0;
-
-        /**
-         * The object cache.
-         */
-        private T objCache = null;
-
-        /**
-         * The type of the object.
-         */
-        private final Class<T> type;
-
-        /**
-         * The lock for multithreading.
-         */
-        private final Object lock = new Object();
-
-        /**
-         * Creates a new argument iterator.
-         * @param type The new argument iterator.
-         */
-        public ArgumentIterator(Class<T> type) {
-            this.type = type;
-        }
-
-        /**
-         * Checks if there is another iterable.
-         * @return {@code true} if we were able to get the next argument.
-         */
-        @Override
-        public boolean hasNext() {
-            synchronized (this.lock) {
-                return this.index < ArgumentIterable.this.size();
-            }
-        }
-
-        /**
-         * Returns the next object.
-         * @return The next object.
-         */
-        @Override
-        public T next() {
-            synchronized (this.lock) {
-                // Make sure we don't exceed length.
-                if (!this.hasNext())
-                    throw new IllegalStateException("StopIteration");
-
-                T result = ArgumentIterable.this.get(this.index, this.type);
-                index++;
-                return result;
-            }
-        }
-    }
-
-    /**
-     * The iterable this iterator is using.
-     */
-    private final ArgumentIterable iterable;
+public abstract class ArgumentIterable extends AbstractArgumentIterable<String> {
 
     /**
      * The argument iterable we will be using.
      * @param iterable The iterable to use.
      */
     protected ArgumentIterable(ArgumentIterable iterable) {
-        this.iterable = iterable;
+        super(iterable, String.class);
     }
 
+
     /**
-     * Returns the argument parser behind the iterable.
-     * @return The argument parser behind the iterable.
+     * Returns the size of arguments that this iterable has.
+     * @return The iterable.
      */
-    public ArgumentList getArgumentParser() {
-        return this.iterable.getArgumentParser();
-    }
+    public abstract int size();
 
     /**
      * Returns the converted argument at the given index.<p />
@@ -110,13 +40,7 @@ public abstract class ArgumentIterable implements Iterable<String>,Collection<St
      * @throws IllegalArgumentException       The given type is not supported.
      * @throws ArrayIndexOutOfBoundsException If the index is invalid.
      */
-    public abstract <T> T get(int index, Class<T> cls) throws NumberFormatException;
-
-    /**
-     * Returns the size of arguments that this iterable has.
-     * @return The iterable.
-     */
-    public abstract int size();
+    public abstract <E> E get(int index, Class<E> cls) throws NumberFormatException;
 
     /**
      * Returns the converted argument at the given index.<p />
@@ -154,21 +78,6 @@ public abstract class ArgumentIterable implements Iterable<String>,Collection<St
         return result;
     }
 
-    /**
-     * Returns all arguments as strings.
-     * @return All arguments as raw strings.
-     */
-    public List<String> getArguments() {
-        return this.getArguments(String.class);
-    }
-
-    /**
-     * Returns an iterator to iterate over.
-     * @return The iterator to iterate over.
-     */
-    public Iterator<String> iterator() {
-        return new ArgumentIterator<>(String.class);
-    }
 
     /**
      * Returns an iterable that returns the object in the given type.
@@ -178,12 +87,7 @@ public abstract class ArgumentIterable implements Iterable<String>,Collection<St
      */
     @SuppressWarnings("unchecked")
     public <T> Iterable<T> asClass(final Class<T> cls) {
-        return new Iterable<T>() {
-            @Override
-            public Iterator<T> iterator() {
-                return new ArgumentIterator<>(cls);
-            }
-        };
+        return new TypedArgumentIterable<>(this, cls);
     }
 
     /**
@@ -240,14 +144,6 @@ public abstract class ArgumentIterable implements Iterable<String>,Collection<St
      */
     public ArgumentIterable reverse() {
         return this.step(-1);
-    }
-
-    /**
-     * Returns the parent iterable.
-     * @return The parent iterable.
-     */
-    public ArgumentIterable getParent() {
-        return this.iterable;
     }
 
     /**
@@ -597,73 +493,5 @@ public abstract class ArgumentIterable implements Iterable<String>,Collection<St
         return this.getRealIndex(index, false);
     }
 
-
-    @Override
-    public boolean isEmpty() {
-        return this.size()==0;
-    }
-
-    @Override
-    public boolean contains(Object o) {
-        if (!(o instanceof String))
-            return false;
-
-        for (String item : this) {
-            if (((String) o).equals(item))
-                return true;
-        }
-        return false;
-    }
-
-    @Override
-    public Object[] toArray() {
-        return this.getArguments().toArray(new String[this.size()]);
-    }
-
-    @Override
-    public <T> T[] toArray(T[] a) {
-        return this.getArguments().toArray(a);
-    }
-
-    @Override
-    public boolean add(String s) {
-        throw new UnsupportedOperationException("Unmodifiable Collection.");
-    }
-
-    @Override
-    public boolean remove(Object o) {
-        throw new UnsupportedOperationException("Unmodifiable Collection.");
-    }
-
-    @Override
-    public boolean containsAll(Collection<?> c) {
-        HashSet<?> hs = new HashSet<>(c);
-        for (String item : this) {
-            hs.remove(item);
-            if (hs.size()==0)
-                return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean addAll(Collection<? extends String> c) {
-        throw new UnsupportedOperationException("Unmodifiable Collection.");
-    }
-
-    @Override
-    public boolean removeAll(Collection<?> c) {
-        throw new UnsupportedOperationException("Unmodifiable Collection.");
-    }
-
-    @Override
-    public boolean retainAll(Collection<?> c) {
-        throw new UnsupportedOperationException("Unmodifiable Collection.");
-    }
-
-    @Override
-    public void clear() {
-        throw new UnsupportedOperationException("Unmodifiable Collection.");
-    }
 
 }

@@ -225,13 +225,13 @@ public class CommandHandler {
     }
 
     /**
-     * Short for CommandHandler.execute(executor, parser.getArguments(0));
+     * Short for CommandHandler.execute(executor, parser.copy(0));
      *
      * @param executor The executor that executes the command.
      * @param parser   The already parsed argumetns.
      */
     public void execute(CommandExecutor executor, ArgumentList parser) {
-        this.execute(executor, (String[])parser.from(0).getArguments().toArray());
+        this.execute(executor, (String[]) parser.from(0).copy().toArray());
     }
 
     /**

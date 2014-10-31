@@ -72,7 +72,7 @@ public class BranchAnnotationCommand extends AnnotationBasedCommand {
             args = new String[0];
         } else {
             name = parser.getString(0);
-            args = (String[])parser.from(1).getArguments().toArray();
+            args = (String[])parser.from(1).copy().toArray();
         }
 
         // Executes the subcommand.

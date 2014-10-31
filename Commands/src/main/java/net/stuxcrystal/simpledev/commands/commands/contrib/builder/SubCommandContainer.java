@@ -21,6 +21,6 @@ public class SubCommandContainer extends SimpleCommandContainer {
     @Override
     public void execute(CommandExecutor executor, ArgumentList parser) {
         // Use the execute method created for this use
-        this.subhandler.execute(executor, (String[])parser.getArguments().toArray());
+        this.subhandler.execute(executor, (String[])parser.copy().toArray());
     }
 }
