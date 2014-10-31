@@ -5,6 +5,7 @@ import net.stuxcrystal.simpledev.commands.CommandExecutor;
 import net.stuxcrystal.simpledev.commands.arguments.splitter.NoSplit;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -42,9 +43,7 @@ public class ArgumentHandler {
      * @param types The new argument-parser.
      */
     public void registerArgumentTypes(ArgumentType... types) {
-        for (ArgumentType type : types) {
-            argumentTypes.add(type);
-        }
+        Collections.addAll(this.argumentTypes, types);
     }
 
     /**

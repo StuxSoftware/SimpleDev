@@ -17,6 +17,10 @@ public class EnumType implements ArgumentType {
 
     @Override
     public Object convert(String value, Class<?> toClass, CommandExecutor executor, CommandBackend backend) {
-        return Enum.valueOf((Class<Enum>) toClass, value);
+        try {
+            return Enum.valueOf((Class<Enum>) toClass, value);
+        } catch (IllegalArgumentException e) {
+            throw (NumberFormatException)new NumberFormatException(e.getLocalizedMessage()).initCause(e);
+        }
     }
 }

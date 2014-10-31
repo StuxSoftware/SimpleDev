@@ -23,6 +23,6 @@ public interface ArgumentType {
      * @param backend    The backend that executed the command.
      * @return The converted value.
      */
-    public abstract Object convert(String value, Class<?> toClass, CommandExecutor executor, CommandBackend backend);
+    public abstract Object convert(String value, Class<?> toClass, CommandExecutor executor, CommandBackend backend) throws NumberFormatException;
 
 }
