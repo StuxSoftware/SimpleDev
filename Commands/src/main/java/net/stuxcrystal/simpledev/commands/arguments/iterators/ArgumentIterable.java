@@ -73,7 +73,7 @@ public abstract class ArgumentIterable extends AbstractArgumentIterable<String> 
      */
     public <T> List<T> getArguments(Class<T> type) {
         List<T> result = new ArrayList<>();
-        for (T arg : this.asClass(type))
+        for (T arg : this.as(type))
             result.add(arg);
         return result;
     }
@@ -86,7 +86,7 @@ public abstract class ArgumentIterable extends AbstractArgumentIterable<String> 
      * @return An iterable that returns the iterable that returns the arguments at the given value.
      */
     @SuppressWarnings("unchecked")
-    public <T> Iterable<T> asClass(final Class<T> cls) {
+    public <T> Iterable<T> as(final Class<T> cls) {
         return new TypedArgumentIterable<>(this, cls);
     }
 
