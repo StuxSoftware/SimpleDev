@@ -15,18 +15,35 @@ import java.util.concurrent.Executors;
  */
 public class FallbackSchedulerBackend {
 
+    /**
+     * This class identifies the main thread by attaching an UUID to each thread and comparing it with the
+     * UUID of the main thread.
+     */
     private static class MainThreadHelper {
 
+        /**
+         * The container for the thread-locale.
+         */
         private static final ThreadLocal<UUID> container = new ThreadLocal<>();
 
+        /**
+         * The uuid of the main thread.
+         */
         private static UUID mainThreadUUID = null;
 
+        /**
+         * Sets the main thread.
+         */
         public static void setMainThread() {
             if (mainThreadUUID != null)
                 throw new IllegalStateException("There is already a main thread.");
             mainThreadUUID = MainThreadHelper.getThreadUUID();
         }
 
+        /**
+         * Get the UUID of the current thread.
+         * @return The UUID of the current thread.
+         */
         private static UUID getThreadUUID() {
             UUID uuid = MainThreadHelper.container.get();
             if (uuid == null)
@@ -34,6 +51,10 @@ public class FallbackSchedulerBackend {
             return uuid;
         }
 
+        /**
+         * Checks if the current thread is the main thread.
+         * @return {@code true} if so.
+         */
         public static boolean isMainThread() {
             if (MainThreadHelper.mainThreadUUID == null)
                 return false;
