@@ -17,7 +17,7 @@ public class BaseCommandContainer implements CommandListener {
      * @param values   The values that are used in the message.
      * @return The translated message.
      */
-    public String _(CommandExecutor executor, String key, Object... values) {
+    public String T(CommandExecutor executor, String key, Object... values) {
         return executor.getCommandHandler().getTranslationManager().translate(executor, key, values);
     }
 
