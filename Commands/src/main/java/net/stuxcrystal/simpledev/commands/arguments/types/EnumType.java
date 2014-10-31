@@ -17,10 +17,20 @@ public class EnumType implements ArgumentType {
 
     @Override
     public Object convert(String value, Class<?> toClass, CommandExecutor executor, CommandBackend backend) {
-        try {
-            return Enum.valueOf((Class<Enum>) toClass, value);
-        } catch (IllegalArgumentException e) {
-            throw (NumberFormatException)new NumberFormatException(e.getLocalizedMessage()).initCause(e);
+        Enum[] enumValues = (Enum[])toClass.getEnumConstants();
+
+        // Try exact name matching.
+        for (Enum eval : enumValues) {
+            if (eval.name().equals(value))
+                return eval;
         }
+
+        // Match without any regards to case.
+        for (Enum eval : enumValues) {
+            if (eval.name().equalsIgnoreCase(value))
+                return eval;
+        }
+
+        throw new NumberFormatException("Unknown enum value");
     }
 }
