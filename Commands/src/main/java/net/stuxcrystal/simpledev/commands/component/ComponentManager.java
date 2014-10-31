@@ -51,6 +51,10 @@ public class ComponentManager {
         }
 
         for (Method method : componentType.getDeclaredMethods()) {
+            // This is a bridge method, the actual implementation will be handled later.
+            if (method.isBridge())
+                continue;
+
             // Make sure we didn't already check the method.
             if (this.methods.containsKey(method))
                 continue;
