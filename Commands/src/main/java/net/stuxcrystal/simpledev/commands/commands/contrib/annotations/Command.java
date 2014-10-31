@@ -91,14 +91,14 @@ public @interface Command {
     public String flags() default "";
 
     /**
-     * The minimal count of arguments needed.
+     * The minimal size of arguments needed.
      *
      * @return
      */
     public int minSize() default -1;
 
     /**
-     * The maximal count of arguments needed.
+     * The maximal size of arguments needed.
      *
      * @return
      */

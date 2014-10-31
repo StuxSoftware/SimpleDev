@@ -2,14 +2,12 @@ package net.stuxcrystal.simpledev.commands.arguments.iterators;
 
 import net.stuxcrystal.simpledev.commands.arguments.ArgumentList;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Implements an iterable for the argument parser.
  */
-public abstract class ArgumentIterable implements Iterable<String> {
+public abstract class ArgumentIterable implements Iterable<String>,Collection<String> {
 
     /**
      * The iterator for the arguments.
@@ -51,16 +49,7 @@ public abstract class ArgumentIterable implements Iterable<String> {
         @Override
         public boolean hasNext() {
             synchronized (this.lock) {
-                if (this.objCache != null)
-                    return true;
-
-                try {
-                    this.objCache = this._next();
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    return false;
-                }
-
-                return true;
+                return this.index < ArgumentIterable.this.size();
             }
         }
 
@@ -71,26 +60,14 @@ public abstract class ArgumentIterable implements Iterable<String> {
         @Override
         public T next() {
             synchronized (this.lock) {
-                // Make sure we have an object cached.
+                // Make sure we don't exceed length.
                 if (!this.hasNext())
                     throw new IllegalStateException("StopIteration");
 
-                // Return and clear the cached object.
-                T cache = this.objCache;
-                this.objCache = null;
-                return cache;
+                T result = ArgumentIterable.this.get(this.index, this.type);
+                index++;
+                return result;
             }
-        }
-
-        /**
-         * Tries to get the next object.
-         * @return The next object.
-         */
-        @SuppressWarnings("unchecked")
-        private T _next() {
-            T result = (T)ArgumentIterable.this.getArgument(this.index, this.type);
-            this.index++;
-            return result;
         }
     }
 
@@ -133,13 +110,13 @@ public abstract class ArgumentIterable implements Iterable<String> {
      * @throws IllegalArgumentException       The given type is not supported.
      * @throws ArrayIndexOutOfBoundsException If the index is invalid.
      */
-    public abstract <T> T getArgument(int index, Class<T> cls) throws NumberFormatException;
+    public abstract <T> T get(int index, Class<T> cls) throws NumberFormatException;
 
     /**
-     * Returns the count of arguments that this iterable has.
+     * Returns the size of arguments that this iterable has.
      * @return The iterable.
      */
-    public abstract int count();
+    public abstract int size();
 
     /**
      * Returns the converted argument at the given index.<p />
@@ -156,9 +133,9 @@ public abstract class ArgumentIterable implements Iterable<String> {
      * @param <T>   The type of the argument
      * @return The converted argument.
      */
-    public <T> T getArgument(int index, Class<T> cls, T def) {
+    public <T> T get(int index, Class<T> cls, T def) {
         try {
-            return this.getArgument(index, cls);
+            return this.get(index, cls);
         } catch (NumberFormatException | ArrayIndexOutOfBoundsException nfe) {
             return def;
         }
@@ -236,7 +213,7 @@ public abstract class ArgumentIterable implements Iterable<String> {
      * @return An iterable with arguments.
      */
     public ArgumentIterable from(int start) {
-        return this.slice(start, null, null);
+        return this.slice(start, null);
     }
 
     /**
@@ -245,7 +222,7 @@ public abstract class ArgumentIterable implements Iterable<String> {
      * @return An iterable with arguments.
      */
     public ArgumentIterable to(int stop) {
-        return this.slice(null, stop, null);
+        return this.slice(null, stop);
     }
 
     /**
@@ -255,6 +232,14 @@ public abstract class ArgumentIterable implements Iterable<String> {
      */
     public ArgumentIterable step(int step) {
         return this.slice(null, null, step);
+    }
+
+    /**
+     * Reverses the order of the arguments.
+     * @return The reversed order of the arguments.
+     */
+    public ArgumentIterable reverse() {
+        return this.step(-1);
     }
 
     /**
@@ -282,7 +267,7 @@ public abstract class ArgumentIterable implements Iterable<String> {
      * @throws ArrayIndexOutOfBoundsException If the index is invalid.
      */
     public int getInt(int index) {
-        return this.getArgument(index, int.class);
+        return this.get(index, int.class);
     }
 
     /**
@@ -300,7 +285,7 @@ public abstract class ArgumentIterable implements Iterable<String> {
      * @throws ArrayIndexOutOfBoundsException If the index is invalid.
      */
     public int getInt(int index, int def) {
-        return this.getArgument(index, int.class, def);
+        return this.get(index, int.class, def);
     }
 
 
@@ -321,7 +306,7 @@ public abstract class ArgumentIterable implements Iterable<String> {
      * @throws ArrayIndexOutOfBoundsException If the index is invalid.
      */
     public float getFloat(int index) {
-        return this.getArgument(index, float.class);
+        return this.get(index, float.class);
     }
 
     /**
@@ -339,7 +324,7 @@ public abstract class ArgumentIterable implements Iterable<String> {
      * @throws ArrayIndexOutOfBoundsException If the index is invalid.
      */
     public float getFloat(int index, float def) {
-        return this.getArgument(index, float.class, def);
+        return this.get(index, float.class, def);
     }
 
 
@@ -360,7 +345,7 @@ public abstract class ArgumentIterable implements Iterable<String> {
      * @throws ArrayIndexOutOfBoundsException If the index is invalid.
      */
     public double getDouble(int index) {
-        return this.getArgument(index, double.class);
+        return this.get(index, double.class);
     }
 
     /**
@@ -378,7 +363,7 @@ public abstract class ArgumentIterable implements Iterable<String> {
      * @throws ArrayIndexOutOfBoundsException If the index is invalid.
      */
     public double getDouble(int index, double def) {
-        return this.getArgument(index, double.class, def);
+        return this.get(index, double.class, def);
     }
 
 
@@ -399,7 +384,7 @@ public abstract class ArgumentIterable implements Iterable<String> {
      * @throws ArrayIndexOutOfBoundsException If the index is invalid.
      */
     public boolean getBoolean(int index) {
-        return this.getArgument(index, boolean.class);
+        return this.get(index, boolean.class);
     }
 
     /**
@@ -417,7 +402,7 @@ public abstract class ArgumentIterable implements Iterable<String> {
      * @throws ArrayIndexOutOfBoundsException If the index is invalid.
      */
     public boolean getBoolean(int index, boolean def) {
-        return this.getArgument(index, boolean.class, def);
+        return this.get(index, boolean.class, def);
     }
 
 
@@ -438,7 +423,7 @@ public abstract class ArgumentIterable implements Iterable<String> {
      * @throws ArrayIndexOutOfBoundsException If the index is invalid.
      */
     public char getChar(int index) {
-        return this.getArgument(index, char.class);
+        return this.get(index, char.class);
     }
 
     /**
@@ -456,7 +441,7 @@ public abstract class ArgumentIterable implements Iterable<String> {
      * @throws ArrayIndexOutOfBoundsException If the index is invalid.
      */
     public char getChar(int index, char def) {
-        return this.getArgument(index, char.class, def);
+        return this.get(index, char.class, def);
     }
 
 
@@ -477,7 +462,7 @@ public abstract class ArgumentIterable implements Iterable<String> {
      * @throws ArrayIndexOutOfBoundsException If the index is invalid.
      */
     public long getLong(int index) {
-        return this.getArgument(index, long.class);
+        return this.get(index, long.class);
     }
 
     /**
@@ -495,7 +480,7 @@ public abstract class ArgumentIterable implements Iterable<String> {
      * @throws ArrayIndexOutOfBoundsException If the index is invalid.
      */
     public long getLong(int index, long def) {
-        return this.getArgument(index, long.class, def);
+        return this.get(index, long.class, def);
     }
 
 
@@ -516,7 +501,7 @@ public abstract class ArgumentIterable implements Iterable<String> {
      * @throws ArrayIndexOutOfBoundsException If the index is invalid.
      */
     public short getShort(int index) {
-        return this.getArgument(index, short.class);
+        return this.get(index, short.class);
     }
 
     /**
@@ -534,7 +519,7 @@ public abstract class ArgumentIterable implements Iterable<String> {
      * @throws ArrayIndexOutOfBoundsException If the index is invalid.
      */
     public short getShort(int index, short def) {
-        return this.getArgument(index, short.class, def);
+        return this.get(index, short.class, def);
     }
 
 
@@ -555,7 +540,7 @@ public abstract class ArgumentIterable implements Iterable<String> {
      * @throws ArrayIndexOutOfBoundsException If the index is invalid.
      */
     public byte getByte(int index) {
-        return this.getArgument(index, byte.class);
+        return this.get(index, byte.class);
     }
 
     /**
@@ -573,19 +558,19 @@ public abstract class ArgumentIterable implements Iterable<String> {
      * @throws ArrayIndexOutOfBoundsException If the index is invalid.
      */
     public byte getByte(int index, byte def) {
-        return this.getArgument(index, byte.class, def);
+        return this.get(index, byte.class, def);
     }
 
     /**
-     * Returns the real index as specified in getArgument.
-     * @param index       The index passed in getArgument.
+     * Returns the real index as specified in get.
+     * @param index       The index passed in get.
      * @param exclusive   Is this argument exclusive or inclusive.
      * @return The real index or -1 if the index is invalid.
      */
     protected int getRealIndex(int index, boolean exclusive) {
-        int cnt = this.count();
+        int cnt = this.size();
         if (index > cnt) {
-            // Index greater than the count of arguments.
+            // Index greater than the size of arguments.
             return -1;
         } else if (!exclusive && index == cnt) {
             // Disallow passing the actual length of the argument.
@@ -604,11 +589,81 @@ public abstract class ArgumentIterable implements Iterable<String> {
     }
 
     /**
-     * Returns the real index as specified in getArgument.
-     * @param index The index passed in getArgument.
+     * Returns the real index as specified in get.
+     * @param index The index passed in get.
      * @return The real index or -1 if the index is invalid.
      */
     protected int getRealIndex(int index) {
         return this.getRealIndex(index, false);
     }
+
+
+    @Override
+    public boolean isEmpty() {
+        return this.size()==0;
+    }
+
+    @Override
+    public boolean contains(Object o) {
+        if (!(o instanceof String))
+            return false;
+
+        for (String item : this) {
+            if (((String) o).equals(item))
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Object[] toArray() {
+        return this.getArguments().toArray(new String[this.size()]);
+    }
+
+    @Override
+    public <T> T[] toArray(T[] a) {
+        return this.getArguments().toArray(a);
+    }
+
+    @Override
+    public boolean add(String s) {
+        throw new UnsupportedOperationException("Unmodifiable Collection.");
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        throw new UnsupportedOperationException("Unmodifiable Collection.");
+    }
+
+    @Override
+    public boolean containsAll(Collection<?> c) {
+        HashSet<?> hs = new HashSet<>(c);
+        for (String item : this) {
+            hs.remove(item);
+            if (hs.size()==0)
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends String> c) {
+        throw new UnsupportedOperationException("Unmodifiable Collection.");
+    }
+
+    @Override
+    public boolean removeAll(Collection<?> c) {
+        throw new UnsupportedOperationException("Unmodifiable Collection.");
+    }
+
+    @Override
+    public boolean retainAll(Collection<?> c) {
+        throw new UnsupportedOperationException("Unmodifiable Collection.");
+    }
+
+    @Override
+    public void clear() {
+        throw new UnsupportedOperationException("Unmodifiable Collection.");
+    }
+
 }

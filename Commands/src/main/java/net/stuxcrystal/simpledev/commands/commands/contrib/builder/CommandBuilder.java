@@ -113,8 +113,8 @@ public class CommandBuilder {
      * Flags for the parser of the command.
      *
      * @param flags     The flags that are accepted.
-     * @param minCount  The minimal argument count. (-1 => Unlimited)
-     * @param maxCount  The maximal argument count. (-1 => Unlimited)
+     * @param minCount  The minimal argument size. (-1 => Unlimited)
+     * @param maxCount  The maximal argument size. (-1 => Unlimited)
      * @return The builder itself.
      */
     public CommandBuilder parser(String flags, int minCount, int maxCount) {
@@ -137,8 +137,8 @@ public class CommandBuilder {
     /**
      * Flags for the parser of the command.
      *
-     * @param minCount  The minimal argument count. (-1 => Unlimited)
-     * @param maxCount  The maximal argument count. (-1 => Unlimited)
+     * @param minCount  The minimal argument size. (-1 => Unlimited)
+     * @param maxCount  The maximal argument size. (-1 => Unlimited)
      * @return The builder itself.
      */
     public CommandBuilder parser(int minCount, int maxCount) {

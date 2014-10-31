@@ -1,5 +1,7 @@
 package net.stuxcrystal.simpledev.commands.arguments.iterators;
 
+import java.util.Collection;
+
 /**
  * Returns the iterable at the given item.
  */
@@ -53,7 +55,7 @@ class SliceIterable extends ArgumentIterable {
 
         /**
          * Adapted from jython PySlice implementation.
-         * @param len The count of arguments.
+         * @param len The size of arguments.
          * @return A new slice object.
          */
         public Slice indices(int len) {
@@ -114,7 +116,7 @@ class SliceIterable extends ArgumentIterable {
 
         /**
          * Automatically assign the right indices for the slice.
-         * @param fullCount The full count of arguments.
+         * @param fullCount The full size of arguments.
          * @param start     The first argument.
          * @param stop      The first argument that should not show up.
          * @param step      The stride.
@@ -136,19 +138,19 @@ class SliceIterable extends ArgumentIterable {
      */
     SliceIterable(ArgumentIterable parent, Integer start, Integer stop, Integer step) {
         super(parent);
-        this.slice = Slice.get(parent.count(), start, stop, step);
+        this.slice = Slice.get(parent.size(), start, stop, step);
     }
 
     @Override
-    public int count() {
+    public int size() {
         return this.slice.getLength();
     }
 
     @Override
-    public <T> T getArgument(int index, Class<T> cls) {
+    public <T> T get(int index, Class<T> cls) {
         int rindex = this.getRealIndex(index);
         if (rindex == -1)
             throw new ArrayIndexOutOfBoundsException(index);
-        return this.getParent().getArgument(this.slice.start + rindex*this.slice.step, cls);
+        return this.getParent().get(this.slice.start + rindex * this.slice.step, cls);
     }
 }

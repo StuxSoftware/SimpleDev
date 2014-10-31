@@ -73,19 +73,19 @@ public interface CommandContainer {
     public String getSupportedFlags();
 
     /**
-     * <p>Returns the minimal count of arguments that need to be passed.</p>
+     * <p>Returns the minimal size of arguments that need to be passed.</p>
      *
      * <p>{@code -1} means we don't care.</p>
      *
-     * @return The minimal count of arguments.
+     * @return The minimal size of arguments.
      */
     public int getMinimalArgumentCount();
 
     /**
-     * <p>Returns the maximal count of arguments that can be used.</p>
+     * <p>Returns the maximal size of arguments that can be used.</p>
      *
      * * <p>{@code -1} means we don't care.</p>
-     * @return The maximal count of arguments.
+     * @return The maximal size of arguments.
      */
     public int getMaximalArgumentCount();
 

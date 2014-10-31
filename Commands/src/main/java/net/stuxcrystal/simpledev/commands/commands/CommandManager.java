@@ -64,12 +64,12 @@ public class CommandManager {
             return;
         }
 
-        if (command.getMinimalArgumentCount() != -1 && parser.count() < command.getMinimalArgumentCount()) {
+        if (command.getMinimalArgumentCount() != -1 && parser.size() < command.getMinimalArgumentCount()) {
             executor.sendMessage(mgr.translate(executor, "cmd.check.args.min"));
             return;
         }
 
-        if (command.getMaximalArgumentCount() != -1 && parser.count() < command.getMaximalArgumentCount()) {
+        if (command.getMaximalArgumentCount() != -1 && parser.size() < command.getMaximalArgumentCount()) {
             executor.sendMessage(mgr.translate(executor, "cmd.check.args.max"));
             return;
         }

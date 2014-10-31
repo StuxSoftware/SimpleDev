@@ -103,10 +103,10 @@ public class ArgumentList extends ArgumentIterable {
     /**
      * Returns the size of the arguments array.
      *
-     * @return The count of arguments.
+     * @return The size of arguments.
      */
     @Override
-    public int count() {
+    public int size() {
         return this.arguments.length;
     }
 
@@ -130,7 +130,7 @@ public class ArgumentList extends ArgumentIterable {
      */
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T getArgument(int index, Class<T> cls) {
+    public <T> T get(int index, Class<T> cls) {
         Class<?> clazz = cls;
 
         int preIndex = index;
@@ -168,7 +168,7 @@ public class ArgumentList extends ArgumentIterable {
      * @param index the index of the required value.
      */
     public String getString(int index) {
-        String result = this.getArgument(index, String.class, null);
+        String result = this.get(index, String.class, null);
         if (result == null) return this.arguments[this.getRealIndex(index)];
         return result;
     }
