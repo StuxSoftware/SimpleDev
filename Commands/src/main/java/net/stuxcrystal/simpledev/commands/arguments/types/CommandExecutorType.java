@@ -16,7 +16,6 @@ public class CommandExecutorType implements ArgumentType {
 
     @Override
     public Object convert(String value, Class<?> toClass, CommandExecutor executor, CommandBackend backend) {
-        if (value.equalsIgnoreCase("CONSOLE")) return backend.getConsole();
         return backend.getExecutor(value);
     }
 }
