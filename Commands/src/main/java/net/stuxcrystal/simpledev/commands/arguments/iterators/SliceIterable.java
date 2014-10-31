@@ -5,6 +5,9 @@ package net.stuxcrystal.simpledev.commands.arguments.iterators;
  */
 class SliceIterable extends ArgumentContainer {
 
+    /**
+     * Stores the values of a slice.
+     */
     private static class Slice {
         /**
          * The start index of the iterable.
@@ -24,7 +27,7 @@ class SliceIterable extends ArgumentContainer {
         /**
          * The length of the slice.
          */
-        private final Integer len;
+        private final int len;
 
         /**
          * Creates a new slice object.
@@ -33,7 +36,7 @@ class SliceIterable extends ArgumentContainer {
          * @param step  The step or stride.
          * @param len   The length of the slice.
          */
-        private Slice(Integer start, Integer stop, Integer step, Integer len) {
+        private Slice(Integer start, Integer stop, Integer step, int len) {
             // Assign the values.
             this.start = start;
             this.stop = stop;
@@ -42,39 +45,32 @@ class SliceIterable extends ArgumentContainer {
         }
 
         /**
-         * Returns the length of the slice.
-         * @return The length of the slice.
+         * Creates a new slice object for object with the given lenght.
+         * @param len     The original length.
+         * @param rStart  The start parameter.
+         * @param rStop   The stop parameter.
+         * @param rStep   The step parameter.
+         * @return The new slice object.
          */
-        public int getLength() {
-            if (this.len == null)
-                throw new IllegalStateException("Cannot calculate length of the slice.");
-            return this.len;
-        }
-
-        /**
-         * Adapted from jython PySlice implementation.
-         * @param len The size of arguments.
-         * @return A new slice object.
-         */
-        public Slice indices(int len) {
+        public static Slice get(int len, Integer rStart, Integer rStop, Integer rStep) {
             int start;
             int stop;
             int step;
             int slicelength;
 
-            if (this.step == null) {
+            if (rStep == null) {
                 step = 1;
             } else {
-                step = this.step;
+                step = rStep;
                 if (step == 0) {
                     throw new IllegalArgumentException("slice step cannot be zero");
                 }
             }
 
-            if (this.start == null) {
+            if (rStart == null) {
                 start = step < 0 ? len - 1 : 0;
             } else {
-                start = this.start;
+                start = rStart;
                 if (start < 0) {
                     start += len;
                 }
@@ -86,10 +82,10 @@ class SliceIterable extends ArgumentContainer {
                 }
             }
 
-            if (this.stop == null) {
+            if (rStop == null) {
                 stop = step < 0 ? -1 : len;
             } else {
-                stop = this.stop;
+                stop = rStop;
                 if (stop < 0) {
                     stop += len;
                 }
@@ -111,20 +107,11 @@ class SliceIterable extends ArgumentContainer {
 
             return new Slice(start, stop, step, slicelength);
         }
-
-        /**
-         * Automatically assign the right indices for the slice.
-         * @param fullCount The full size of arguments.
-         * @param start     The first argument.
-         * @param stop      The first argument that should not show up.
-         * @param step      The stride.
-         * @return A new slice object that contains its length.
-         */
-        public static Slice get(int fullCount, Integer start, Integer stop, Integer step) {
-            return new Slice(start, stop, step, null).indices(fullCount);
-        }
     }
 
+    /**
+     * The slice to use.
+     */
     private final Slice slice;
 
     /**
@@ -141,7 +128,7 @@ class SliceIterable extends ArgumentContainer {
 
     @Override
     public int size() {
-        return this.slice.getLength();
+        return this.slice.len;
     }
 
     @Override
