@@ -1,8 +1,12 @@
-package net.stuxcrystal.simpledev.commands.commands.contrib.annotations;
+package net.stuxcrystal.simpledev.commands.commands.contrib.annotations.simple;
 
 import net.stuxcrystal.simpledev.commands.CommandExecutor;
 import net.stuxcrystal.simpledev.commands.CommandHandler;
 import net.stuxcrystal.simpledev.commands.arguments.ArgumentList;
+import net.stuxcrystal.simpledev.commands.commands.contrib.annotations.AnnotationBasedCommand;
+import net.stuxcrystal.simpledev.commands.commands.contrib.annotations.CallTime;
+import net.stuxcrystal.simpledev.commands.commands.contrib.annotations.Command;
+import net.stuxcrystal.simpledev.commands.commands.contrib.annotations.SubCommand;
 import net.stuxcrystal.simpledev.commands.translations.TranslationManager;
 
 import java.lang.reflect.Method;

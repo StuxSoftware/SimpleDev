@@ -130,7 +130,7 @@ public class ArgumentList extends ArgumentContainer {
      */
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T get(int index, Class<T> cls) {
+    public <T> T get(int index, Class<? extends T> cls) {
         Class<?> clazz = cls;
 
         int preIndex = index;

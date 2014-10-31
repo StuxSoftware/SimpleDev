@@ -40,7 +40,7 @@ public abstract class ArgumentContainer extends ArgumentIterable<String> {
      * @throws IllegalArgumentException       The given type is not supported.
      * @throws ArrayIndexOutOfBoundsException If the index is invalid.
      */
-    public abstract <E> E get(int index, Class<E> cls) throws NumberFormatException;
+    public abstract <E> E get(int index, Class<? extends E> cls) throws NumberFormatException;
 
     /**
      * Returns the converted argument at the given index.<p />

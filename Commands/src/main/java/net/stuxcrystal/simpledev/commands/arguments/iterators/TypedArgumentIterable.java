@@ -16,7 +16,7 @@ public class TypedArgumentIterable<T> extends ArgumentIterable<T> {
     }
 
     @Override
-    public <E> E get(int index, Class<E> cls) throws NumberFormatException {
+    public <E> E get(int index, Class<? extends E> cls) throws NumberFormatException {
         return this.getParent().get(index, cls);
     }
 

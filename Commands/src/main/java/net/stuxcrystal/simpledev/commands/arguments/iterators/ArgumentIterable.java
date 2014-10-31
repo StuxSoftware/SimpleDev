@@ -51,7 +51,7 @@ public abstract class ArgumentIterable<T> extends AbstractList<T> {
      * @throws IllegalArgumentException       The given type is not supported.
      * @throws ArrayIndexOutOfBoundsException If the index is invalid.
      */
-    protected abstract <E> E get(int index, Class<E> cls) throws NumberFormatException;
+    protected abstract <E> E get(int index, Class<? extends E> cls) throws NumberFormatException;
 
     /**
      * Returns the argument at the given index.

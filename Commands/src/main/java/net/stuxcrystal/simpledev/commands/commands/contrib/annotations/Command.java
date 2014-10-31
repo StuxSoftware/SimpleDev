@@ -34,14 +34,14 @@ public @interface Command {
      *
      * If the value doesn't have a value, the name of the method will be used.
      *
-     * @return
+     * @return The name of the command.
      */
     public String value() default "";
 
     /**
      * The aliases of the command.
      *
-     * @return
+     * @return The aliases of the command.
      */
     public String[] aliases() default {};
 
@@ -49,14 +49,14 @@ public @interface Command {
      * The permission needed to execute.<br>
      * Default: None
      *
-     * @return
+     * @return The permission for the command.
      */
     public String permission() default "";
 
     /**
      * The description of the command.
      *
-     * @return
+     * @return The description
      */
     public String description() default "";
 
@@ -64,7 +64,7 @@ public @interface Command {
      * Can the command be executed as a player.<br>
      * Default: true
      *
-     * @return
+     * @return Can the console execute the command.
      */
     public boolean asConsole() default true;
 
@@ -72,42 +72,42 @@ public @interface Command {
      * Can the command be executed as a player.<br>
      * Default: true
      *
-     * @return
+     * @return Can a player execute the command.
      */
     public boolean asPlayer() default true;
 
     /**
      * Should the command be execute asynchronous.
      *
-     * @return
+     * @return Should the command be executed asynchronously?
      */
     public boolean async() default false;
 
     /**
      * All supported flags.
      *
-     * @return
+     * @return All supported flags.
      */
     public String flags() default "";
 
     /**
      * The minimal size of arguments needed.
      *
-     * @return
+     * @return The minimal amount of arguments.
      */
     public int minSize() default -1;
 
     /**
      * The maximal size of arguments needed.
      *
-     * @return
+     * @return the maximal amount of arguments.
      */
     public int maxSize() default -1;
 
     /**
      * Should the command only executed as an operator if no permissions-system is supported.
      *
-     * @return
+     * @return If we fall back to operator permissions, are the operators the only one who are allowed to use the command?
      */
     public boolean opOnly() default false;
 

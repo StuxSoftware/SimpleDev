@@ -3,6 +3,8 @@ package net.stuxcrystal.simpledev.commands.commands.contrib.annotations;
 import net.stuxcrystal.simpledev.commands.CommandHandler;
 import net.stuxcrystal.simpledev.commands.commands.CommandContainer;
 import net.stuxcrystal.simpledev.commands.commands.CommandLoader;
+import net.stuxcrystal.simpledev.commands.commands.contrib.annotations.simple.BranchAnnotationCommand;
+import net.stuxcrystal.simpledev.commands.commands.contrib.annotations.simple.LeafAnnotationCommand;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -53,6 +55,7 @@ public class AnnotationCommandLoader implements CommandLoader {
             // The method have to be annotated by Command.
             if (!method.isAnnotationPresent(Command.class)) continue;
 
+            // Support for subcommands.
             if (method.isAnnotationPresent(SubCommand.class)) {
                 CommandHandler subhandler = null;
                 SubCommand command = method.getAnnotation(SubCommand.class);
