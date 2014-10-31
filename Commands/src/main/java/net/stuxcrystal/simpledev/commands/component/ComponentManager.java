@@ -240,6 +240,7 @@ public class ComponentManager {
 
                     Class<?>[] lowerParams = lower.getParameters();
 
+                    // Check the parameters.
                     for (int i = 0; i<upperParams.length; i++) {
                         // Ignore parameters with the same parameter types.
                         if (lowerParams[i].equals(upperParams[i]))
