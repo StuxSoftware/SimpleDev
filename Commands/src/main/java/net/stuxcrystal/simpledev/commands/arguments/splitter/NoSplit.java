@@ -1,30 +1,21 @@
 package net.stuxcrystal.simpledev.commands.arguments.splitter;
 
 import net.stuxcrystal.simpledev.commands.arguments.ArgumentSplitter;
-import org.apache.commons.lang.ArrayUtils;
 
 /**
- * Like the default splitting on bukkit.
+ * Completely disable splitting.
  */
 public class NoSplit implements ArgumentSplitter {
 
+    /**
+     * Doesn't split the arguments.
+     * The first item in the array are always the flags of the plugin (but they are empty because we don't parse them).
+     *
+     * @param args The input-string.
+     * @return {@code String[]{"", args}}
+     */
     @Override
-    public String[] split(String rawArgs) {
-        String[] args = rawArgs.split(" ");
-        String[] arguments;
-        String flags;
-
-        if (args.length == 0) {
-            flags = "";
-            arguments = args;
-        } else if (args[0].startsWith("-")) {
-            flags = args[0].substring(1);
-            arguments = (String[]) ArrayUtils.remove(args, 0);
-        } else {
-            flags = "";
-            arguments = args;
-        }
-
-        return (String[]) ArrayUtils.add(arguments, 0, flags);
+    public String[] split(String args) {
+        return new String[]{"", args};
     }
 }

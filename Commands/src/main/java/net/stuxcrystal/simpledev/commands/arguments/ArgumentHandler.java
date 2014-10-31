@@ -2,7 +2,7 @@ package net.stuxcrystal.simpledev.commands.arguments;
 
 import net.stuxcrystal.simpledev.commands.CommandBackend;
 import net.stuxcrystal.simpledev.commands.CommandExecutor;
-import net.stuxcrystal.simpledev.commands.arguments.splitter.NoSplit;
+import net.stuxcrystal.simpledev.commands.arguments.splitter.SimpleSplit;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,7 +21,7 @@ public class ArgumentHandler {
     /**
      * The argument-splitter for this handler.
      */
-    private ArgumentSplitter splitter = new NoSplit();
+    private ArgumentSplitter splitter = new SimpleSplit();
 
     /**
      * Adds the types with the default values.
