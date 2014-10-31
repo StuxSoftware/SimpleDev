@@ -1,7 +1,5 @@
 package net.stuxcrystal.simpledev.commands.arguments.iterators;
 
-import java.util.Collection;
-
 /**
  * Returns the iterable at the given item.
  */
