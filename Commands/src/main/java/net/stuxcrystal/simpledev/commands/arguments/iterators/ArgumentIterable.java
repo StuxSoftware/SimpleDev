@@ -136,6 +136,12 @@ public abstract class ArgumentIterable implements Iterable<String> {
     public abstract <T> T getArgument(int index, Class<T> cls) throws NumberFormatException;
 
     /**
+     * Returns the count of arguments that this iterable has.
+     * @return The iterable.
+     */
+    public abstract int count();
+
+    /**
      * Returns the converted argument at the given index.<p />
      *
      * The index argument has some additional features: If the index is greater or equals 0 the default
@@ -221,7 +227,34 @@ public abstract class ArgumentIterable implements Iterable<String> {
      * @return A slice of the arguments.
      */
     public ArgumentIterable slice(Integer start, Integer stop) {
-        return new SliceIterable(this, start, stop, null);
+        return this.slice(start, stop, null);
+    }
+
+    /**
+     * Returns an ArgumentIterable that contains all arguments from the given argument (inclusive).
+     * @param start The first argument that is included in the iterable.
+     * @return An iterable with arguments.
+     */
+    public ArgumentIterable from(int start) {
+        return this.slice(start, null, null);
+    }
+
+    /**
+     * Returns an ArgumentIterable that contains all arguments to the given argument (exclusive).
+     * @param stop The first argument that is to be excluded in the iterable.
+     * @return An iterable with arguments.
+     */
+    public ArgumentIterable to(int stop) {
+        return this.slice(null, stop, null);
+    }
+
+    /**
+     * Returns an ArgumentIterable that conains every n-th(step) argument.
+     * @param step The n in n-th.
+     * @return A new iterable.
+     */
+    public ArgumentIterable step(int step) {
+        return this.slice(null, null, step);
     }
 
     /**
@@ -541,5 +574,41 @@ public abstract class ArgumentIterable implements Iterable<String> {
      */
     public byte getByte(int index, byte def) {
         return this.getArgument(index, byte.class, def);
+    }
+
+    /**
+     * Returns the real index as specified in getArgument.
+     * @param index       The index passed in getArgument.
+     * @param exclusive   Is this argument exclusive or inclusive.
+     * @return The real index or -1 if the index is invalid.
+     */
+    protected int getRealIndex(int index, boolean exclusive) {
+        int cnt = this.count();
+        if (index > cnt) {
+            // Index greater than the count of arguments.
+            return -1;
+        } else if (!exclusive && index == cnt) {
+            // Disallow passing the actual length of the argument.
+            return -1;
+        } else if (index < 0) {
+            // Support python-like indices.
+            index += cnt;
+
+            // If the index is still invalid, throw an exception.
+            if (index < 0) {
+                return -1;
+            }
+        }
+
+        return index;
+    }
+
+    /**
+     * Returns the real index as specified in getArgument.
+     * @param index The index passed in getArgument.
+     * @return The real index or -1 if the index is invalid.
+     */
+    protected int getRealIndex(int index) {
+        return this.getRealIndex(index, false);
     }
 }

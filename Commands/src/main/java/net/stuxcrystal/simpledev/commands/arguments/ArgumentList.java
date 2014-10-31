@@ -101,61 +101,14 @@ public class ArgumentList extends ArgumentIterable {
     }
 
     /**
-     * Returns all arguments beginning at the given index.
-     *
-     * @param from the index of the first element
-     * @return Al list of strings
-     */
-    public String[] getArguments(int from) {
-        return (String[]) ArrayUtils.subarray(arguments, from, arguments.length);
-    }
-
-    /**
      * Returns the size of the arguments array.
      *
      * @return The count of arguments.
      */
+    @Override
     public int count() {
         return this.arguments.length;
     }
-
-    /**
-     * Returns the real index as specified in getArgument.
-     * @param index       The index passed in getArgument.
-     * @param allowLength Allow
-     * @return The real index or -1 if the index is invalid.
-     */
-    private int getRealIndex(int index, boolean allowLength) {
-        // Check validity of the index.
-        if (index > this.arguments.length) {
-            // Index greater than the count of arguments.
-            return -1;
-        } else if (!allowLength && index == this.arguments.length) {
-            // Disallow passing the actual length of the argument.
-            return -1;
-        } else if (index < 0) {
-            // Support python-like indices.
-            index = this.arguments.length - index;
-
-            // If the index is still invalid, throw an exception.
-            if (index < 0) {
-                return -1;
-            }
-        }
-
-        return index;
-    }
-
-    /**
-     * Returns the real index as specified in getArgument.
-     * @param index The index passed in getArgument.
-     * @return The real index or -1 if the index is invalid.
-     */
-    private int getRealIndex(int index) {
-        return getRealIndex(index, false);
-    }
-
-
 
     /**
      * Returns the converted argument at the given index.<p />
