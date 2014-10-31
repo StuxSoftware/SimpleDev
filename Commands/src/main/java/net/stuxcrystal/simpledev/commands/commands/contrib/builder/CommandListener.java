@@ -1,7 +1,7 @@
 package net.stuxcrystal.simpledev.commands.commands.contrib.builder;
 
 import net.stuxcrystal.simpledev.commands.CommandExecutor;
-import net.stuxcrystal.simpledev.commands.arguments.ArgumentParser;
+import net.stuxcrystal.simpledev.commands.arguments.ArgumentList;
 import net.stuxcrystal.simpledev.commands.commands.CommandContainer;
 
 /**
@@ -16,6 +16,6 @@ public interface CommandListener {
      * @param executor   The executor that executed the command.
      * @param arguments  The arguments that have been passed to this command.
      */
-    public void execute(CommandContainer command, CommandExecutor executor, ArgumentParser arguments);
+    public void execute(CommandContainer command, CommandExecutor executor, ArgumentList arguments);
 
 }

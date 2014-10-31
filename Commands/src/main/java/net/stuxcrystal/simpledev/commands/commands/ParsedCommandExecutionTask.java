@@ -1,14 +1,14 @@
 package net.stuxcrystal.simpledev.commands.commands;
 
 import net.stuxcrystal.simpledev.commands.CommandExecutor;
-import net.stuxcrystal.simpledev.commands.arguments.ArgumentParser;
+import net.stuxcrystal.simpledev.commands.arguments.ArgumentList;
 
 /**
  * Task for parsed commands.
  */
 public class ParsedCommandExecutionTask extends CommandExecutionTask {
 
-    private final ArgumentParser parser;
+    private final ArgumentList parser;
 
     /**
      * The task to execute.
@@ -16,7 +16,7 @@ public class ParsedCommandExecutionTask extends CommandExecutionTask {
      * @param executor  The executor to use.
      * @param parser    The parsed arguments.
      */
-    protected ParsedCommandExecutionTask(CommandContainer container, CommandExecutor executor, ArgumentParser parser) {
+    protected ParsedCommandExecutionTask(CommandContainer container, CommandExecutor executor, ArgumentList parser) {
         super(container, executor);
         this.parser = parser;
     }

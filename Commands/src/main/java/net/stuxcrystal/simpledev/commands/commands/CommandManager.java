@@ -2,7 +2,7 @@ package net.stuxcrystal.simpledev.commands.commands;
 
 import net.stuxcrystal.simpledev.commands.CommandExecutor;
 import net.stuxcrystal.simpledev.commands.CommandHandler;
-import net.stuxcrystal.simpledev.commands.arguments.ArgumentParser;
+import net.stuxcrystal.simpledev.commands.arguments.ArgumentList;
 import net.stuxcrystal.simpledev.commands.commands.contrib.annotations.AnnotationCommandLoader;
 import net.stuxcrystal.simpledev.commands.commands.contrib.raw.CommandContainerLoader;
 import net.stuxcrystal.simpledev.commands.translations.TranslationManager;
@@ -55,7 +55,7 @@ public class CommandManager {
         TranslationManager mgr = executor.getCommandHandler().getTranslationManager();
 
         // Check argument data.
-        ArgumentParser parser = new ArgumentParser(executor, executor.getCommandHandler(), args);
+        ArgumentList parser = new ArgumentList(executor, executor.getCommandHandler(), args);
 
         // Check if only these flags are in the flag list
         if (!command.getSupportedFlags().isEmpty() &&

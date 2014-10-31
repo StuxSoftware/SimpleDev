@@ -3,7 +3,7 @@ package net.stuxcrystal.simpledev.commands.compat.bungee.contrib.commands;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Command;
 import net.stuxcrystal.simpledev.commands.CommandExecutor;
-import net.stuxcrystal.simpledev.commands.arguments.ArgumentParser;
+import net.stuxcrystal.simpledev.commands.arguments.ArgumentList;
 import net.stuxcrystal.simpledev.commands.commands.CommandContainer;
 
 import java.util.Arrays;
@@ -81,7 +81,7 @@ public class BungeeCommandContainer implements CommandContainer {
     }
 
     @Override
-    public void execute(CommandExecutor executor, ArgumentParser parser) {
+    public void execute(CommandExecutor executor, ArgumentList parser) {
 
     }
 

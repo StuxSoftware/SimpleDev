@@ -15,7 +15,7 @@
 
 package net.stuxcrystal.simpledev.commands;
 
-import net.stuxcrystal.simpledev.commands.arguments.ArgumentParser;
+import net.stuxcrystal.simpledev.commands.arguments.ArgumentList;
 import net.stuxcrystal.simpledev.commands.commands.CommandContainer;
 import net.stuxcrystal.simpledev.commands.commands.CommandLoader;
 import net.stuxcrystal.simpledev.commands.commands.CommandManager;
@@ -230,7 +230,7 @@ public class CommandHandler {
      * @param executor The executor that executes the command.
      * @param parser   The already parsed argumetns.
      */
-    public void execute(CommandExecutor executor, ArgumentParser parser) {
+    public void execute(CommandExecutor executor, ArgumentList parser) {
         this.execute(executor, parser.getArguments(0));
     }
 

@@ -16,7 +16,7 @@
 package net.stuxcrystal.simpledev.commands.exceptions;
 
 import net.stuxcrystal.simpledev.commands.CommandExecutor;
-import net.stuxcrystal.simpledev.commands.arguments.ArgumentParser;
+import net.stuxcrystal.simpledev.commands.arguments.ArgumentList;
 
 /**
  * A handler for exceptions.<p />
@@ -36,6 +36,6 @@ public interface ExceptionHandler<T extends Throwable> {
      * @param executor  The sender who executed the command.
      * @param arguments The arguments that were passed to the command.
      */
-    public void exception(T exception, String name, CommandExecutor<?> executor, ArgumentParser arguments);
+    public void exception(T exception, String name, CommandExecutor<?> executor, ArgumentList arguments);
 
 }

@@ -1,7 +1,7 @@
 package net.stuxcrystal.simpledev.example;
 
 import net.stuxcrystal.simpledev.commands.CommandExecutor;
-import net.stuxcrystal.simpledev.commands.arguments.ArgumentParser;
+import net.stuxcrystal.simpledev.commands.arguments.ArgumentList;
 import net.stuxcrystal.simpledev.commands.commands.contrib.annotations.Command;
 import net.stuxcrystal.simpledev.commands.commands.contrib.annotations.CommandListener;
 
@@ -16,7 +16,7 @@ public class InterBanCommands implements CommandListener {
      * @param arguments  The arguments.
      */
     @Command(minSize = 1, maxSize = 1, permission = "interban.ban")
-    public void ban(CommandExecutor executor, ArgumentParser arguments) {
+    public void ban(CommandExecutor executor, ArgumentList arguments) {
         // Get the player who is to be banned.
         CommandExecutor ce = arguments.getArgument(0, CommandExecutor.class);
 
@@ -30,7 +30,7 @@ public class InterBanCommands implements CommandListener {
      * @param arguments  The arguments.
      */
     @Command(minSize = 1, maxSize = 1, permission = "interban.unban")
-    public void unban(CommandExecutor executor, ArgumentParser arguments) {
+    public void unban(CommandExecutor executor, ArgumentList arguments) {
         // Get the player who is to be unbanned
         CommandExecutor ce = arguments.getArgument(0, CommandExecutor.class);
 

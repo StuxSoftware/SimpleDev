@@ -1,7 +1,7 @@
 package net.stuxcrystal.simpledev.commands.commands.contrib.builder;
 
 import net.stuxcrystal.simpledev.commands.CommandExecutor;
-import net.stuxcrystal.simpledev.commands.arguments.ArgumentParser;
+import net.stuxcrystal.simpledev.commands.arguments.ArgumentList;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class ListenerCommandContainer extends SimpleCommandContainer {
 
 
     @Override
-    public void execute(CommandExecutor executor, ArgumentParser parser) {
+    public void execute(CommandExecutor executor, ArgumentList parser) {
         this.listener.execute(this, executor, parser);
     }
 }

@@ -1,7 +1,7 @@
 package net.stuxcrystal.simpledev.commands.commands;
 
 import net.stuxcrystal.simpledev.commands.CommandExecutor;
-import net.stuxcrystal.simpledev.commands.arguments.ArgumentParser;
+import net.stuxcrystal.simpledev.commands.arguments.ArgumentList;
 
 import java.util.List;
 
@@ -105,7 +105,7 @@ public interface CommandContainer {
      * @param executor  The executor that has executed the command.
      * @param parser    The parser that parsed the commands.
      */
-    public void execute(CommandExecutor executor, ArgumentParser parser);
+    public void execute(CommandExecutor executor, ArgumentList parser);
 
     /**
      * Executes the command without parsing the arguments.<p />

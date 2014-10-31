@@ -1,7 +1,7 @@
 package net.stuxcrystal.simpledev.commands.commands.contrib.annotations;
 
 import net.stuxcrystal.simpledev.commands.CommandExecutor;
-import net.stuxcrystal.simpledev.commands.arguments.ArgumentParser;
+import net.stuxcrystal.simpledev.commands.arguments.ArgumentList;
 
 import java.lang.reflect.Method;
 
@@ -27,7 +27,7 @@ public class LeafAnnotationCommand extends AnnotationBasedCommand {
      * @param parser    The parser that parsed the commands.
      */
     @Override
-    public void execute(CommandExecutor sender, ArgumentParser parser) {
+    public void execute(CommandExecutor sender, ArgumentList parser) {
         this._execute(sender, parser);
     }
 }

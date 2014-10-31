@@ -1,6 +1,6 @@
 package net.stuxcrystal.simpledev.commands.arguments.iterators;
 
-import net.stuxcrystal.simpledev.commands.arguments.ArgumentParser;
+import net.stuxcrystal.simpledev.commands.arguments.ArgumentList;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -111,7 +111,7 @@ public abstract class ArgumentIterable implements Iterable<String> {
      * Returns the argument parser behind the iterable.
      * @return The argument parser behind the iterable.
      */
-    public ArgumentParser getArgumentParser() {
+    public ArgumentList getArgumentParser() {
         return this.iterable.getArgumentParser();
     }
 

@@ -1,7 +1,7 @@
 package net.stuxcrystal.simpledev.example;
 
 import net.stuxcrystal.simpledev.commands.CommandExecutor;
-import net.stuxcrystal.simpledev.commands.arguments.ArgumentParser;
+import net.stuxcrystal.simpledev.commands.arguments.ArgumentList;
 import net.stuxcrystal.simpledev.commands.commands.contrib.annotations.Command;
 import net.stuxcrystal.simpledev.commands.commands.contrib.annotations.CommandListener;
 
@@ -16,7 +16,7 @@ public class InterBanHistoryCommands implements CommandListener{
      * @param argumentParser   The arguments.
      */
     @Command(minSize = 0, maxSize = 0, permission = "interban.history.undoAction")
-    public void undo(CommandExecutor executor, ArgumentParser argumentParser) {
+    public void undo(CommandExecutor executor, ArgumentList argumentParser) {
         executor.getHistory().undoAction();
     }
 
@@ -26,7 +26,7 @@ public class InterBanHistoryCommands implements CommandListener{
      * @param argumentParser   The arguments.
      */
     @Command(minSize = 0, maxSize = 0, permission = "interban.history.redoAction")
-    public void redo(CommandExecutor executor, ArgumentParser argumentParser) {
+    public void redo(CommandExecutor executor, ArgumentList argumentParser) {
         executor.getHistory().redoAction();
     }
 

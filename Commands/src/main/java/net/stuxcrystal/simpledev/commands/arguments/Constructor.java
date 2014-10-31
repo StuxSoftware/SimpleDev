@@ -17,7 +17,7 @@ public class Constructor {
     protected void addedTypes(ArgumentHandler handler) {}
 
     /**
-     * Adds types used by {@link ArgumentParser}.
+     * Adds types used by {@link ArgumentList}.
      * @param handler
      */
     public final void addTypes(ArgumentHandler handler) {

@@ -21,16 +21,12 @@ import net.stuxcrystal.simpledev.commands.arguments.types.PrimitiveType;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 /**
  * Argument Parser for BukkitInstallPlugin
  *
  * @author StuxCrystal
  */
-public class ArgumentParser extends ArgumentIterable {
+public class ArgumentList extends ArgumentIterable {
 
     /**
      * Raw arguments
@@ -59,7 +55,7 @@ public class ArgumentParser extends ArgumentIterable {
      * @param handler   The handler that handles the function.
      * @param args      The arguments specified by the function.
      */
-    public ArgumentParser(CommandExecutor executor, CommandHandler handler, String[] args) {
+    public ArgumentList(CommandExecutor executor, CommandHandler handler, String[] args) {
         super(null);
         this.executor = executor;
         this.handler = handler;
@@ -260,7 +256,7 @@ public class ArgumentParser extends ArgumentIterable {
      * @return The argument parser behind the iterable.
      */
     @Override
-    public ArgumentParser getArgumentParser() {
+    public ArgumentList getArgumentParser() {
         return this;
     }
 }

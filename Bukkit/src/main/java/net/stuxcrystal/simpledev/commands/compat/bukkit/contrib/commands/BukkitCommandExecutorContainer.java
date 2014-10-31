@@ -1,7 +1,7 @@
 package net.stuxcrystal.simpledev.commands.compat.bukkit.contrib.commands;
 
 import net.stuxcrystal.simpledev.commands.CommandExecutor;
-import net.stuxcrystal.simpledev.commands.arguments.ArgumentParser;
+import net.stuxcrystal.simpledev.commands.arguments.ArgumentList;
 import net.stuxcrystal.simpledev.commands.commands.CommandContainer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -92,7 +92,7 @@ public class BukkitCommandExecutorContainer implements CommandContainer {
     }
 
     @Override
-    public void execute(CommandExecutor executor, ArgumentParser parser) {
+    public void execute(CommandExecutor executor, ArgumentList parser) {
 
     }
 

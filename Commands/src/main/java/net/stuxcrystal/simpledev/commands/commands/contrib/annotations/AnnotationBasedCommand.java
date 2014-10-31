@@ -2,7 +2,7 @@ package net.stuxcrystal.simpledev.commands.commands.contrib.annotations;
 
 import net.stuxcrystal.simpledev.commands.CommandExecutor;
 import net.stuxcrystal.simpledev.commands.CommandHandler;
-import net.stuxcrystal.simpledev.commands.arguments.ArgumentParser;
+import net.stuxcrystal.simpledev.commands.arguments.ArgumentList;
 import net.stuxcrystal.simpledev.commands.commands.CommandContainer;
 import net.stuxcrystal.simpledev.commands.exceptions.DoNotExecuteException;
 import net.stuxcrystal.simpledev.commands.exceptions.ExceptionHandler;
@@ -122,7 +122,7 @@ public abstract class AnnotationBasedCommand implements CommandContainer {
      * @param arguments  The arguments the have been passed.
      * @return  {@code false} if a DoNotExecuteException has been thrown
      */
-    protected boolean _execute(CommandExecutor sender, ArgumentParser arguments) {
+    protected boolean _execute(CommandExecutor sender, ArgumentList arguments) {
         CommandHandler handler = sender.getCommandHandler();
         TranslationManager manager = handler.getTranslationManager();
 
