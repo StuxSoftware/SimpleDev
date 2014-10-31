@@ -35,6 +35,11 @@ public class BaseConstructor implements Constructor {
      */
     public void addedTypes(ConfigurationHandler loader) {}
 
+    /**
+     * Registers a tree-generator if it does not throw an exception while preparing it.
+     * @param loader    The generator.
+     * @param classname The name of the class.
+     */
     private void registerTreeGeneratorClass(ConfigurationHandler loader, String classname) {
         try {
             Class<?> cls = ClassUtils.getClass(this.getClass().getClassLoader(), classname);

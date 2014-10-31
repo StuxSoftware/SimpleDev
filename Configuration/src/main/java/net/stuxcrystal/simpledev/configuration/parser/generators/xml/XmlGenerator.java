@@ -29,21 +29,45 @@ import java.io.OutputStream;
  */
 public class XmlGenerator implements NodeTreeGenerator {
 
+    /**
+     * Returns "XML"
+     * @return "XML"
+     */
     @Override
     public String getName() {
         return "XML";
     }
 
+    /**
+     * Only accept files that end with ".xml"
+     * @param name The name of the file that should be parsed.
+     * @return {@code true} if the name ends with ".xml"
+     * @throws IOException if an I/O-Operation fails.
+     */
     @Override
     public boolean isValidFileName(String name) throws IOException {
         return name.endsWith(".xml");
     }
 
+    /**
+     * Parse the xml file.
+     * @param stream The stream to parse.
+     * @param parser The configuration handler that parses the stream.
+     * @return The node tree.
+     * @throws IOException If an I/O-Operation fails.
+     */
     @Override
     public Node<?> parse(InputStream stream, ConfigurationHandler parser) throws IOException {
         return XMLParser.parse(stream);
     }
 
+    /**
+     * Dump the node tree into a file.
+     * @param stream The stream to write to.
+     * @param node   The node to store.
+     * @param parser The configuration handler that parses the stream.
+     * @throws IOException If an I/O-Operation fails.
+     */
     @Override
     public void dump(OutputStream stream, Node<?> node, ConfigurationHandler parser) throws IOException {
         CommentAwareDumper.dump(stream, node);

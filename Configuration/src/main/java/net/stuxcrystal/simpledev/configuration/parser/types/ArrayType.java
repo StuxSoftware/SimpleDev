@@ -30,11 +30,28 @@ import java.lang.reflect.Type;
 
 public class ArrayType implements ValueType<Object> {
 
+    /**
+     * Is our type an array.
+     * @param object The current object the parser is working on.
+     * @param cls    the class the parser is parsing.
+     * @return {@code true} if it is a array.
+     * @throws ReflectiveOperationException
+     */
     @Override
     public boolean isValidType(Object object, Type cls) throws ReflectiveOperationException {
         return ReflectionUtil.toClass(cls).isArray();
     }
 
+    /**
+     * Parses the node tree and stores everything into an array.
+     * @param object The current object the parser is parsing.
+     * @param parser The parser that parses object. (Used if you want to parse Array or Maps).
+     * @param type   The type of the object.
+     * @param value  The current node to be parsed.
+     * @return The array.
+     * @throws ReflectiveOperationException If an reflective operation fails.
+     * @throws ValueException               If a invalid value has been encountered.
+     */
     @SuppressWarnings("unchecked")
     @Override
     public Object parse(Object object, ConfigurationParser parser, Type type, Node<?> value) throws ReflectiveOperationException, ValueException {
@@ -58,6 +75,16 @@ public class ArrayType implements ValueType<Object> {
         return result;
     }
 
+    /**
+     * Dumps the object.
+     * @param object The object the parser is parsing.
+     * @param parser The parser that dumps the object.
+     * @param type   The type of the object.
+     * @param data   The data to be parsed.
+     * @return The node tree.
+     * @throws ReflectiveOperationException If an reflective operation fails.
+     * @throws ValueException               If a invalid value has been encountered.
+     */
     @Override
     public Node<?> dump(Object object, ConfigurationParser parser, Type type, Object data) throws ReflectiveOperationException, ValueException {
         Type component;

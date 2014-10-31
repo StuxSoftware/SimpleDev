@@ -34,61 +34,64 @@ class CommentAwareDumper {
     private static final CommentAwareDumper DUMPER = new CommentAwareDumper();
 
     /**
-     * Internal reference to the default XML declaration.
+     * Contains the doctype of the xml file.
      */
-    private static final String XML_DECLARATION = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>";
+    private static final String XML_DOCTYPE = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>";
 
+    /**
+     * One does not simple create a new dumper.
+     */
     private CommentAwareDumper() {
     }
 
     /**
      * Dumps a node tree into a XML-File.
      *
-     * @param stream
-     * @param node
-     * @throws java.io.IOException
+     * @param stream  The stream to write data to.
+     * @param node    The node to dump.
+     * @throws java.io.IOException If an I/O-Operation fils.
      */
     public static void dump(OutputStream stream, Node<?> node) throws IOException {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stream, "UTF-8"));
-        writer.write(XML_DECLARATION);
+        writer.write(XML_DOCTYPE);
         writer.newLine();
 
         // Set the node name if necessary.
         if (node.getName() == null || node.getName().isEmpty())
             node.setName("xml");
 
-        DUMPER.dumpNode(writer, node, 0);
+        CommentAwareDumper.DUMPER.dumpNode(writer, node, 0);
         writer.close();
     }
 
     /**
      * Dumps the content of a node.
      *
-     * @param writer
-     * @param node
-     * @param indent
-     * @throws java.io.IOException
+     * @param writer   The writer to write the content into.
+     * @param node     The node to dump.
+     * @param indent   The indent we should add in each line.
+     * @throws java.io.IOException If an I/O-Operation fails.
      */
     private void dump(BufferedWriter writer, Node<?> node, int indent) throws IOException {
         if (node.hasChildren()) {
             writer.newLine();
             for (Node<?> child : ((Node<Node<?>[]>) node).getData()) {
-                dumpComment(writer, child, indent);
-                dumpNode(writer, child, indent);
+                this.dumpComment(writer, child, indent);
+                this.dumpNode(writer, child, indent);
             }
-            writeIndent(writer, indent - 2);
+            this.writeIndent(writer, indent - 2);
 
         } else {
-            dumpScalar(writer, node);
+            this.dumpScalar(writer, node);
         }
     }
 
     /**
      * Dumps the content of a string node.
      *
-     * @param writer
-     * @param node
-     * @throws java.io.IOException
+     * @param writer  The writer to write data.
+     * @param node    The node in which the data should be copied.
+     * @throws java.io.IOException If an I/O-Operation fails.
      */
     private void dumpScalar(BufferedWriter writer, Node<?> node) throws IOException {
         writer.write(StringEscapeUtils.escapeXml(((Node<String>) node).getData()));
@@ -97,10 +100,10 @@ class CommentAwareDumper {
     /**
      * Dumps the content of a single node.
      *
-     * @param writer
-     * @param node
-     * @param indent
-     * @throws java.io.IOException
+     * @param writer The writer to write data.
+     * @param node   The node.
+     * @param indent The indent.
+     * @throws java.io.IOException If an I/O-Operation fails.
      */
     private void dumpNode(BufferedWriter writer, Node<?> node, int indent) throws IOException {
         String name = (node.getName() != null && !node.getName().isEmpty()) ? node.getName() : "item";
@@ -111,7 +114,7 @@ class CommentAwareDumper {
         writer.write(name);
         writer.write(">");
 
-        dump(writer, node, indent + 2);
+        this.dump(writer, node, indent + 2);
 
         writer.write("</");
         writer.write(name);
@@ -123,16 +126,16 @@ class CommentAwareDumper {
     /**
      * Dumps a comment.
      *
-     * @param writer
-     * @param node
-     * @param indent
-     * @throws java.io.IOException
+     * @param writer  The writer to write the comment into.
+     * @param node    The node that should be used.
+     * @param indent  The indent of the nodes.
+     * @throws java.io.IOException If an I/O-Operation fails.
      */
     private void dumpComment(BufferedWriter writer, Node<?> node, int indent) throws IOException {
         String[] comment = node.getComments();
 
         for (String line : comment) {
-            writeIndent(writer, indent);
+            this.writeIndent(writer, indent);
             if (!(line == null || line.isEmpty())) {
                 writer.write("<!-- ");
                 writer.write(line);
@@ -146,14 +149,16 @@ class CommentAwareDumper {
     /**
      * Writes an indent.
      *
-     * @param writer
-     * @param indent
-     * @throws java.io.IOException
+     * @param writer The writer to write the indent into.
+     * @param indent The indent.
+     * @throws java.io.IOException If an I/O-Operation fails.
      */
     private void writeIndent(BufferedWriter writer, int indent) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < indent; i++) sb.append(" ");
-        writer.write(sb.toString());
+        // We will use a char array since we know how many characters we are going to write.
+        char[] chars = new char[indent];
+        for (int i = 0; i < indent; i++)
+            chars[i] = ' ';
+        writer.write(chars, 0, indent);
     }
 
 }

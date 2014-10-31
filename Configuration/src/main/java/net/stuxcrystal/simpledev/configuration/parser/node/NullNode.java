@@ -15,73 +15,17 @@
 
 package net.stuxcrystal.simpledev.configuration.parser.node;
 
-import java.lang.ref.WeakReference;
-
 /**
  * Node without data.
  */
 public class NullNode extends Node<Void> {
 
-    private String name;
-
-    private WeakReference<Node<?>> parent;
-
-
+    /**
+     * Checks if the node has children.
+     * @return {@code false}
+     */
     @Override
     public boolean hasChildren() {
         return false;
-    }
-
-    @Override
-    public Void getData() {
-        return null;
-    }
-
-    @Override
-    public void setData(Void data) {
-
-    }
-
-    @Override
-    public boolean hasName() {
-        return false;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String[] getComments() {
-        return new String[0];
-    }
-
-    @Override
-    public void setComments(String[] comments) {
-
-    }
-
-    @Override
-    public Node<?> getParent() {
-        return this.parent.get();
-    }
-
-    @Override
-    public void setParent(Node<?> parent) {
-        this.parent = new WeakReference<Node<?>>(parent);
-    }
-
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("NullNode[name=").append(getName()).append("]");
-
-        return sb.toString();
     }
 }

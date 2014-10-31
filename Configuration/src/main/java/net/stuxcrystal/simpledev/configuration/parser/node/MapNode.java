@@ -15,8 +15,6 @@
 
 package net.stuxcrystal.simpledev.configuration.parser.node;
 
-import java.lang.ref.WeakReference;
-
 /**
  * Represents a parent node.
  *
@@ -24,90 +22,42 @@ import java.lang.ref.WeakReference;
  */
 public class MapNode extends Node<Node<?>[]> {
 
-
     /**
-     * The nodes.
+     * Creates a new map node.
+     * @param parent     The parent node.
+     * @param nodes      The children.
+     * @param comments   The comments.
+     * @param name       The name of the node.
      */
-    private Node<?>[] children;
-
-    /**
-     * The metadata.
-     */
-    private String[] value;
-
-    /**
-     * The name of the field
-     */
-    private String name = null;
-
-    /**
-     * The parent node.
-     */
-    private WeakReference<Node<?>> parent;
-
-    MapNode(Node<?> parent, Node<?>[] nodes, String[] value, String name) {
-        this.parent = new WeakReference<Node<?>>(parent);
-        this.children = nodes;
-        this.value = value;
-        this.name = name;
+    protected MapNode(Node<?> parent, Node<?>[] nodes, String[] comments, String name) {
+        this(nodes);
+        this.setName(name);
+        this.setParent(parent);
+        this.setComments(comments);
     }
 
+    /**
+     * Creates a new map node.
+     * @param nodes      The children.
+     */
     public MapNode(Node<?>[] nodes) {
-        this.children = nodes;
+        this();
+        this.setData(nodes);
     }
 
+    /**
+     * Creates a new map node.
+     */
     public MapNode() {
 
     }
 
+    /**
+     * Checks if the node has children.
+     * @return {@code true}
+     */
     @Override
     public boolean hasChildren() {
         return true;
     }
-
-    @Override
-    public Node<?>[] getData() {
-        return children;
-    }
-
-    @Override
-    public boolean hasName() {
-        return this.name != null;
-    }
-
-    @Override
-    public String getName() {
-        return this.name;
-    }
-
-    @Override
-    public String[] getComments() {
-        return this.value;
-    }
-
-    @Override
-    public Node<?> getParent() {
-        return this.parent.get();
-    }
-
-    @Override
-    public void setData(Node<?>[] data) {
-        this.children = data;
-    }
-
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public void setComments(String[] value) {
-        this.value = value;
-    }
-
-    @Override
-    public void setParent(Node<?> parent) {
-        this.parent = new WeakReference<Node<?>>(parent);
-    }
-
 }

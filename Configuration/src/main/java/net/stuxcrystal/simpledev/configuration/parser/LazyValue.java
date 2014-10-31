@@ -11,18 +11,35 @@ import java.lang.reflect.Type;
 /**
  * Represents a lazy node.
  */
-public class LazyValue {
+public final class LazyValue {
 
     /**
      * Parser that parses lazy nodes.
      */
     private static class LazyValueParser implements ValueType<LazyValue> {
 
+        /**
+         * Checks if the type of the object is a LazyValue.
+         * @param object The current object the parser is working on.
+         * @param cls    the class the parser is parsing.
+         * @return {@code true} if we can parse the type.
+         * @throws ReflectiveOperationException If we failed to resolve the object.
+         */
         @Override
         public boolean isValidType(Object object, Type cls) throws ReflectiveOperationException {
-            return LazyValue.class.isAssignableFrom(ReflectionUtil.toClass(cls));
+            return LazyValue.class.equals(ReflectionUtil.toClass(cls));
         }
 
+        /**
+         * Wrap everything into a lazy value.
+         * @param object The current object the parser is parsing.
+         * @param parser The parser that parses object. (Used if you want to parse Array or Maps).
+         * @param cls    Type type of the current value.
+         * @param value  The current node to be parsed.
+         * @return The newly created lazy value.
+         * @throws ReflectiveOperationException If a Reflective-Operation fails.
+         * @throws ValueException               If the value is invalid.
+         */
         @Override
         public LazyValue parse(Object object, ConfigurationParser parser, Type cls, Node<?> value) throws ReflectiveOperationException, ValueException {
             // Since the value is lazy, we will just store the current node in the lazy node
@@ -36,6 +53,16 @@ public class LazyValue {
             return result;
         }
 
+        /**
+         * Dumps the contents of the LazyValue into a node.
+         * @param object The object the parser is parsing.
+         * @param parser The parser that dumps the object.
+         * @param cls    The type of the object.
+         * @param data   The data to be parsed.
+         * @return The value that will be dumped.
+         * @throws ReflectiveOperationException If a reflective operation fails.
+         * @throws ValueException               If the value is invalid.
+         */
         @Override
         public Node<?> dump(Object object, ConfigurationParser parser, Type cls, LazyValue data) throws ReflectiveOperationException, ValueException {
             try {

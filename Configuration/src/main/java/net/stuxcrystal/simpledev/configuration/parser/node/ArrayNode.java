@@ -16,18 +16,32 @@
 package net.stuxcrystal.simpledev.configuration.parser.node;
 
 /**
- * Represents a node.
+ * Represents a node that contains unnamed data.
  */
 public class ArrayNode extends MapNode {
 
-    protected ArrayNode(Node<?> parent, Node<?>[] nodes, String[] value, String name) {
-        super(parent, nodes, value, name);
+    /**
+     * Creates a new array node.
+     * @param parent    The parent node.
+     * @param nodes     The nodes that the array node contains.
+     * @param comments  The comments
+     * @param name      The name of the node.
+     */
+    protected ArrayNode(Node<?> parent, Node<?>[] nodes, String[] comments, String name) {
+        super(parent, nodes, comments, name);
     }
 
+    /**
+     * Creates a new array node.
+     * @param nodes The node that the array node contains.
+     */
     public ArrayNode(Node<?>[] nodes) {
         super(nodes);
     }
 
+    /**
+     * Creates a new array node.
+     */
     public ArrayNode() {
         super();
     }

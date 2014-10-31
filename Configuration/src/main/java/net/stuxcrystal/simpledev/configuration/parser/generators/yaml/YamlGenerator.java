@@ -26,6 +26,7 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.error.YAMLException;
 import org.yaml.snakeyaml.representer.Representer;
+import org.yaml.snakeyaml.resolver.Resolver;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -35,14 +36,10 @@ import java.util.Map.Entry;
 
 public class YamlGenerator implements NodeTreeGenerator {
 
-    private static Yaml parser;
-
-    static {
-        DumperOptions options = new DumperOptions();
-        options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-        options.setDefaultScalarStyle(DumperOptions.ScalarStyle.PLAIN);
-        parser = new Yaml(new Constructor(), new Representer(), options, new StringOnlyResolver());
-    }
+    /**
+     * Make sure we get to initiate the yaml parser.
+     */
+    private static final YamlParser parser = new YamlParser();
 
     public YamlGenerator() {}
 
@@ -57,50 +54,7 @@ public class YamlGenerator implements NodeTreeGenerator {
 
     @Override
     public Node<?> parse(InputStream stream, ConfigurationHandler cParser) throws IOException {
-        try {
-            return parseNode(parser.load(stream));
-        } catch (YAMLException e) {
-            throw new IOException(e);
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    private Node<?> parseNode(Object value) {
-        Node<?> n;
-        if (value instanceof Map) {
-            n = parseMap((Map<String, Object>) value);
-        } else if (value instanceof List) {
-            n = parseList((List<Object>) value);
-        } else {
-            n = new DataNode((String) value);
-        }
-        return n;
-    }
-
-    private Node<?> parseMap(Map<String, Object> data) {
-        MapNode node = new MapNode();
-        ArrayList<Node<?>> nodes = new ArrayList<>();
-        for (Entry<String, Object> entry : data.entrySet()) {
-            Node<?> n = parseNode(entry.getValue());
-            n.setName(entry.getKey());
-            n.setParent(node);
-            nodes.add(n);
-        }
-
-        node.setData(nodes.toArray(new Node<?>[nodes.size()]));
-        return node;
-    }
-
-    private Node<?> parseList(List<Object> data) {
-        MapNode node = new ArrayNode();
-        ArrayList<Node<?>> nodes = new ArrayList<>();
-        for (Object o : data) {
-            Node<?> n = parseNode(o);
-            n.setParent(node);
-            nodes.add(n);
-        }
-        node.setData(nodes.toArray(new Node<?>[nodes.size()]));
-        return node;
+        return YamlParser.parse(stream);
     }
 
     @Override

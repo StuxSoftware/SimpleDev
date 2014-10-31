@@ -18,28 +18,48 @@ package net.stuxcrystal.simpledev.configuration.parser.generators.yaml;
 import net.stuxcrystal.simpledev.configuration.parser.ConfigurationHandler;
 import net.stuxcrystal.simpledev.configuration.parser.node.ArrayNode;
 import net.stuxcrystal.simpledev.configuration.parser.node.Node;
+import org.apache.commons.lang.StringEscapeUtils;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Writer;
 
-public class CommentAwareDumper {
+/**
+ * Dumps the yaml files with comments.
+ */
+class CommentAwareDumper {
 
+    /**
+     * The type of the object.
+     */
     private static enum Type {
         MAP, ARRAY, SCALAR
     }
 
     /**
-     * True if somethis was written.
+     * True if something was written.
      */
     private boolean wroteSomething = false;
 
+    /**
+     * The configuration handler.
+     */
     private final ConfigurationHandler parser;
 
+    /**
+     * Creates the new dumper.
+     * @param parser The parser for comments.
+     */
     public CommentAwareDumper(ConfigurationHandler parser) {
         this.parser = parser;
     }
 
+    /**
+     * Dumps the node to the file.
+     * @param writer The writer of the file
+     * @param parent The parent node to dump.
+     * @throws IOException I an I/O-Operation fails.
+     */
     public void dump(Writer writer, Node<?> parent) throws IOException {
         BufferedWriter buffer = new BufferedWriter(writer);
         writeComment(buffer, parent.getComments(), 0);
@@ -52,7 +72,7 @@ public class CommentAwareDumper {
      *
      * @param writer The writer to write in.
      * @param lines  The lines to write.
-     * @param indent
+     * @param indent The indent to add.
      */
     void writeComment(BufferedWriter writer, String[] lines, int indent) {
         if (lines == null) return;
@@ -74,9 +94,9 @@ public class CommentAwareDumper {
     /**
      * Writes a node.
      *
-     * @param writer
-     * @param node
-     * @param indent
+     * @param writer The writer to write to.
+     * @param node   The node to write.
+     * @param indent The indent to add.
      */
     void writeNode(BufferedWriter writer, Node<?> node, int indent) {
         switch (this.checkType(node)) {
@@ -97,9 +117,9 @@ public class CommentAwareDumper {
     /**
      * Writes the mapping.
      *
-     * @param writer
-     * @param node
-     * @param indent
+     * @param writer The writer to write to.
+     * @param node   The node to write.
+     * @param indent The indent to add.
      */
     @SuppressWarnings("unchecked")
     void writeMapping(BufferedWriter writer, Node<?> node, int indent) {
@@ -121,8 +141,8 @@ public class CommentAwareDumper {
     /**
      * Writes a sequence.
      *
-     * @param writer
-     * @param node
+     * @param writer The writer to write to.
+     * @param node   The node to write.
      */
     @SuppressWarnings("unchecked")
     void writeSequence(BufferedWriter writer, Node<?> node, int indent) {
@@ -145,7 +165,7 @@ public class CommentAwareDumper {
      * Writes a scalar node.
      *
      * @param writer The writer to write to.
-     * @param node   The node to write to.
+     * @param node   The node to write.
      */
     @SuppressWarnings("unchecked")
     void writeScalar(BufferedWriter writer, Node<?> node, int indent) {
@@ -156,7 +176,7 @@ public class CommentAwareDumper {
 
         String text = ((Node<String>) node).getData();
         if (!text.contains("\n")) {
-            _write(writer, ((Node<String>) node).getData());
+            _write(writer, StringEscapeUtils.escapeXml(((Node<String>) node).getData()));
         } else {
             this.parser.warn("YAML", "Multi-Line String... Parsing may be inaccurate.");
 
@@ -188,8 +208,8 @@ public class CommentAwareDumper {
     /**
      * Writes the indentation.
      *
-     * @param writer
-     * @param indent
+     * @param writer The writer to write a key to.
+     * @param indent The indent to write.
      */
     private void writeIndent(BufferedWriter writer, int indent) {
         char[] chars = new char[indent];
@@ -211,7 +231,7 @@ public class CommentAwareDumper {
         try {
             writer.write(text);
         } catch (IOException e) {
-            e.printStackTrace();
+            this.parser.getLoggingInterface().exception(e);
         }
     }
 
@@ -233,8 +253,8 @@ public class CommentAwareDumper {
     /**
      * Checks the type.
      *
-     * @param node
-     * @return
+     * @param node The node to check.
+     * @return The type of the generator.
      */
     Type checkType(Node<?> node) {
         if (node instanceof ArrayNode)

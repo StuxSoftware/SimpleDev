@@ -25,82 +25,27 @@ import java.lang.ref.WeakReference;
 public class DataNode extends Node<String> {
 
     /**
-     * The name of the node.
+     * Creates a new data node.
+     * @param data Contents
      */
-    private String name;
-
-    /**
-     * The data of the node.
-     */
-    private String data;
-
-    /**
-     * The value of the node.
-     */
-    private String[] comments;
-
-    /**
-     * The parent node.
-     */
-    private WeakReference<Node<?>> node;
-
     public DataNode(String data) {
-        this.data = data;
+        this.setData(data);
     }
 
+    /**
+     * Creates a new data node.
+     */
     public DataNode() {
         this(null);
     }
 
+    /**
+     * Checks if the node has children.
+     * @return {@code false}
+     */
     @Override
     public boolean hasChildren() {
         return false;
-    }
-
-    @Override
-    public String getData() {
-        return this.data;
-    }
-
-    @Override
-    public boolean hasName() {
-        return this.name != null;
-    }
-
-    @Override
-    public String getName() {
-        return this.name;
-    }
-
-    @Override
-    public Node<?> getParent() {
-        return this.node.get();
-    }
-
-    @Override
-    public void setData(String data) {
-        this.data = data;
-
-    }
-
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public void setParent(Node<?> parent) {
-        this.node = new WeakReference<Node<?>>(parent);
-    }
-
-    @Override
-    public String[] getComments() {
-        return this.comments;
-    }
-
-    @Override
-    public void setComments(String[] comments) {
-        this.comments = comments;
     }
 
 }

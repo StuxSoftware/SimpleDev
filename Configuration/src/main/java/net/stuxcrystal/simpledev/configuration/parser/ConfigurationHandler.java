@@ -60,7 +60,7 @@ public class ConfigurationHandler {
     /**
      * Constructs the configuration loader with a Constructor object that loads the types and generators needed.
      *
-     * @param constructor
+     * @param constructor The constructor that will be used to initialize the configuration handler.
      */
     public ConfigurationHandler(Constructor constructor) {
         constructor.loadGenerators(this);
@@ -261,7 +261,7 @@ public class ConfigurationHandler {
      * Dumps a configuration object.
      *
      * @param configuration The configuration to dump.
-     * @return
+     * @return The node that dumped the configuration.
      * @throws ReflectionException
      * @throws net.stuxcrystal.simpledev.configuration.parser.exceptions.ValueException
      */
@@ -284,6 +284,7 @@ public class ConfigurationHandler {
      * @param <T>   The type of the configuration class.
      * @return The configuration.
      */
+    @SuppressWarnings("unchecked")
     private <T> T parseNodeTree(Node<?> nodes, Class<? extends T> cls) throws ValueException, ReflectionException {
         ConfigurationParser parser = new ConfigurationParser(this);
         Object o;

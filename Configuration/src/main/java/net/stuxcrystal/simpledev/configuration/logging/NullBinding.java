@@ -31,14 +31,27 @@ public class NullBinding implements LoggingInterface {
     public void warn(String message) {
     }
 
+    /**
+     * Drop the message.
+     *
+     * @param message Message to send.
+     */
     @Override
     public void debug(String message) {
     }
 
+    /**
+     * Drops the exception.
+     * @param exception The thrown exception.
+     */
     @Override
     public void debugException(Throwable exception) {
     }
 
+    /**
+     * Drops the exception.
+     * @param exception The thrown exception.
+     */
     @Override
     public void exception(Throwable exception) {
     }

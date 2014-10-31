@@ -37,40 +37,82 @@ import java.util.LinkedList;
  */
 class XMLParser extends DefaultHandler {
 
+    /**
+     * Contains the node that we are currently parsing.
+     */
     public static class NodeContainer {
 
+        /**
+         * The current node.
+         */
         private Node<?> node = new NullNode();
 
+        /**
+         * The parent node.
+         */
         private NodeContainer parent = null;
 
+        /**
+         * Creates a new node container.
+         */
         public NodeContainer() {
         }
 
+        /**
+         * Converts the current node in this node container to a node with the given type.
+         * @param instance The new node
+         * @param <T>      The type of the node.
+         * @return The node passed to the function..
+         */
         private <T> Node<T> convert(Node<T> instance) {
-            Node<?> pre = node;
-            node = instance;
+            Node<?> pre = this.node;
+            this.node = instance;
 
-            node.setName(pre.getName());
+            this.node.setName(pre.getName());
 
             return instance;
         }
 
+        /**
+         * Sets the name of the node.
+         * @param name The name of the node.
+         */
         private void setName(String name) {
             node.setName(name);
         }
 
+        /**
+         * Returns the raw node.
+         * @return The raw node.
+         */
         private Node<?> getRawNode() {
             return node;
         }
 
+        /**
+         * Casts the node object to the given type. (Yeah... I was practically a n00b in java as I wrote this)
+         * @param <T> The type of the node.
+         * @return The casted node.
+         */
+        @SuppressWarnings("unchecked")
         private <T extends Node<?>> T getCastedRawNode() {
             return (T) node;
         }
 
+        /**
+         * Sets the parent of the node.
+         * @param container The parent.
+         */
         public void setParent(NodeContainer container) {
             this.parent = container;
         }
 
+        /**
+         * Retrieve the actual node.
+         * @param <T> The type of the node.
+         * @return The node.
+         */
+        @SuppressWarnings("unchecked")
         public <T extends Node<?>> T getNode() {
             if (parent != null)
                 node.setParent(parent.node);
@@ -78,15 +120,33 @@ class XMLParser extends DefaultHandler {
         }
     }
 
+    /**
+     * The current stack of node containers.
+     */
     private LinkedList<NodeContainer> currentStack = new LinkedList<>();
 
+    /**
+     * The current node.
+     */
     private Node<?> base = null;
 
+    /**
+     * Creates a new SAX-Parser.
+     * @return The new sax parser.
+     * @throws ParserConfigurationException If we failed to create anew SAX-Parser.
+     * @throws SAXException                 If we failed to create anew SAX-Parser.
+     */
     private static SAXParser getParser() throws ParserConfigurationException, SAXException {
         SAXParserFactory factory = SAXParserFactory.newInstance();
         return factory.newSAXParser();
     }
 
+    /**
+     * Converts a InputStream to a input source.
+     * @param stream The stream that contains the file.
+     * @return The InputSource for XML.
+     * @throws UnsupportedEncodingException If there is a computer without UTF-8 let me know.
+     */
     private static InputSource toSource(InputStream stream) throws UnsupportedEncodingException {
         Reader reader = new InputStreamReader(stream, "UTF-8");
         InputSource source = new InputSource(reader);
@@ -99,13 +159,19 @@ class XMLParser extends DefaultHandler {
      * @param pis The input stream.
      * @return {@code true} if so.
      */
-    private static boolean isEmpty(PushbackInputStream pis) throws IOException{
+    private static boolean isEmpty(PushbackInputStream pis) throws IOException {
         int b = pis.read();
         boolean empty = (b==-1);
         pis.unread(b);
         return empty;
     }
 
+    /**
+     * Parse the XML-File.
+     * @param stream The stream to use.
+     * @return The Node-Tree.
+     * @throws IOException if an I/O-Operation fails.
+     */
     public static Node<?> parse(InputStream stream) throws IOException {
         // Make sure empty files are supported...
         stream = new PushbackInputStream(stream, 1);
@@ -113,7 +179,6 @@ class XMLParser extends DefaultHandler {
             // The node has no content.
             return new MapNode(new Node[0]);
         }
-
 
         SAXParser parser;
         try {
@@ -132,17 +197,30 @@ class XMLParser extends DefaultHandler {
         return raw_parser.base;
     }
 
-
+    /**
+     * Called when a new node starts.
+     * @param uri            PAIN IN THE ASS
+     * @param localName      PAIN IN THE ASS
+     * @param qName          PAIN IN THE ASS
+     * @param attributes     The attributes of the element
+     */
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) {
-        NodeContainer parent = currentStack.peek();
+        NodeContainer parent = this.currentStack.peek();
 
         NodeContainer container = new NodeContainer();
         container.setName(qName);
         container.setParent(parent);
-        currentStack.push(container);
+        this.currentStack.push(container);
     }
 
+    /**
+     * Parse the characters of the node.
+     * @param ch         The character array. (Can't we deal with strings?)
+     * @param start      The start
+     * @param length     The length
+     * @throws SAXException Cannot mix node types.
+     */
     @Override
     public void characters(char ch[], int start, int length) throws SAXException {
         String content = new String(ch, start, length);
@@ -150,7 +228,7 @@ class XMLParser extends DefaultHandler {
         if (StringUtils.isBlank(content))
             return;
 
-        NodeContainer container = currentStack.peek();
+        NodeContainer container = this.currentStack.peek();
 
         if (!(container.getRawNode() instanceof NullNode) && (!(container.getRawNode() instanceof DataNode))) {
             throw new SAXException("Node Value already set: " + container.getRawNode().toString());
@@ -165,14 +243,21 @@ class XMLParser extends DefaultHandler {
         node.setData(node.getData() + content);
     }
 
+    /**
+     * Actually update the node that is below our current stack.
+     * @param uri            PAIN IN THE ASS
+     * @param localName      PAIN IN THE ASS
+     * @param qName          PAIN IN THE ASS
+     * @throws SAXException Cannot mix node types.
+     */
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
-        NodeContainer container = currentStack.pop();
+        NodeContainer container = this.currentStack.pop();
 
-        if (currentStack.isEmpty()) {
-            base = container.getNode();
+        if (this.currentStack.isEmpty()) {
+            this.base = container.getNode();
         } else {
-            NodeContainer parent = currentStack.peek();
+            NodeContainer parent = this.currentStack.peek();
             if (!(parent.getRawNode() instanceof NullNode) && !(parent.getRawNode() instanceof MapNode))
                 throw new SAXException("The configuration should not mix multiple element types:" + parent.getRawNode().toString());
 

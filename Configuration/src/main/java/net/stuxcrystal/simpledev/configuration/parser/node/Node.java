@@ -15,6 +15,9 @@
 
 package net.stuxcrystal.simpledev.configuration.parser.node;
 
+import org.apache.commons.lang.StringUtils;
+
+import java.lang.ref.WeakReference;
 import java.util.Arrays;
 
 /**
@@ -25,78 +28,121 @@ import java.util.Arrays;
 public abstract class Node<T> {
 
     /**
+     * Contains the comments.
+     */
+    private String[] comments;
+
+    /**
+     * Reference to the parent.
+     */
+    private WeakReference<Node<?>> parent;
+
+    /**
+     * Contains the contents of the node.
+     */
+    private T contents;
+
+    /**
+     * Contains the name of the node.
+     */
+    private String name;
+
+    /**
      * Returns true if the node has childnodes.<p />
      * Retrieve the children using {@code (Node[]) Node.getData();}
      *
-     * @return
+     * @return {@code true} if node has children.
      */
     public abstract boolean hasChildren();
 
     /**
      * Returns the data.
      *
-     * @return
+     * @return The data.
      */
-    public abstract T getData();
+    public T getData() {
+        return this.contents;
+    }
 
     /**
      * Sets the data.
      *
-     * @param data
+     * @param data The new data.
      */
-    public abstract void setData(T data);
+    public void setData(T data) {
+        this.contents = data;
+    }
 
     /**
      * Has the node a name.
      */
-    public abstract boolean hasName();
+    public boolean hasName() {
+        return StringUtils.isNotBlank(this.name);
+    }
 
     /**
      * Returns the name of the node.
      */
-    public abstract String getName();
+    public String getName() {
+        return this.hasName()?this.name:null;
+    }
 
     /**
-     * The name of the param.
+     * The name of the node.
      *
-     * @param name
+     * @param name The name of the node.
      */
-    public abstract void setName(String name);
+    public void setName(String name) {
+        this.name = name;
+    }
 
     /**
-     * Returns the metadata of the node.
+     * Returns the comments of the node.
      *
-     * @return
+     * @return The comments.
      */
-    public abstract String[] getComments();
+    public String[] getComments() {
+        return this.comments;
+    }
 
     /**
-     * Sets the metadata.
+     * Sets the comments.
      *
-     * @param comments
+     * @param comments The comments.
      */
-    public abstract void setComments(String[] comments);
+    public void setComments(String[] comments) {
+        this.comments = comments;
+    }
 
     /**
-     * The parent-node.
+     * Returns the parent node.
      *
-     * @return
+     * @return The parent node.
      */
-    protected abstract Node<?> getParent();
+    protected Node<?> getParent() {
+        return this.parent.get();
+    }
 
     /**
      * Sets the parent node.
      *
-     * @param parent
+     * @param parent The new parent.
      */
-    public abstract void setParent(Node<?> parent);
+    public void setParent(Node<?> parent) {
+        this.parent = new WeakReference<Node<?>>(parent);
+    }
 
+    /**
+     * Creates a string representation for the node.
+     * @return The string representation.
+     */
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("Node[");
+        sb.append(this.getClass().getSimpleName());
+        sb.append("[");
         sb.append("name=").append(this.getName());
-        sb.append(", parent=").append(this.getParent() == null ? 0 : this.getParent().hashCode());
+        sb.append(", parent=WeakReference<").append(this.getParent() == null ? "null" : ""+this.getParent().hashCode()).append(">");
         if (this.getData() instanceof String)
             sb.append(", value=").append(this.getData());
         else
