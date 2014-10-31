@@ -69,6 +69,7 @@ public class ArgumentHandler {
      * @return The converted type.
      * @throws IllegalArgumentException If the given type is unsupported.
      */
+    @SuppressWarnings("unchecked")
     public <T> T convertType(String value, Class<T> type, CommandExecutor executor, CommandBackend handler) {
         for (ArgumentType aType : argumentTypes) {
             if (aType.isTypeSupported(type))
