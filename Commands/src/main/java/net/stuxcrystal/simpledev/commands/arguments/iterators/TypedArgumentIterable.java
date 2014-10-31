@@ -3,7 +3,7 @@ package net.stuxcrystal.simpledev.commands.arguments.iterators;
 /**
  * Implements a typed argument iterable.
  */
-public class TypedArgumentIterable<T> extends AbstractArgumentIterable<T> {
+public class TypedArgumentIterable<T> extends ArgumentIterable<T> {
 
     /**
      * Creates a new abstract argument iterable.
@@ -11,7 +11,7 @@ public class TypedArgumentIterable<T> extends AbstractArgumentIterable<T> {
      * @param parent The parent iterable.
      * @param type   The type of the iterable.
      */
-    public TypedArgumentIterable(ArgumentIterable parent, Class<T> type) {
+    public TypedArgumentIterable(ArgumentContainer parent, Class<T> type) {
         super(parent, type);
     }
 

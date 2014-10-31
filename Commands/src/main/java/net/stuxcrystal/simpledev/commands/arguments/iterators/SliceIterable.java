@@ -3,7 +3,7 @@ package net.stuxcrystal.simpledev.commands.arguments.iterators;
 /**
  * Returns the iterable at the given item.
  */
-class SliceIterable extends ArgumentIterable {
+class SliceIterable extends ArgumentContainer {
 
     private static class Slice {
         /**
@@ -134,7 +134,7 @@ class SliceIterable extends ArgumentIterable {
      * @param stop      The first item not to be returned.
      * @param step      The step.
      */
-    SliceIterable(ArgumentIterable parent, Integer start, Integer stop, Integer step) {
+    SliceIterable(ArgumentContainer parent, Integer start, Integer stop, Integer step) {
         super(parent);
         this.slice = Slice.get(parent.size(), start, stop, step);
     }

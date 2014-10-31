@@ -16,7 +16,7 @@ package net.stuxcrystal.simpledev.commands.arguments;
 
 import net.stuxcrystal.simpledev.commands.CommandExecutor;
 import net.stuxcrystal.simpledev.commands.CommandHandler;
-import net.stuxcrystal.simpledev.commands.arguments.iterators.ArgumentIterable;
+import net.stuxcrystal.simpledev.commands.arguments.iterators.ArgumentContainer;
 import net.stuxcrystal.simpledev.commands.arguments.types.PrimitiveType;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -26,7 +26,7 @@ import org.apache.commons.lang.StringUtils;
  *
  * @author StuxCrystal
  */
-public class ArgumentList extends ArgumentIterable {
+public class ArgumentList extends ArgumentContainer {
 
     /**
      * Raw arguments
