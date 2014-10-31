@@ -86,7 +86,7 @@ public abstract class ArgumentIterable extends AbstractArgumentIterable<String> 
      * @return An iterable that returns the iterable that returns the arguments at the given value.
      */
     @SuppressWarnings("unchecked")
-    public <T> Iterable<T> as(final Class<T> cls) {
+    public <T> Iterable<T> as(Class<T> cls) {
         return new TypedArgumentIterable<>(this, cls);
     }
 
