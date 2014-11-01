@@ -65,7 +65,7 @@ public class AnnotationCommandLoader implements CommandLoader {
 
             // Support for subcommands.
             if (method.isAnnotationPresent(SubCommand.class)) {
-                CommandHandler subhandler = null;
+                CommandHandler subhandler;
                 SubCommand command = method.getAnnotation(SubCommand.class);
 
                 // Create a sub-handler.
