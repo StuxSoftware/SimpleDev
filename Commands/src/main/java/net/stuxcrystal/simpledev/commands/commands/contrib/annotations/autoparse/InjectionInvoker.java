@@ -2,8 +2,7 @@ package net.stuxcrystal.simpledev.commands.commands.contrib.annotations.autopars
 
 import net.stuxcrystal.simpledev.commands.CommandExecutor;
 import net.stuxcrystal.simpledev.commands.arguments.ArgumentList;
-import net.stuxcrystal.simpledev.commands.commands.contrib.annotations.Command;
-import net.stuxcrystal.simpledev.commands.commands.contrib.annotations.simple.LeafAnnotationCommand;
+import net.stuxcrystal.simpledev.commands.commands.contrib.annotations.MethodInvoker;
 import net.stuxcrystal.simpledev.commands.utils.HandleWrapper;
 
 import java.lang.annotation.Annotation;
@@ -13,7 +12,7 @@ import java.lang.reflect.Method;
 /**
  * The leaf annotation command.
  */
-public class ParsingAnnotationCommand extends LeafAnnotationCommand {
+public class InjectionInvoker extends MethodInvoker {
 
     /**
      * The dummy object.
@@ -21,15 +20,14 @@ public class ParsingAnnotationCommand extends LeafAnnotationCommand {
     private static final Object DUMMY = new Object();
 
     /**
-     * Creates a new annotation based command.
-     *
-     * @param command  The command metadata.
-     * @param method   The method to execute.
-     * @param instance The instance of the command metadata.
+     * The injection invoker.
      */
-    public ParsingAnnotationCommand(Command command, Method method, Object instance) {
-        super(command, method, instance);
-    }
+    public static MethodInvoker INJECTIONS = new InjectionInvoker();
+
+    /**
+     * Singleton
+     */
+    private InjectionInvoker() {}
 
     /**
      * Invokes the command and parses the parameters.
@@ -38,19 +36,19 @@ public class ParsingAnnotationCommand extends LeafAnnotationCommand {
      */
     @Override
     @SuppressWarnings("unchecked")
-    public void _invoke(CommandExecutor executor, ArgumentList list)
+    public void invoke(Method method, Object instance, CommandExecutor executor, ArgumentList list)
             throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
         // Prepare the values.
-        Object[] values = new Object[this.method.getParameterCount()];
-        Annotation[][] annotations = this.method.getParameterAnnotations();
-        Class<?>[] cls = this.method.getParameterTypes();
+        Object[] values = new Object[method.getParameterCount()];
+        Annotation[][] annotations = method.getParameterAnnotations();
+        Class<?>[] cls = method.getParameterTypes();
 
         for (int i = 0; i<values.length; i++) {
             Annotation[] pAnnotations = annotations[i];
             Class<?> paramType = cls[0];
 
-            Object currentValue = ParsingAnnotationCommand.DUMMY;
+            Object currentValue = InjectionInvoker.DUMMY;
 
             for (Annotation annotation : pAnnotations) {
 
@@ -116,7 +114,7 @@ public class ParsingAnnotationCommand extends LeafAnnotationCommand {
             values[i] = currentValue;
         }
 
-        this.method.invoke(this.instance, values);
+        method.invoke(instance, values);
     }
 
     /**
@@ -124,7 +122,7 @@ public class ParsingAnnotationCommand extends LeafAnnotationCommand {
      * @param method The method to parse.
      * @return The injection command.
      */
-    private static boolean isInjectionCommand(Method method) {
+    public static boolean isInjectionCommand(Method method) {
         for (Annotation[] annotations : method.getParameterAnnotations())
             for (Annotation annotation : annotations)
                 if ((annotation instanceof Argument) || (annotation instanceof Backend) || (annotation instanceof Executor))

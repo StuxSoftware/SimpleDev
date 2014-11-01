@@ -3,6 +3,7 @@ package net.stuxcrystal.simpledev.commands.commands.contrib.annotations;
 import net.stuxcrystal.simpledev.commands.CommandHandler;
 import net.stuxcrystal.simpledev.commands.commands.CommandContainer;
 import net.stuxcrystal.simpledev.commands.commands.CommandLoader;
+import net.stuxcrystal.simpledev.commands.commands.contrib.annotations.autoparse.InjectionInvoker;
 import net.stuxcrystal.simpledev.commands.commands.contrib.annotations.simple.BranchAnnotationCommand;
 import net.stuxcrystal.simpledev.commands.commands.contrib.annotations.simple.LeafAnnotationCommand;
 
@@ -55,6 +56,13 @@ public class AnnotationCommandLoader implements CommandLoader {
             // The method have to be annotated by Command.
             if (!method.isAnnotationPresent(Command.class)) continue;
 
+            // Determine the correct method invoker.
+            MethodInvoker mi;
+            if (InjectionInvoker.isInjectionCommand(method))
+                mi = InjectionInvoker.INJECTIONS;
+            else
+                mi = MethodInvoker.DEFAULT;
+
             // Support for subcommands.
             if (method.isAnnotationPresent(SubCommand.class)) {
                 CommandHandler subhandler = null;
@@ -73,10 +81,10 @@ public class AnnotationCommandLoader implements CommandLoader {
                 }
 
                 // Register the command.
-                commands.add(new BranchAnnotationCommand(method.getAnnotation(Command.class), method, container, command, subhandler));
+                commands.add(new BranchAnnotationCommand(method.getAnnotation(Command.class), method, container, command, subhandler, mi));
             } else {
                 // Just register the command.
-                commands.add(new LeafAnnotationCommand(method.getAnnotation(Command.class), method, container));
+                commands.add(new LeafAnnotationCommand(method.getAnnotation(Command.class), method, container, mi));
             }
         }
 

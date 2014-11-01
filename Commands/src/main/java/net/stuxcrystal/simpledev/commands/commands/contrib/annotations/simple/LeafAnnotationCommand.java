@@ -4,6 +4,7 @@ import net.stuxcrystal.simpledev.commands.CommandExecutor;
 import net.stuxcrystal.simpledev.commands.arguments.ArgumentList;
 import net.stuxcrystal.simpledev.commands.commands.contrib.annotations.AnnotationBasedCommand;
 import net.stuxcrystal.simpledev.commands.commands.contrib.annotations.Command;
+import net.stuxcrystal.simpledev.commands.commands.contrib.annotations.MethodInvoker;
 
 import java.lang.reflect.Method;
 
@@ -18,9 +19,10 @@ public class LeafAnnotationCommand extends AnnotationBasedCommand {
      * @param command  The command metadata.
      * @param method   The method to execute.
      * @param instance The instance of the command metadata.
+     * @param invoker    The way how the method will be invoked.
      */
-    public LeafAnnotationCommand(Command command, Method method, Object instance) {
-        super(command, method, instance);
+    public LeafAnnotationCommand(Command command, Method method, Object instance, MethodInvoker invoker) {
+        super(command, method, instance, invoker);
     }
 
     /**

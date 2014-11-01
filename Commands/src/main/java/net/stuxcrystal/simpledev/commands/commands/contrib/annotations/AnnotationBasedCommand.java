@@ -35,15 +35,22 @@ public abstract class AnnotationBasedCommand implements CommandContainer {
     protected final Object instance;
 
     /**
+     * The invoker for the action.
+     */
+    private final MethodInvoker invoker;
+
+    /**
      * Creates a new annotation based command.
      * @param command  The command metadata.
      * @param method   The method to execute.
      * @param instance The instance of the command metadata.
+     * @param invoker  The invoker for the action.
      */
-    public AnnotationBasedCommand(Command command, Method method, Object instance) {
+    public AnnotationBasedCommand(Command command, Method method, Object instance, MethodInvoker invoker) {
         this.command = command;
         this.method = method;
         this.instance = instance;
+        this.invoker = invoker;
     }
 
     @Override
@@ -127,7 +134,7 @@ public abstract class AnnotationBasedCommand implements CommandContainer {
         TranslationManager manager = handler.getTranslationManager();
 
         try {
-            this._invoke(sender, arguments);
+            this.invoker.invoke(this.method, this.instance, sender, arguments);
         } catch (IllegalAccessException | IllegalArgumentException e) {
             sender.sendMessage(manager.translate(sender, "cmd.call.fail"));
             sender.getBackend().getLogger().log(Level.WARNING, "Failed to execute command.", e);
@@ -148,15 +155,5 @@ public abstract class AnnotationBasedCommand implements CommandContainer {
         }
 
         return true;
-    }
-
-    /**
-     * Invokes the command without executing any checks.
-     * @param executor The executor that should execute the command
-     * @param list     The argument list shat should be used.
-     */
-    protected void _invoke(CommandExecutor executor, ArgumentList list)
-            throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        this.method.invoke(this.instance, executor, list);
     }
 }

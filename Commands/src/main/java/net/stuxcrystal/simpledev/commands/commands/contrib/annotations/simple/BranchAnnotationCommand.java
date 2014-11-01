@@ -3,10 +3,7 @@ package net.stuxcrystal.simpledev.commands.commands.contrib.annotations.simple;
 import net.stuxcrystal.simpledev.commands.CommandExecutor;
 import net.stuxcrystal.simpledev.commands.CommandHandler;
 import net.stuxcrystal.simpledev.commands.arguments.ArgumentList;
-import net.stuxcrystal.simpledev.commands.commands.contrib.annotations.AnnotationBasedCommand;
-import net.stuxcrystal.simpledev.commands.commands.contrib.annotations.CallTime;
-import net.stuxcrystal.simpledev.commands.commands.contrib.annotations.Command;
-import net.stuxcrystal.simpledev.commands.commands.contrib.annotations.SubCommand;
+import net.stuxcrystal.simpledev.commands.commands.contrib.annotations.*;
 import net.stuxcrystal.simpledev.commands.translations.TranslationManager;
 
 import java.lang.reflect.Method;
@@ -33,9 +30,10 @@ public class BranchAnnotationCommand extends AnnotationBasedCommand {
      * @param instance   The instance of the command metadata.
      * @param subcommand The subcommand metadata.
      * @param cHandler   The command handler.
+     * @param invoker    The way how the method will be invoked.
      */
-    public BranchAnnotationCommand(Command command, Method method, Object instance, SubCommand subcommand, CommandHandler cHandler) {
-        super(command, method, instance);
+    public BranchAnnotationCommand(Command command, Method method, Object instance, SubCommand subcommand, CommandHandler cHandler, MethodInvoker invoker) {
+        super(command, method, instance, invoker);
         this.subcommand = subcommand;
         this.cHandler = cHandler;
     }
