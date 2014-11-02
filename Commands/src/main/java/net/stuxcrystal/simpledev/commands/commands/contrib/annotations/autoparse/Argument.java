@@ -11,10 +11,10 @@ import java.lang.annotation.*;
 public @interface Argument {
 
     /**
-     * The start index.
-     * @return The start index.
+     * The value index.
+     * @return The value index.
      */
-    int start();
+    int value();
 
     /**
      * The stop index. (List only)
@@ -32,7 +32,7 @@ public @interface Argument {
      * Contains the default value. (Non-Array only)
      * @return The default value.
      */
-    String defaultValue() default "\t";
+    String defaultValue() default "§";
 
     /**
      * The type of the annotation (used when the type of the argument cannot be determined from the parameter type)

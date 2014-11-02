@@ -2,10 +2,12 @@ package net.stuxcrystal.simpledev.commands.commands.contrib.annotations.autopars
 
 import net.stuxcrystal.simpledev.commands.CommandExecutor;
 import net.stuxcrystal.simpledev.commands.arguments.ArgumentList;
+import net.stuxcrystal.simpledev.commands.arguments.iterators.ArgumentContainer;
 import net.stuxcrystal.simpledev.commands.commands.contrib.annotations.MethodInvoker;
 import net.stuxcrystal.simpledev.commands.utils.HandleWrapper;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -60,21 +62,23 @@ public class InjectionInvoker extends MethodInvoker {
                         parsingParamType = paramType;
 
                     // This is an array, we will enter array parsing mode.
-                    if (parsingParamType.isArray()) {
-                        int start = ((Argument) annotation).start();
+                    if (parsingParamType.isArray() || parsingParamType.equals(ArgumentContainer.class)) {
+                        int start = ((Argument) annotation).value();
                         Integer stop = ((Argument) annotation).stop();
                         int step = ((Argument) annotation).step();
 
                         if (stop == Integer.MAX_VALUE)
                             stop = null;
 
-                        currentValue = list.slice(start, stop, step).as(parsingParamType.getComponentType()).toArray();
+                        currentValue = list.slice(start, stop, step);
+                        if (parsingParamType.isArray())
+                            currentValue = ((ArgumentContainer) currentValue).as(parsingParamType.getComponentType()).toArray();
 
                     // We deal with simple objects.
                     } else {
                         // We deal with an required argument.
-                        if ("\t".equals(((Argument) annotation).defaultValue())) {
-                            currentValue = list.get(((Argument) annotation).start(), parsingParamType);
+                        if ("§".equals(((Argument) annotation).defaultValue())) {
+                            currentValue = list.get(((Argument) annotation).value(), parsingParamType);
 
                         // We deal with an optional argument.
                         } else {
@@ -84,7 +88,7 @@ public class InjectionInvoker extends MethodInvoker {
                                     executor,
                                     executor.getBackend()
                             );
-                            currentValue = list.get(((Argument) annotation).start(), parsingParamType, def);
+                            currentValue = list.get(((Argument) annotation).value(), parsingParamType, def);
                         }
                     }
 
@@ -95,6 +99,8 @@ public class InjectionInvoker extends MethodInvoker {
                 // Return the executor of the function.
                 } else if (annotation instanceof Executor) {
                     currentValue = executor;
+                } else if (annotation instanceof Flag) {
+                    currentValue = list.hasFlag(((Flag) annotation).value());
                 }
             }
 
@@ -104,10 +110,30 @@ public class InjectionInvoker extends MethodInvoker {
             // Handle the component annotation.
             for (Annotation annotation : pAnnotations) {
                 if (annotation instanceof Component) {
-                    if (!(currentValue instanceof HandleWrapper))
-                        continue;
 
-                    currentValue = ((HandleWrapper) currentValue).getComponent(paramType);
+                    if (currentValue.getClass().isArray()) {
+                        if (!(HandleWrapper.class.isAssignableFrom(currentValue.getClass().getComponentType())))
+                            continue;
+
+                        int length = Array.getLength(currentValue);
+                        Object o = Array.newInstance(paramType.getComponentType(), length);
+                        for (int index = 0; index<length; index++)
+                            Array.set(
+                                    o,
+                                    index,
+                                    ((HandleWrapper) Array.get(currentValue, index)).getComponent(
+                                            paramType.getComponentType()
+                                    )
+                            );
+                        currentValue = o;
+                    } else {
+                        if (!(currentValue instanceof HandleWrapper))
+                            continue;
+
+                        currentValue = ((HandleWrapper) currentValue).getComponent(paramType);
+                    }
+
+
                 }
             }
 

@@ -10,7 +10,7 @@ class SliceIterable extends ArgumentContainer {
      */
     private static class Slice {
         /**
-         * The start index of the iterable.
+         * The value index of the iterable.
          */
         private final Integer start;
 
@@ -47,7 +47,7 @@ class SliceIterable extends ArgumentContainer {
         /**
          * Creates a new slice object for object with the given lenght.
          * @param len     The original length.
-         * @param rStart  The start parameter.
+         * @param rStart  The value parameter.
          * @param rStop   The stop parameter.
          * @param rStep   The step parameter.
          * @return The new slice object.
