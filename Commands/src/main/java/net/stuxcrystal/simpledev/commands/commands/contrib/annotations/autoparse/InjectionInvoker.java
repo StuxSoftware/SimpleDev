@@ -68,7 +68,7 @@ public class InjectionInvoker extends MethodInvoker {
                         if (stop == Integer.MAX_VALUE)
                             stop = null;
 
-                        currentValue = list.slice(start, stop, step).as(parsingParamType).toArray();
+                        currentValue = list.slice(start, stop, step).as(parsingParamType.getComponentType()).toArray();
 
                     // We deal with simple objects.
                     } else {
